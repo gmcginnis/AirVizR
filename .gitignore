@@ -37,3 +37,7 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# More
+AirVizR.Rproj
+.Rbuildignore

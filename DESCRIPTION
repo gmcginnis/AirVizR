@@ -1,0 +1,27 @@
+Package: AirVizR
+Title: Visualization Tools for Air Quality Data
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Gillian",
+           family = "McGinnis",
+           role = c("aut", "cre"),
+           email = "gmcginnis@reed.edu")
+Description: A series of tools for extracting, wrangling, correcting, and visualizing air quality data, with an emphasis on PM2.5 data from PurpleAir.
+License: GPL >= 3.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dplyr,
+    readr,
+    ggplot2,
+    ggmap (>= 3.0.0.903),
+    ggrepel,
+    lubridate,
+    viridis
+Suggests: 
+    testthat (>= 3.0.0),
+    AirSensor,
+    openair
+Config/testthat/edition: 3
