@@ -1,0 +1,163 @@
+#' Visualization Settings for Specified Units
+#'
+#' A series of arguments to detect the appropriate visualization labels and settings to apply to a dataset provided said dataset and a varaible of interest.
+#' Additionally, an optional "cap" value (and custom color) can be provided in order to distinguish values at or above said specified values to prevent color scale washout (e.g. if a few observations are extremely high to the point where all other values are washed out on the color scale).
+#' @param dataset The dataset which to evaluate
+#' @param var_qt Character; The variable of interest within the dataset, in quotation marks
+#' @param cap_value Numeric; The value of the color "cap" to be applied
+#' @param cap_color Character; The color of values at or above the \code{cap_value}.
+#' @param digits Numeric; the number of digits to round data labels to.
+#' @param lab_title Character; the first portion of the visualization title. It is recommended to adjust this to the type of visualization to be made.
+#' @param lab_fill Character; the default unit label for the variable of interest (standalone, e.g. y-axis label of 'Units')
+#' @param lab_unit Character; the default unit label for the variable of interest (in context of a sentence, e.g. 'X units')
+#' @return List of values to be applyed to various visualization methods.
+#' @examples 
+#' units_results <- settings_units(data_pm25, "pm25_atm", cap_value = 150)
+#' ggplot() + fill_colors + cap_guide + labs(fill = units_results$lab_fill)
+#' @export
+settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
+                           cap_value = NA, cap_color = "red", digits = 2,
+                           lab_title = "Graph of", lab_fill = "Units", lab_unit = "units") {
+  
+  # Defaults
+  lab_title_val <- var_qt
+  # Color scale will default set to start at 0
+  fill_colors <- scale_fill_viridis(option = "inferno", limits = c(0, NA), na.value = cap_color)
+  
+  if (str_detect(var_qt, "pm") == TRUE) {
+    fill_colors <- scale_fill_viridis(option = "plasma", limits = c(0, NA), na.value = cap_color)
+    lab_title_val <- "Particulate Matter (PM)"
+    lab_unit <- '*mu*"g/m"^3*'
+    
+    if (str_detect(var_qt, "(25)|(2.5)") == TRUE) {
+      pm_val <- 2.5
+      print("PM 2.5 detected")
+    } else if (str_detect(var_qt, "(1.0)|(01)|(\\D1$)|(1\\D)") == TRUE) {
+      pm_val <- 1.0
+      print("PM 1.0 detected")
+    } else if (str_detect(var_qt, "(10)") == TRUE) {
+      pm_val <- 10
+      print("PM 10 detected")
+    } else {
+      pm_val <- NULL
+      print("PM unit undetermined")
+    }
+    lab_fill <- parse(text = paste0('PM[', pm_val, ']~"("', lab_unit,'")"'))
+    lab_unit <- "units"
+  } else if (str_detect(var_qt, "((H|h)umid)|(rh)|(RH)") == TRUE) {
+    # Adjusting color scale and labels if the variable of interest is RH
+    lab_title_val <- "humidity"
+    lab_unit <- "%"
+    lab_fill <- paste0("Relative humidity (", lab_unit, ")")
+    fill_colors <- scale_fill_viridis(option = "mako", direction = -1, limits = c(0, 100), end = 0.9, na.value = cap_color)
+    print("RH detected as variable of interest; adjusting labels accordingly")
+  } else if (str_detect(var_qt, "temp") == TRUE) {
+    # Adjusting color scale and labels if the variable of interest is internal temperature
+    lab_title_val <- "internal temperature"
+    fill_colors <- scale_fill_viridis(option = "cividis", begin = 0.15, na.value = cap_color)
+    print("Temperature detected as variable of interest; adjusting labels accordingly")
+    lab_unit <- "\u00B0F"
+    
+    if (str_detect(var_qt, "_c") == TRUE) {
+      lab_unit <- "\u00B0C"
+      print("Temperature detected to be in Celsius")
+    } else { print("Temperature assumed to be in Fahrenheit") }
+    
+    lab_fill <- paste0("Internal temperature (", lab_unit, ")")
+    
+    if (str_detect(var_qt, "ambient") == TRUE) {
+      print("Ambient temperature (not raw/internal) detected")
+      lab_title_val <- "ambient temperature"
+      lab_fill <- paste0("Ambient temperature (", lab_unit, ")")
+    }
+  }
+  
+  # # Adjusting color scale and labels if the variable of interest is internal temperature
+  # if (str_detect(var_qt, "temp") == TRUE) {
+  #   lab_title_val <- "internal temperature"
+  #   fill_colors <- scale_fill_viridis(option = "cividis", begin = 0.15, na.value = cap_color)
+  #   print("Temperature detected as variable of interest; adjusting labels accordingly")
+  #   lab_unit <- "\u00B0F"
+  #   
+  #   if (str_detect(var_qt, "_c") == TRUE) {
+  #     lab_unit <- "\u00B0C"
+  #     print("Temperature detected to be in Celsius")
+  #   } else { print("Temperature assumed to be in Fahrenheit") }
+  #   
+  #   lab_fill <- paste0("Internal temperature (", lab_unit, ")")
+  # }
+  # 
+  # # Adjusting color scale and labels if the variable of interest is RH
+  # if (str_detect(var_qt, "((H|h)umid)|(rh)|(RH)") == TRUE) {
+  #   lab_title_val <- "humidity"
+  #   lab_unit <- "%"
+  #   lab_fill <- paste0("Relative humidity (", lab_unit, ")")
+  #   fill_colors <- scale_fill_viridis(option = "mako", direction = -1, limits = c(0, 100), end = 0.9, na.value = cap_color)
+  #   print("RH detected as variable of interest; adjusting labels accordingly")
+  # }
+  
+  # Getting min and max values from the data set
+  val_min <- dataset %>% ungroup() %>% select_at(vars(var_qt)) %>% min(na.rm = TRUE)
+  val_max <- dataset %>% ungroup() %>% select_at(vars(var_qt)) %>% max(na.rm = TRUE)
+  
+  lab_subtitle <- paste0("Variable plotted: ",
+                         var_qt,
+                         ", with a reported range of ",
+                         round(val_min, digits = digits),
+                         " to ",
+                         round(val_max, digits = digits),
+                         " ", lab_unit, ".")
+  
+  cap_guide <- guides(fill = guide_colorbar(order = 1, barwidth = 10),
+                      color = "none")
+  
+  # If manually applying a max filter value
+  if (is.na(cap_value) == FALSE) {
+    # Getting number of rows at or above the cap
+    nrow_hi <- dataset %>% 
+      filter_at(vars({{var_qt}}),  ~.>= cap_value) %>% 
+      nrow()
+    
+    if ((nrow_hi > 0) == TRUE) {
+      # Replacing the values above the set max to be NA so that they will be colored differently on the map
+      dataset <- dataset %>% 
+        mutate_at(vars({{var_qt}}), ~replace(., which(.>={{cap_value}}), NA))
+      
+      # Updated lab caption to include the filter
+      lab_subtitle <- paste0("Color scale manually capped at ",
+                             cap_value, " units; all higher values colored ", cap_color,
+                             ".\n", lab_subtitle)
+      
+      # Feedback
+      print(paste(
+        "Values greater than or equal to",
+        {{cap_value}}, "in", {{var_qt}},
+        "will be colored", cap_color
+      ))
+      
+      cap_guide <- guides(fill = guide_colorbar(order = 1, barwidth = 10),
+                          color = guide_legend(
+                            title = paste0(cap_value, "+"),
+                            order = 2,
+                            title.position = "bottom",
+                            title.theme = element_text(size = 10),
+                            override.aes = list(color = cap_color, fill = cap_color)
+                          ))
+    } else {
+      print(paste0(
+        "No values greater than or equal to ",
+        {{cap_value}}, " found in ", {{var_qt}},
+        "; color cap will not be applied."
+      ))
+    }
+  }
+  
+  return(list(
+    lab_title = lab_title,
+    lab_title_val = lab_title_val,
+    lab_subtitle = lab_subtitle,
+    lab_fill = lab_fill,
+    fill_colors = fill_colors,
+    cap_guide = cap_guide
+  ))
+}

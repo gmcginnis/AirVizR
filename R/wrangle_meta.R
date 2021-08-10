@@ -1,0 +1,18 @@
+#' Wrangle Location (Meta) Data
+#'
+#' Select variables of interest from location data, and (importantly) make monitor labels unique from one another.
+#' @param raw_location_data The dataset which to wrangle.
+#' @return Dataframe with selected columns of interest.
+#' @examples 
+#' data_meta <- wrangle_meta(results$raw_meta)
+#' @export
+wrangle_meta <- function(raw_location_data = raw_meta) {
+  location_data <- raw_location_data %>% 
+    select(site_id, location, label, longitude, latitude, timezone, flag_highValue) %>% 
+    mutate(
+      label_orig = label,
+      label = make.unique(label, sep = " ")
+    )
+  print("Meta data now sorted and labels made distinctive.")
+  return(location_data)
+}
