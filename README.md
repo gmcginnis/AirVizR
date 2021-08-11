@@ -24,10 +24,7 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
-# You only need to install "devtools" once:
 # install.packages("devtools")
-
-# Then, install the package:
 devtools::install_github("gmcginnis/AirVizR")
 ```
 
@@ -41,6 +38,11 @@ library(tidyverse)
 ```
 
 ## Wrangling options:
+
+Many of the functions in this package are intended to work hand-in-hand
+with a series of provided inputs, hence why many of the defaults inputs
+for man class types are “`input_*`” or “`raw_*`”. For full lists of
+inputs, browse the vignettes.
 
 One of three methods of data importation are documented in the
 vignettes, via either API or local import;  
@@ -60,10 +62,16 @@ loading FRM data, the visualization functions can be applied to them.
 The examples in this package use FRM data from Oregon’s DEQ. See the
 `frm-data` vignette for more information.
 
-Many of the functions in this package are intended to work hand-in-hand
-with a series of provided inputs, hence why many of the defaults inputs
-for man class types are "input\_\*" or “raw\_”. See the `api-data`
-vignette for a full example of inputs.
+The data preparation functions are primarily configured for using
+PurpleAir data sets, however other types can be wrangled in similar
+methods. All spatio-temporal atmospheric data (STAD) sets can be
+visualized using the functions in this package, so long as the following
+structures are followed:  
+\* A data frame of STAD with at least one column for a time stamp of any
+unit, one column for the atmospheric unit of interest, and one
+identifying column (`site_id`).  
+\* A data frame of meta/location data for each `site_id` in the STAD,
+including latitudes, longitudes, and location (inside/outside/FRM).
 
 ## Exaple Visualizations:
 
@@ -186,8 +194,7 @@ ts_line(july_api_hourly,
 
 #### Variation
 
-A visualization option that builds upon the [timeVariation()
-function](https://bookdown.org/david_carslaw/openair/sec-timeVariation.html)
+A visualization option that builds upon the `timeVariation()` function
 from the [OpenAir package](https://bookdown.org/david_carslaw/openair/)
 is also available.  
 It can be modified to compare multiple groups (such as date ranges) or

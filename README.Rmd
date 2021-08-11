@@ -26,11 +26,8 @@ Visualization functions have been carefully selected to maximize accessibility a
 
 You can install the development version from [GitHub](https://github.com/) with:  
 
-``` r
-# You only need to install "devtools" once:
+``` {r, eval = FALSE}
 # install.packages("devtools")
-
-# Then, install the package:
 devtools::install_github("gmcginnis/AirVizR")
 ```
 
@@ -45,14 +42,17 @@ library(tidyverse)
 
 ## Wrangling options:
 
+Many of the functions in this package are intended to work hand-in-hand with a series of provided inputs, hence why many of the defaults inputs for man class types are "`input_*`" or "`raw_*`". For full lists of inputs, browse the vignettes.  
+
 One of three methods of data importation are documented in the vignettes, via either API or local import;  
 * **API** (PurpleAir only): Using a series of functions, some derived from the [AirSensor](https://mazamascience.github.io/AirSensor/) package, archived PurpleAir data can be pulled if provided coordinates and date ranges of interest. See the `api-data` vignette for more information. 
 * **Local data**  
   + **PurpleAir**: Many of the same arguments as the API setup can be used. You can download data from PurpleAir's sensor [download tool](https://www.purpleair.com/sensorlist). It should be noted that this data does not include as much information as API data, including meta information regarding high values or A/B monitor sensor disparity. See the `local-data` vignette for more information.  
   + **FRM**: Although currently no functions are explicitly dedicated to loading FRM data, the visualization functions can be applied to them. The examples in this package use FRM data from Oregon's DEQ. See the `frm-data` vignette for more information.  
-
-
-Many of the functions in this package are intended to work hand-in-hand with a series of provided inputs, hence why many of the defaults inputs for man class types are "input_*" or "raw_". See the `api-data` vignette for a full example of inputs.
+  
+The data preparation functions are primarily configured for using PurpleAir data sets, however other types can be wrangled in similar methods. All spatio-temporal atmospheric data (STAD) sets can be visualized using the functions in this package, so long as the following structures are followed:  
+* A data frame of STAD with at least one column for a time stamp of any unit, one column for the atmospheric unit of interest, and one identifying column (`site_id`).  
+* A data frame of meta/location data for each `site_id` in the STAD, including latitudes, longitudes, and location (inside/outside/FRM).
 
 ## Exaple Visualizations:
 
@@ -79,7 +79,7 @@ The heatmap options in this package are designed for continuous numeric variable
 
 To show hourly changes over time for a single monitor, data can be visualized with the date on the x-axis, and hour of the day on the y-axis. By default, cell data will also be supplemented with a text label (which is color-customizable).
 
-```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height=7}
+```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height = 7}
 heatmap_single(dataset = july_api_hourly,
                pm25_epa_2021,
                "Lighthouse",
@@ -119,7 +119,7 @@ ts_line(july_api_hourly,
 
 #### Variation
 
-A visualization option that builds upon the [timeVariation() function](https://bookdown.org/david_carslaw/openair/sec-timeVariation.html) from the [OpenAir package](https://bookdown.org/david_carslaw/openair/) is also available.  
+A visualization option that builds upon the `timeVariation()` function from the [OpenAir package](https://bookdown.org/david_carslaw/openair/) is also available.  
 It can be modified to compare multiple groups (such as date ranges) or multiple pollutants.
 
 ```{r example_ts_variation, warning = FALSE, message = FALSE, eval = FALSE}
