@@ -13,8 +13,8 @@ input_west <- -122.854
 input_south <- 45.4
 input_east <- -122.58
 input_north <- 45.6
-input_labels <- c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b", "(C|c)ollege", "(R|r)ow", "Richmond")
-temperature_change <- 8
+input_labels <- NULL
+# input_labels <- c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b", "(C|c)ollege", "(R|r)ow", "Richmond")
 
 run_date_grouping <- TRUE
 input_date_tags <- c("Before", "Independence Day", "After")
