@@ -26,7 +26,7 @@ Visualization functions have been carefully selected to maximize accessibility a
 
 You can install the development version from [GitHub](https://github.com/) with:  
 
-``` {r, message = FALSE, warning = FALSE}
+``` r
 # You only need to install "devtools" once:
 # install.packages("devtools")
 
@@ -62,7 +62,7 @@ Many of the functions in this package are intended to work hand-in-hand with a s
 To represent both the spatial and temporal aspects of atmospheric data, maps can be used to visualize multiple monitors.  
 Visual options, such as point size and background graphics, can also be customized.
 
-```{r example_map_stad, warning = FALSE, message = FALSE}
+```{r example_map_stad, warning = FALSE, message = FALSE, fig.retina=2}
 map_stad(july_api_daily,
          pm25_epa_2021,
          location_data = july_api_meta,
@@ -79,7 +79,7 @@ The heatmap options in this package are designed for continuous numeric variable
 
 To show hourly changes over time for a single monitor, data can be visualized with the date on the x-axis, and hour of the day on the y-axis. By default, cell data will also be supplemented with a text label (which is color-customizable).
 
-```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height=8}
+```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height=7}
 heatmap_single(dataset = july_api_hourly,
                pm25_epa_2021,
                "Lighthouse",
@@ -92,7 +92,7 @@ To compare multiple monitors in a set over time (of any temporal resolution), da
 This visualization option is ideal for larger data sets with many monitors. Optionally, monitors with incomplete data can be filtered out.  
 Below, an example is shown with the defaults, followed by one with only complete monitors included and a "color cap" applied to avoid a washed out color palette. This color "cap" can be applied to all visualization types with continuous colors in this package.  
 
-```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=8}
+```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=9}
 # BEFORE dropping incomplete sets and applying a color cap
 heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta)
 

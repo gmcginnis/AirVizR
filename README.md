@@ -29,18 +29,6 @@ You can install the development version from
 
 # Then, install the package:
 devtools::install_github("gmcginnis/AirVizR")
-#> readr (2.0.0 -> 2.0.1) [CRAN]
-#>      checking for file ‘/tmp/RtmpH6cYfE/remotes1a684227ab9e/gmcginnis-AirVizR-e3088c0/DESCRIPTION’ ...  ✓  checking for file ‘/tmp/RtmpH6cYfE/remotes1a684227ab9e/gmcginnis-AirVizR-e3088c0/DESCRIPTION’
-#>   ─  preparing ‘AirVizR’:
-#>    checking DESCRIPTION meta-information ...  ✓  checking DESCRIPTION meta-information
-#>   ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#>   ─  building ‘AirVizR_0.0.0.9000.tar.gz’
-#>      Warning in sprintf(gettext(fmt, domain = domain), ...) :
-#>      one argument not used by format 'invalid uid value replaced by that for user 'nobody''
-#>      Warning: invalid uid value replaced by that for user 'nobody'
-#>    
-#> 
 ```
 
 ``` r
