@@ -6,10 +6,10 @@
 #' @param by_hour Logical; average data by hour
 #' @return Dataframe with numeric values averaged by specified timestamp(s)
 #' @examples 
-#' data_daily <- group_data(raw_data, by_day = TRUE)
-#' data_hourly <- group_data(raw_data, by_day = TRUE, by_hour = FALSE)
+#' data_daily <- group_stad(july_api_full, by_day = TRUE)
+#' data_diurnal <- group_stad(july_api_full, by_day = FALSE, by_hour = TRUE)
 #' @export
-group_data <- function(dataset, by_day = TRUE, by_hour = FALSE) {
+group_stad <- function(dataset, by_day = TRUE, by_hour = FALSE) {
   
   if (by_day == FALSE & by_hour == FALSE) {
     stop("INPUT ERROR: Please set `by_day` and/or `by_hour` to TRUE.")

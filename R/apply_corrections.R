@@ -6,10 +6,10 @@
 #' @param by_hour Logical; average data by hour
 #' @param epa_percent Numeric; Minimum percentage of data required to be included
 #' @param keep_cols Logical; Keep or disgard extra columns. If FALSE, only identifying columns and EPA-corrected columns will remain
-#' @return Dataframe with new columns for EPA-corrected PM2.5, and values removed if A & B determined to be in disagreement or minimum data requirement not met.
+#' @return Dataframe with new columns for EPA-corrected and LRAPA-corrected PM2.5.
 #' @examples 
-#' corrected_data <- apply_corrections(raw_data)
-#' corrected_hourly <- apply_corrections(raw_data, hourly = TRUE)
+#' corrected_data <- apply_corrections(july_api_full)
+#' corrected_hourly <- apply_corrections(july_api_full, hourly = TRUE)
 #' @export
 apply_corrections <- function(dataset, daily = TRUE, hourly = FALSE, epa = 75){
   epa <- apply_epa(dataset, by_day = daily, by_hour = hourly, epa_percent = epa, keep_cols = TRUE)

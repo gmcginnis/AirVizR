@@ -33,23 +33,21 @@ map_stad(
 
 \item{point_size}{Numeric; size of the points on the map}
 
-\item{maptype}{Character; the qmplot() class of maptype to use}
+\item{maptype}{Character; the \link[ggmap]{qmplot} class of maptype to use; see \link[ggmap]{get_map} for types.}
 
 \item{zoom}{Numeric; the zoom level of the map}
 
-\item{tint_alpha}{Numeric; the transparency for the background tint overlayed on the map}
+\item{tint_alpha}{Numeric; the transparency for the background tint overlaid on the map}
 
-\item{tint_color}{Character; the color of background tint overlayed on the map}
+\item{tint_color}{Character; the color of background tint overlaid on the map}
 }
 \value{
 Data visualization: map with data points colored by a specified numeric variable, located by a provided data frame of lat/long data.
 }
 \description{
 Visualize spatio-temporal atmospheric data using points on a map, colored by a specified variable.
-Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
+Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 }
 \examples{
-map_stad(data_daily, pm25_atm)
-map_stad(data_daily, pm25_atm, grouping_vars = "date_tag")
-map_stad(column_dt(data_hourly, "hour"), pm25_atm, cap_value = 17, cap_color = "black", grouping_vars = c("hour", "date_tag"))
+map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
 }

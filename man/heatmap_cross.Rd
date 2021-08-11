@@ -27,7 +27,7 @@ heatmap_cross(
 
 \item{cap_color}{Character; color for values at or above the \code{cap_value}}
 
-\item{data_labels}{Logical; label each cell in the heatmap with the appropraite value}
+\item{data_labels}{Logical; label each cell in the heatmap with the appropriate value}
 
 \item{text_color}{Character; the color of data label text}
 
@@ -36,14 +36,13 @@ heatmap_cross(
 \item{digits}{Numeric; the number of digits to report}
 }
 \value{
-Data visualization: heatmap colored by a specified numeric variable, with time on the x-axis (and approrpiate breaks & labels) and monitor labels on the y-axis arranged from north to south and separted by location.
+Data visualization: heatmap colored by a specified numeric variable, with time on the x-axis (and appropriate breaks & labels) and monitor labels on the y-axis arranged from north to south and separted by location.
 }
 \description{
 Visualize temporal atmospheric data for multiple monitors using a heatmap, with optional data labels. To visualize one monitor on a heatmap, see \link{heatmap_single}.
-Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
+Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 }
 \examples{
-heatmap_cross(data_hourly, pm25_atm)
-heatmap_cross(data_daily, pm25_atm, data_labels = TRUE)
-heatmap_cross(data_pm25, pm25_atm, cap_value = 100, cap_color = "green")
+heatmap_cross(july_api_daily, humidity)
+heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, cap_value = 75, cap_color = "green")
 }

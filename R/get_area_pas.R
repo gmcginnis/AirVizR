@@ -11,15 +11,16 @@
 #' @param startdate Relevant for calculating lookback days (the maximum number of days to go back and try to load data if the requested date cannot be retrieved)
 #' @return A dataframe returning all PAS within the defined area
 #' @examples 
-#' area_pas_defaults <- get_area_pas()
-#' area_pas_custom <- get_area_pas("OR", -122.854, 45.4, -122.58, 45.6, c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b"), datestamp = "2021-07-07", startdate = "2021-07-01")
+#' area_pas_custom <- get_area_pas("OR", -122.854, 45.4, -122.58, 45.6, c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b"), datestamp = "2020-07-07", startdate = "2020-07-01")
+#' @import AirSensor
 #' @export
 get_area_pas <- function(state_code = input_stateCode,
                          west = input_west, east = input_east, south = input_south, north = input_north,
                          labels = input_labels,
                          datestamp = input_enddate, startdate = input_startdate){
   
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  # setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1/")
   
   # Stringing the selected labels as one argument to be used as a string
   labels_string <- paste0("(", paste(labels, collapse = ")|("), ")")

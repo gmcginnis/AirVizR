@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrangle_data.R
 \name{wrangle_data}
 \alias{wrangle_data}
-\title{Wrangle PM Data}
+\title{Wrangle PurpleAir PM Data}
 \usage{
 wrangle_data(raw_pm_data = raw_data)
 }
@@ -10,11 +10,11 @@ wrangle_data(raw_pm_data = raw_data)
 \item{raw_pm_data}{The dataset which to wrangle.}
 }
 \value{
-Dataframe with selected columns of interest.
+Data frame with rows removed from quality control, timezone adjusted to be that of the location, and improved temperature values (ºC and ambient calculated for both ºF and ºC).
 }
 \description{
 Apply quality control functions (\link{apply_qc}), timezone adjustments (\link{unit_convert} and \link{adjust_timezone}), and temperature conversions (\link{ambient_temperature}) to a provided raw dataset.
 }
 \examples{
-data_pm25 <- wrangle_data(raw_data)
+data_pm25 <- wrangle_data(slice(july_api_raw, 1:5))
 }

@@ -7,17 +7,17 @@
 adjust_timezone(dataset, location_data = raw_meta)
 }
 \arguments{
-\item{dataset}{The dataset for which to convert timezone data (column: "datetime")}
+\item{dataset}{The data set for which to convert timezone data (column: "datetime")}
 
-\item{location_data}{The dataset containing information on the timezone (column: "timezone") to apply}
+\item{location_data}{The data set containing information on the timezone (column: "timezone") to apply}
 }
 \value{
-Dataset with a column of corrected timestamp ("datetime") and the original ("datetime_utc")
+Dataset with a column of corrected time stamp ("datetime") and the original ("datetime_utc")
 }
 \description{
-Time zones are reported as a variable when downloading the data. Time stamps are reported in UTC. The following will convert the time stamps to said reported time zone.
+Time zones are reported as a variable when downloading the data. Time stamps in PurpleAir data are reported in UTC. The following will convert the time stamps to said reported time zone.
 If more than one time zone is reported in the data, the conversion will use the time zone most frequently used in the data set. This is because no more than one time zone can be applied to a date time variable.
 }
 \examples{
-adjust_timezone(raw_data)
+adjust_timezone(july_api_raw, location_data = july_api_raw_meta)
 }

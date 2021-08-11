@@ -4,10 +4,22 @@
 #' @param dataset The data set which to evaluate
 #' @param start_date The start date (to be pasted into captions); will be automatically adjusted based on actual start date of the data set, if possible
 #' @param end_date The end date (to be pasted into captions); will be automatically adjusted based on actual end date of the data set, if possible
-#' @return List of values to be applied to various visualization methods.
+#' @return List of values to be applied to various visualization methods:
+#' \describe{
+#'   \item{dataset}{Dataset with the minimum time stamp column header renamed 'timestamp'.}
+#'   \item{lab_title_sub}{Character; Working in conjunction with \code{lab_title} from \link{settings_units}, the unit of temporal measurement of the dataset}
+#'   \item{x_angle}{Numeric; the angle to place x-axis (temporal) text.}
+#'   \item{x_scale}{x-axis scale (from \link[ggplot2]{scale_x_datetime}) formatting and scale breaks.}
+#'   \item{date_in_set}{Logical; if date value(s) present in data set.}
+#'   \item{start_date}{Date; actual minimum date of data set, regardless of function input.}
+#'   \item{end_date}{Date; actual maximum date of data set, regardless of function input.}
+#'   \item{lab_caption}{Character; label information for details containing date range in the set.}
+#' }
 #' @examples 
-#' settings_results <- settings_dt_scale(data_pm25)
-#' ggplot() + labs(subtitle = settings_results$lab_caption)
+#' settings_results <- settings_dt_scale(july_api_diurnal, start_date = "2020-07-01", end_date = "2020-07-07")
+#' ggplot(settings_results$dataset, aes(timestamp, temperature)) +
+#'   settings_results$x_scale +
+#'   labs(subtitle = settings_results$lab_caption)
 #' @export
 settings_dt_scale <- function(dataset, start_date = input_startdate, end_date = input_enddate) {
   # Expanding axis to allow monitor labels to be closer to the data

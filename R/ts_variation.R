@@ -1,20 +1,21 @@
 #' Time Series Variation for multiple monitors' temporal atmospheric data
 #'
-#' Please note that this funcition will take the longest of all the visualization options.
-#' Visualize variation in temporal atmospheric data for multiple monitors and (optionally) multiple pollutants; a customization of \link[openair]{timeVariation} from \link[openair].
-#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization, however limitations to the plot settings prevent all relevant information from being included.
-#' @param dataset The hourly dataset to visualize
+#' Please note that this function will take the longest of all the visualization options.
+#' Visualize variation in temporal atmospheric data for multiple monitors and (optionally) multiple pollutants; a customization of \link[openair]{timeVariation} from \link[openair]{openair}.
+#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization, however limitations to the plot settings prevent all relevant information from being included.
+#' @param dataset The hourly data set to visualize
 #' @param pollutants Character, optionally a list; in quotation marks, the pollutant(s) to map. Note that if multiple are specified, \code{group} must remain unspecified.
-#' @param group Character; in quotaiton marks, the variable for which to group the data (i.e. what will distinguish values from one another). Note that if specified, \code{pollutants} must be singular.
+#' @param group Character; in quotation marks, the variable for which to group the data (i.e. what will distinguish values from one another). Note that if specified, \code{pollutants} must be singular.
 #' @param subset Character; in quotation marks, the specific plot to report. Either all (default; c("hour", "day.hour", "day", "month")) or one (from the default list) is permitted.
-#' @param include Character, optional; label(s) of montors to include. See \link{filter_df} for more information.
+#' @param include Character, optional; label(s) of monitors to include. See \link{filter_df} for more information.
 #' @param exclude Character, optional; label(s) of monitors to exclude. See \link{filter_df} for more information.
 #' @param location_data Data set containing label information
 #' @param color Character; color palette to use. For a full list of other defaults, see \link[openair]{openColours}.
 #' @return Data visualization: diurnal, hour of day, day of the week, and/or monthly time series variation of specified pollutant(s).
 #' @examples 
-#' ts_variation(data_hourly, "pm25_atm", include = "Lighthouse", group = "date_tag")
-#' ts_variation(data_hourly, c("pm25_atm", "temperature"))
+#' ts_variation(july_api_hourly, "pm25_atm", include = "Lighthouse", group = "date_tag", location_data = july_api_meta)
+#' ts_variation(july_api_hourly, c("pm25_atm", "temperature"), location_data = july_api_meta, subset = "hour")
+#' @importFrom openair timeVariation
 #' @export
 ts_variation <- function(dataset, pollutants, group,
                          subset = c("hour", "day.hour", "day", "month"),

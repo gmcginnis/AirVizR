@@ -17,9 +17,9 @@
 #' @param location_data Data set containing latitude and longitude data
 #' @return Data visualization: line graph time series spotlighting individual monitors, with background graphics representing the time series data for all other monitors in the set.
 #' @examples 
-#' ts_line(data_hourly, pm25_atm)
-#' ts_line(data_hourly, pm25_atm, add_points = TRUE)
-#' ts_line(data_hourly, pm25_atm, label_filter = c("\\bSTAR\\b", "Lighthouse"), single_column = TRUE)
+#' ts_line(july_api_diurnal, pm25_atm, location_data = july_api_meta)
+#' ts_line(july_api_hourly, pm25_atm, label_filter = c("\\bPSU\\b"), add_points = TRUE, single_column = TRUE, add_average = FALSE, location_data = july_api_meta)
+#' @importFrom ggrepel geom_text_repel
 #' @export
 ts_line <- function(dataset, variable_of_interest,
                     add_extrema = TRUE, digits = 2,
@@ -82,7 +82,7 @@ ts_line <- function(dataset, variable_of_interest,
     extrema <- extrema %>% 
       group_by(site_id) %>% 
       mutate(
-        date = date(timestamp),
+        date = lubridate::date(timestamp),
         max = case_when({{variable_of_interest}} == max({{variable_of_interest}}, na.rm = TRUE) ~ {{variable_of_interest}}),
         min = case_when({{variable_of_interest}} == min({{variable_of_interest}}, na.rm = TRUE) ~ {{variable_of_interest}})
       ) %>% 
@@ -108,7 +108,7 @@ ts_line <- function(dataset, variable_of_interest,
     if (add_extrema == TRUE) {
       extrema_avg <- extrema_avg %>% 
         mutate(
-          date = date(timestamp),
+          date = lubridate::date(timestamp),
           max = case_when(mean == max(mean, na.rm = TRUE) ~ mean),
           min = case_when(mean == min(mean, na.rm = TRUE) ~ mean)
         ) %>%

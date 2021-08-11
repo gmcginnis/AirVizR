@@ -1,23 +1,23 @@
 #' Heatmap for a single monitor's temporal atmospheric data
 #'
 #' Visualize hourly atmospheric data for a single monitor using a heatmap, with optional data labels. To visualize multiple monitors on a heatmap, see \link{heatmap_cross}.
-#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
+#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 #' @param variable_of_interest The variable of interest (not in quotation marks) which to visualize
 #' @param site_of_interest Character; the label (or a portion of the label) of the monitor to visualize
 #' @param cap_value Numeric, optional; values at or above to be colored serpately from the regular continuous scale. See \link{add_cap} for more information.
 #' @param cap_color Character; color for values at or above the \code{cap_value}
-#' @param data_labels Logical; label each cell in the heatmap with the appropraite value
+#' @param data_labels Logical; label each cell in the heatmap with the appropriate value
 #' @param digits Numeric; the number of digits to report
 #' @param date_breaks Character; the frequency of x-axis label breaks
 #' @param text_color Character; the color of data label text
-#' @param dataset The hourly dataset to visualize
+#' @param dataset The hourly data set to visualize
 #' @param location_data Data set containing latitude and longitude data
 #' @return Data visualization: hourly heatmap colored by a specified numeric variable, with date on the x-axis and hours on the y-axis.
 #' @examples 
-#' heatmap_single(pm25_atm, "Lighthouse")
-#' heatmap_single(pm25_atm, "Lighthouse", cap_value = 20, cap_color = "green", data_label = FALSE)
+#' heatmap_single(pm25_epa_2021, "Lighthouse", dataset = july_api_hourly, location_data = july_api_meta)
+#' heatmap_single(temperature, "Lighthouse", cap_value = 85, cap_color = "green", data_label = FALSE, dataset = july_api_hourly, location_data = july_api_meta)
 #' @export
-heatmap_single <- function(variable_of_interest, site_of_interest,
+heatmap_single <- function(variable_of_interest, site_of_interest = "",
                            cap_value = NA, cap_color = "red",
                            data_labels = TRUE, digits = 2, date_breaks = "1 day",
                            text_color = "black", dataset = data_hourly, location_data = data_meta){
@@ -103,8 +103,8 @@ heatmap_single <- function(variable_of_interest, site_of_interest,
   # Plotting data
   dataset %>% 
     ggplot(aes(
-      x = date(date_hour),
-      y = hour(date_hour),
+      x = lubridate::date(date_hour),
+      y = lubridate::hour(date_hour),
       fill = {{variable_of_interest}},
       color = "",
       label = rounding_w_zeroes(val_orig, digits)

@@ -6,7 +6,7 @@
 \usage{
 heatmap_single(
   variable_of_interest,
-  site_of_interest,
+  site_of_interest = "",
   cap_value = NA,
   cap_color = "red",
   data_labels = TRUE,
@@ -26,7 +26,7 @@ heatmap_single(
 
 \item{cap_color}{Character; color for values at or above the \code{cap_value}}
 
-\item{data_labels}{Logical; label each cell in the heatmap with the appropraite value}
+\item{data_labels}{Logical; label each cell in the heatmap with the appropriate value}
 
 \item{digits}{Numeric; the number of digits to report}
 
@@ -34,7 +34,7 @@ heatmap_single(
 
 \item{text_color}{Character; the color of data label text}
 
-\item{dataset}{The hourly dataset to visualize}
+\item{dataset}{The hourly data set to visualize}
 
 \item{location_data}{Data set containing latitude and longitude data}
 }
@@ -43,9 +43,9 @@ Data visualization: hourly heatmap colored by a specified numeric variable, with
 }
 \description{
 Visualize hourly atmospheric data for a single monitor using a heatmap, with optional data labels. To visualize multiple monitors on a heatmap, see \link{heatmap_cross}.
-Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
+Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 }
 \examples{
-heatmap_single(pm25_atm, "Lighthouse")
-heatmap_single(pm25_atm, "Lighthouse", cap_value = 20, cap_color = "green", data_label = FALSE)
+heatmap_single(pm25_epa_2021, "Lighthouse", dataset = july_api_hourly, location_data = july_api_meta)
+heatmap_single(temperature, "Lighthouse", cap_value = 85, cap_color = "green", data_label = FALSE, dataset = july_api_hourly, location_data = july_api_meta)
 }

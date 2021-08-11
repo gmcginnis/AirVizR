@@ -12,11 +12,18 @@ column_dt(dataset, unit)
 \item{unit}{The unit(s) for which to apply to the dataset. Options: "date", "date_hour", "hour", "hour_minute", "time"}
 }
 \value{
-Dataset with column(s) of newly specified time unit
+Dataset with column(s) of newly specified time unit by row:
+\describe{
+\item{date}{Column of the time stamp's date; class 'Date'.}
+\item{date_hour}{Column of the time stamp's date and time, rounded down by hour; class 'POSIXct','POSIXt'.}
+\item{hour}{Column of the time stamp's time, rounded down by hour; class 'hms', 'difftime'.}
+\item{hour_minute}{Column of the time stamp's time, rounded by minute; class 'hms', 'difftime'.}
+\item{time}{Column of the time stamp's time; class 'hms', 'difftime'.}
+}
 }
 \description{
 Creating a new column in a data set with a specified date or time rounding/conversion
 }
 \examples{
-column_dt(raw_data, c("date", "hour"))
+column_dt(slice(july_api_full, 1:5), c("date", "hour"))
 }

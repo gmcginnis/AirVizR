@@ -18,12 +18,12 @@ apply_corrections(dataset, daily = TRUE, hourly = FALSE, epa = 75)
 \item{keep_cols}{Logical; Keep or disgard extra columns. If FALSE, only identifying columns and EPA-corrected columns will remain}
 }
 \value{
-Dataframe with new columns for EPA-corrected PM2.5, and values removed if A & B determined to be in disagreement or minimum data requirement not met.
+Dataframe with new columns for EPA-corrected and LRAPA-corrected PM2.5.
 }
 \description{
 Apply EPA correction factors to PurpleAir PM2.5 data: a combination of \link{apply_lrapa} and \link{apply_epa}.
 }
 \examples{
-corrected_data <- apply_corrections(raw_data)
-corrected_hourly <- apply_corrections(raw_data, hourly = TRUE)
+corrected_data <- apply_corrections(july_api_full)
+corrected_hourly <- apply_corrections(july_api_full, hourly = TRUE)
 }

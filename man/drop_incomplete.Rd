@@ -18,5 +18,5 @@ Data set with monitors without complete sets removed
 Drop monitor data for which its time series data is incomplete compared to that of other monitors in the data set.
 }
 \examples{
-drop_incomplete(data_pm25, "pm25_atm") \%>\% ggplot(aes(datetime, site_id, fill = pm25_atm)) + geom_tile()
+drop_incomplete(july_api_diurnal, "pm25_atm") \%>\% ggplot(aes(hour, site_id, fill = pm25_atm)) + geom_tile()
 }

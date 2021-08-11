@@ -1,10 +1,10 @@
-#' Wrangle PM Data
+#' Wrangle PurpleAir PM Data
 #'
 #' Apply quality control functions (\link{apply_qc}), timezone adjustments (\link{unit_convert} and \link{adjust_timezone}), and temperature conversions (\link{ambient_temperature}) to a provided raw dataset.
 #' @param raw_pm_data The dataset which to wrangle.
-#' @return Dataframe with selected columns of interest.
+#' @return Data frame with rows removed from quality control, timezone adjusted to be that of the location, and improved temperature values (ºC and ambient calculated for both ºF and ºC).
 #' @examples 
-#' data_pm25 <- wrangle_data(raw_data)
+#' data_pm25 <- wrangle_data(slice(july_api_raw, 1:5))
 #' @export
 wrangle_data <- function(raw_pm_data = raw_data) {
   pm_data <- raw_pm_data %>% 

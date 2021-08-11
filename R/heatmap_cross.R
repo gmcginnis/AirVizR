@@ -1,21 +1,20 @@
 #' Heatmap for multiple monitors' temporal atmospheric data
 #'
 #' Visualize temporal atmospheric data for multiple monitors using a heatmap, with optional data labels. To visualize one monitor on a heatmap, see \link{heatmap_single}.
-#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
+#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 #' @param dataset The hourly dataset to visualize
 #' @param variable_of_interest The variable of interest (not in quotation marks) which to visualize
 #' @param drop_incomplete Logical; drop/keep incomplete monitors, see \link{drop_incomplete} for more information.
 #' @param cap_value Numeric, optional; values at or above to be colored serpately from the regular continuous scale. See \link{add_cap} for more information.
 #' @param cap_color Character; color for values at or above the \code{cap_value}
-#' @param data_labels Logical; label each cell in the heatmap with the appropraite value
+#' @param data_labels Logical; label each cell in the heatmap with the appropriate value
 #' @param text_color Character; the color of data label text
 #' @param digits Numeric; the number of digits to report
 #' @param location_data Data set containing latitude and longitude data
-#' @return Data visualization: heatmap colored by a specified numeric variable, with time on the x-axis (and approrpiate breaks & labels) and monitor labels on the y-axis arranged from north to south and separted by location.
-#' @examples 
-#' heatmap_cross(data_hourly, pm25_atm)
-#' heatmap_cross(data_daily, pm25_atm, data_labels = TRUE)
-#' heatmap_cross(data_pm25, pm25_atm, cap_value = 100, cap_color = "green")
+#' @return Data visualization: heatmap colored by a specified numeric variable, with time on the x-axis (and appropriate breaks & labels) and monitor labels on the y-axis arranged from north to south and separted by location.
+#' @examples
+#' heatmap_cross(july_api_daily, humidity)
+#' heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, cap_value = 75, cap_color = "green")
 #' @export
 heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE,
                           cap_value = NA, cap_color = "red",

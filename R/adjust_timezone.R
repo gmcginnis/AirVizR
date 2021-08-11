@@ -1,12 +1,12 @@
 #' Adjust timezone
 #'
-#' Time zones are reported as a variable when downloading the data. Time stamps are reported in UTC. The following will convert the time stamps to said reported time zone.
+#' Time zones are reported as a variable when downloading the data. Time stamps in PurpleAir data are reported in UTC. The following will convert the time stamps to said reported time zone.
 #' If more than one time zone is reported in the data, the conversion will use the time zone most frequently used in the data set. This is because no more than one time zone can be applied to a date time variable.
-#' @param dataset The dataset for which to convert timezone data (column: "datetime")
-#' @param location_data The dataset containing information on the timezone (column: "timezone") to apply
-#' @return Dataset with a column of corrected timestamp ("datetime") and the original ("datetime_utc")
+#' @param dataset The data set for which to convert timezone data (column: "datetime")
+#' @param location_data The data set containing information on the timezone (column: "timezone") to apply
+#' @return Dataset with a column of corrected time stamp ("datetime") and the original ("datetime_utc")
 #' @examples 
-#' adjust_timezone(raw_data)
+#' adjust_timezone(july_api_raw, location_data = july_api_raw_meta)
 #' @export
 adjust_timezone <- function(dataset, location_data = raw_meta){
   
@@ -25,7 +25,7 @@ adjust_timezone <- function(dataset, location_data = raw_meta){
   dataset <- dataset %>%
     # Original time stamps (in UTC) will be preserved
     rename(datetime_utc = datetime) %>% 
-    mutate(datetime = with_tz(datetime_utc, tzone = timezone))
+    mutate(datetime = lubridate::with_tz(datetime_utc, tzone = timezone))
   
   print(paste("Time zone applied:", timezone))
   return(dataset)

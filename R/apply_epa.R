@@ -9,11 +9,28 @@
 #' @param by_day Logical; average data by day
 #' @param by_hour Logical; average data by hour
 #' @param epa_percent Numeric; Minimum percentage of data required to be included
-#' @param keep_cols Logical; Keep or disgard extra columns. If FALSE, only identifying columns and EPA-corrected columns will remain
+#' @param keep_cols Logical; Keep or discard extra columns. If FALSE, only identifying columns and EPA-corrected columns will remain
 #' @return Dataframe with new columns for EPA-corrected PM2.5, and values removed if A & B determined to be in disagreement or minimum data requirement not met.
+#' \describe{
+#'   \item{pm25_epa_2020}{EPA-corrected PM2.5 values, calculated as 0.524 × PM2.5(CF=1) - (0.0852 × humidity) + 5.72}
+#'   \item{pm25_epa_2021}{EPA-corrected PM2.5 values, calculated as:
+#'     \itemize{
+#'       \item The 2020 equation (see \code{pm25_epa_2020} description) if PM2.5(CF=1) ≤ 343 µg/m^3
+#'       \item 0.46 × PM2.5(CF=1) + (3.93 × 10^(-4) × PM2.5(CF=1)^2) + 2.97 for PM2.5(CF=1) > 343 µg/m^3
+#'     }
+#'   }
+#'   \item{pm25_epa_atm}{EPA-corrected PM2.5 values, calculated as:
+#'     \itemize{
+#'       \item 0.25 × PM2.5(CF=ATM) - 0.086 × humidity + 5.75 when PM2.5(CF=ATM) < 50
+#'       \item 0.786 × PM2.5(CF=ATM) - 0.086 × humidity + 5.75 when 50 ≤ PM2.5(CF=ATM) < 229
+#'       \item 0.69 × PM2.5(CF=ATM) + 8.84 × 10^(-4) × PM2.5(CF=ATM)(^2) + 2.97 when PM2.5(CF=ATM) > 229
+#'     }
+#'   }
+#' }
 #' @examples 
-#' data_with_epa <- apply_epa(raw_data, keep_cols = TRUE)
-#' epa_hourly <- apply_epa(raw_data, by_hour = TRUE)
+#' data_epa <- apply_epa(july_api_full)
+#' data_hourly <- apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)
+#' @source \href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{EPA Air Sensor Toolbox}
 #' @export
 apply_epa <- function(dataset, by_day = TRUE, by_hour = FALSE, epa_percent = 75, keep_cols = FALSE) {
   

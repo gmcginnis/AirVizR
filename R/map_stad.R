@@ -1,7 +1,7 @@
 #' Map Spatio-Temporal Atmospheric Data (STAD)
 #'
 #' Visualize spatio-temporal atmospheric data using points on a map, colored by a specified variable.
-#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
+#' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 #' @param dataset Data set for which to visualize
 #' @param variable_of_interest The variable of interest (not in quotation marks) which to visualize
 #' @param grouping_vars Character, optional; one or two variables for which to facet (grid) the plot by
@@ -9,15 +9,14 @@
 #' @param cap_value Numeric, optional; values at or above to be colored serpately from the regular continuous scale. See \link{add_cap} for more information.
 #' @param cap_color Character; color for values at or above the \code{cap_value}
 #' @param point_size Numeric; size of the points on the map
-#' @param maptype Character; the qmplot() class of maptype to use
+#' @param maptype Character; the \link[ggmap]{qmplot} class of maptype to use; see \link[ggmap]{get_map} for types.
 #' @param zoom Numeric; the zoom level of the map
-#' @param tint_alpha Numeric; the transparency for the background tint overlayed on the map
-#' @param tint_color Character; the color of background tint overlayed on the map
+#' @param tint_alpha Numeric; the transparency for the background tint overlaid on the map
+#' @param tint_color Character; the color of background tint overlaid on the map
 #' @return Data visualization: map with data points colored by a specified numeric variable, located by a provided data frame of lat/long data.
 #' @examples 
-#' map_stad(data_daily, pm25_atm)
-#' map_stad(data_daily, pm25_atm, grouping_vars = "date_tag")
-#' map_stad(column_dt(data_hourly, "hour"), pm25_atm, cap_value = 17, cap_color = "black", grouping_vars = c("hour", "date_tag"))
+#' map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
+#' @importFrom ggmap qmplot
 #' @export
 map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, location_data = data_meta,
                      cap_value = NA, cap_color = "red", point_size = 3,
@@ -77,6 +76,12 @@ map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, locati
   dataset <- cap_results$dataset
   lab_subtitle <- paste(lab_subtitle, cap_results$lab_subtitle_cap, sep="\n")
   cap_guide <- cap_results$cap_guide
+  
+  if ("hour" %in% grouping_vars) {
+    dataset <- dataset %>% 
+      mutate(hour = paste0(formatC(lubridate::hour(hour), width = 2, flag = 0), ":00"))
+    print("Hour column changed to class 'character' to allow for faceting.")
+  }
   
   # Base plot
   plot <- qmplot(data = dataset, x = longitude, y = latitude,
@@ -142,7 +147,7 @@ map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, locati
       )
     # Feedback message
     print(paste("Plot now faceted by", grouping_vars))
-  }
+  } else if (length(grouping_vars) > 1) { print("Error: more than two grouping variable provided. Please select up to two.") }
   
   print("Final plot created.")
   

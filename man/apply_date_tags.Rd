@@ -30,5 +30,5 @@ Dataframe with a new column ("date_tag") containing the appropriate date tag wit
 Create a column of date tags based on specified date ranges (\code{starts} and \code{ends}) and respective names (\code{tags}).
 }
 \examples{
-tagged_data <- apply_date_tags(data_daily, starts = c("2021-07-01" "2021-07-04" "2021-07-05"), ends = c("2021-07-03" "2021-07-04" "2021-07-07"), tags = c("Before", "Independence Day", "After"))
+tagged_data <- apply_date_tags(july_api_daily, starts = c("2021-07-01", "2021-07-04", "2021-07-05"), ends = c("2021-07-03", "2021-07-04", "2021-07-07"), tags = c("Before", "Independence Day", "After"))
 }

@@ -18,12 +18,19 @@ ambient_temperature(
 \item{change}{Numeric: The value which to subtract from the original temperature value}
 }
 \value{
-Dataset with two new columns for ambient temperature
+Dataset with two new columns for ambient temperature:
+\describe{
+\item{temperature_ambient}{Ambient temperature in ºF}
+\item{temperature_ambient_c}{Ambient temperature in ºC}
+}
 }
 \description{
 PurpleAir monitor reports include internal temperature, which is on average slightly higher than ambient temperature.
 More information can be found on \href{https://www2.purpleair.com/community/faq#!hc-primary-and-secondary-data-header}{their FAQ}.
 }
 \examples{
-dataset <- ambient_temperature(data_raw, change = 8)
+july_api_raw \%>\% 
+  ungroup() \%>\% 
+  slice(1:10) \%>\% 
+  ambient_temperature(change = 8)
 }

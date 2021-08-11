@@ -39,6 +39,5 @@ A dataframe returning all PAS within the defined area
 Load the PAS within a specified area
 }
 \examples{
-area_pas_defaults <- get_area_pas()
-area_pas_custom <- get_area_pas("OR", -122.854, 45.4, -122.58, 45.6, c("se", "SE", "Se", "\\\\bSTAR\\\\b", "\\\\bPSU\\\\b"), datestamp = "2021-07-07", startdate = "2021-07-01")
+area_pas_custom <- get_area_pas("OR", -122.854, 45.4, -122.58, 45.6, c("se", "SE", "Se", "\\\\bSTAR\\\\b", "\\\\bPSU\\\\b"), datestamp = "2020-07-07", startdate = "2020-07-01")
 }

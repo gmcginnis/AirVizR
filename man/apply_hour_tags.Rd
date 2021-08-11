@@ -20,5 +20,5 @@ Dataframe with a new column ("hour_tag") containing the appropriate hour tag wit
 Create a column of date tags based on specified hour ranges (created using inputted \code{starts}) and respective names (\code{tags}).
 }
 \examples{
-tagged_data <- apply_hour_tags(data_hourly, starts = c(5, 12, 17, 21), tags = c("Morning", "Afternoon", "Evening", "Night"))
+tagged_data <- apply_hour_tags(july_api_diurnal, starts = c(5, 12, 17, 21), tags = c("Morning", "Afternoon", "Evening", "Night"))
 }

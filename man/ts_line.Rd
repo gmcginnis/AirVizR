@@ -57,7 +57,6 @@ Visualize temporal atmospheric data for multiple monitors, with optional minimum
 Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported autmatically in the visualization.
 }
 \examples{
-ts_line(data_hourly, pm25_atm)
-ts_line(data_hourly, pm25_atm, add_points = TRUE)
-ts_line(data_hourly, pm25_atm, label_filter = c("\\\\bSTAR\\\\b", "Lighthouse"), single_column = TRUE)
+ts_line(july_api_diurnal, pm25_atm, location_data = july_api_meta)
+ts_line(july_api_hourly, pm25_atm, label_filter = c("\\\\bPSU\\\\b"), add_points = TRUE, single_column = TRUE, add_average = FALSE, location_data = july_api_meta)
 }

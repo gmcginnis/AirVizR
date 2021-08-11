@@ -10,10 +10,26 @@
 #' @param lab_title Character; the first portion of the visualization title. It is recommended to adjust this to the type of visualization to be made.
 #' @param lab_fill Character; the default unit label for the variable of interest (standalone, e.g. y-axis label of 'Units')
 #' @param lab_unit Character; the default unit label for the variable of interest (in context of a sentence, e.g. 'X units')
-#' @return List of values to be applyed to various visualization methods.
+#' @return List of values to be applied to various visualization methods:
+#' \describe{
+#'   \item{lab_title}{First portion of the visualization title.}
+#'   \item{lab_title_val}{Shorthand unit description intended to be appended to the title.}
+#'   \item{lab_subtitle}{Information with which varaible was applied, in addition to the minimum and maximum values of the set. Intended to be used as a subtitle or caption.}
+#'   \item{lab_fill}{Full unit description intended to be applied to the fill label (or axis labels).}
+#'   \item{fill_colors}{Colorblind-friendly fill color to be applied to a plot using \link[viridis]{scale_fill_viridis}, colored appropriately based on the variable of interest with matching min & max values if applicable:
+#'     \itemize{
+#'       \item Default: inferno, with the minimum set to 0
+#'       \item PM: plasma, with the minimum set to 0
+#'       \item humidity: mako (reversed direction), with the scale having a minimum of 0 and maximum of 100
+#'       \item temperature (ºF or ºC): cividis, with no scale minimum or maximum
+#'     }
+#'   }
+#'   \item{cap_guide}{Legend settings (see \link[ggplot2]{guides}) for arranging legend order in order to properly arrange values at or above the \code{cap_value}, and to set the aesthetics to match \code{cap_color} where appropraite.}
+#' }
 #' @examples 
-#' units_results <- settings_units(data_pm25, "pm25_atm", cap_value = 150)
-#' ggplot() + fill_colors + cap_guide + labs(fill = units_results$lab_fill)
+#' units_results <- settings_units(july_api_daily, "pm25_atm", cap_value = 17, cap_color = "green")
+#' ggplot() + labs(title = paste(units_results$lab_title, units_results$lab_title_val), fill = units_results$lab_fill)
+#' @importFrom viridis scale_fill_viridis
 #' @export
 settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
                            cap_value = NA, cap_color = "red", digits = 2,

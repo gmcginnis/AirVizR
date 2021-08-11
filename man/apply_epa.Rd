@@ -3,6 +3,9 @@
 \name{apply_epa}
 \alias{apply_epa}
 \title{Apply EPA Corrections}
+\source{
+\href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{EPA Air Sensor Toolbox}
+}
 \usage{
 apply_epa(
   dataset,
@@ -21,10 +24,26 @@ apply_epa(
 
 \item{epa_percent}{Numeric; Minimum percentage of data required to be included}
 
-\item{keep_cols}{Logical; Keep or disgard extra columns. If FALSE, only identifying columns and EPA-corrected columns will remain}
+\item{keep_cols}{Logical; Keep or discard extra columns. If FALSE, only identifying columns and EPA-corrected columns will remain}
 }
 \value{
 Dataframe with new columns for EPA-corrected PM2.5, and values removed if A & B determined to be in disagreement or minimum data requirement not met.
+\describe{
+\item{pm25_epa_2020}{EPA-corrected PM2.5 values, calculated as 0.524 × PM2.5(CF=1) - (0.0852 × humidity) + 5.72}
+\item{pm25_epa_2021}{EPA-corrected PM2.5 values, calculated as:
+\itemize{
+\item The 2020 equation (see \code{pm25_epa_2020} description) if PM2.5(CF=1) ≤ 343 µg/m^3
+\item 0.46 × PM2.5(CF=1) + (3.93 × 10^(-4) × PM2.5(CF=1)^2) + 2.97 for PM2.5(CF=1) > 343 µg/m^3
+}
+}
+\item{pm25_epa_atm}{EPA-corrected PM2.5 values, calculated as:
+\itemize{
+\item 0.25 × PM2.5(CF=ATM) - 0.086 × humidity + 5.75 when PM2.5(CF=ATM) < 50
+\item 0.786 × PM2.5(CF=ATM) - 0.086 × humidity + 5.75 when 50 ≤ PM2.5(CF=ATM) < 229
+\item 0.69 × PM2.5(CF=ATM) + 8.84 × 10^(-4) × PM2.5(CF=ATM)(^2) + 2.97 when PM2.5(CF=ATM) > 229
+}
+}
+}
 }
 \description{
 Apply EPA correction factors to PurpleAir PM2.5 data.
@@ -34,6 +53,6 @@ Unlike the LRAPA correction factor (\link{apply_lrapa}) which uses CF=ATM PM2.5 
 More information about EPA correction factors can be found on the \href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{Air Sensor Toolbox}.
 }
 \examples{
-data_with_epa <- apply_epa(raw_data, keep_cols = TRUE)
-epa_hourly <- apply_epa(raw_data, by_hour = TRUE)
+data_epa <- apply_epa(july_api_full)
+data_hourly <- apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)
 }

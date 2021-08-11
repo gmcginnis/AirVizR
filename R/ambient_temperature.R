@@ -5,9 +5,16 @@
 #' @param dataset The dataset containing temperature values to adjust
 #' @param variable The column name of temperature data (in ºF) which to apply the change
 #' @param change Numeric: The value which to subtract from the original temperature value
-#' @return Dataset with two new columns for ambient temperature
+#' @return Dataset with two new columns for ambient temperature:
+#' \describe{
+#'   \item{temperature_ambient}{Ambient temperature in ºF}
+#'   \item{temperature_ambient_c}{Ambient temperature in ºC}
+#' }
 #' @examples 
-#' dataset <- ambient_temperature(data_raw, change = 8)
+#' july_api_raw %>% 
+#'   ungroup() %>% 
+#'   slice(1:10) %>% 
+#'   ambient_temperature(change = 8)
 #' @export
 ambient_temperature <- function(dataset, variable = temperature, change = temperature_change) {
   

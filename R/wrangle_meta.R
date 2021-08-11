@@ -4,7 +4,7 @@
 #' @param raw_location_data The dataset which to wrangle.
 #' @return Dataframe with selected columns of interest.
 #' @examples 
-#' data_meta <- wrangle_meta(results$raw_meta)
+#' data_meta <- wrangle_meta(july_api_raw_meta)
 #' @export
 wrangle_meta <- function(raw_location_data = raw_meta) {
   location_data <- raw_location_data %>% 

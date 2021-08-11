@@ -16,5 +16,5 @@ Dataframe with selected columns of interest.
 Select variables of interest from location data, and (importantly) make monitor labels unique from one another.
 }
 \examples{
-data_meta <- wrangle_meta(results$raw_meta)
+data_meta <- wrangle_meta(july_api_raw_meta)
 }

@@ -12,13 +12,17 @@ settings_shapes(dataset = dataset, meta = data_meta)
 \item{meta}{The location data, related the data set}
 }
 \value{
-List of values to be applyed to various visualization methods.
+List of values to be applied to various visualization methods:
+\describe{
+\item{shape_set}{Scale settings for shapes; see \link[ggplot2]{scale_shape_manual}.}
+\item{shape_guide}{Guide settings for shapes; see \link[ggplot2]{guides}.}
+}
 }
 \description{
 Arguments to detect the relevant shapes to be applied to visualizations based on monitor location(s) in the data set.
 Custom shapes are necessary for the custom visualizations, since "fill" and "color" arguments can be individually specified for the shapes below, unlike the default shapes.
 }
 \examples{
-shape_results <- settings_shapes(data_pm25, data_meta)
-ggplot() + shape_set + shape_guide
+shape_results <- settings_shapes(july_api_daily, july_api_meta)
+ggplot(full_join(july_api_daily, july_api_meta), aes(date, site_id, shape = location)) + shape_results$shape_set + shape_results$shape_guide + geom_point()
 }

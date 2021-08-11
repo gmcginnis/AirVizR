@@ -5,7 +5,7 @@
 #' @param var_qt Character; the variable of interest (in quotation marks) for which to apply the cap
 #' @return Data set with monitors without complete sets removed
 #' @examples 
-#' drop_incomplete(data_pm25, "pm25_atm") %>% ggplot(aes(datetime, site_id, fill = pm25_atm)) + geom_tile()
+#' drop_incomplete(july_api_diurnal, "pm25_atm") %>% ggplot(aes(hour, site_id, fill = pm25_atm)) + geom_tile()
 #' @export
 drop_incomplete <- function(dataset, var_qt) {
   dataset <- dataset %>% 

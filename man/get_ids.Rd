@@ -20,6 +20,6 @@ A list of IDs from a provided PAS
 Load a list of device deployment IDs from a provided PAS
 }
 \examples{
-id_default <- get_ids()
-id_outside <- get_ids(outside = TRUE, inside = FALSE)
+outside_ids <- get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "RI"), outside = TRUE, inside = FALSE)
+many_ids <- get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "CA"), outside = TRUE, inside = TRUE)
 }

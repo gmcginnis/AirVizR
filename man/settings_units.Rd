@@ -33,13 +33,28 @@ settings_units(
 \item{lab_unit}{Character; the default unit label for the variable of interest (in context of a sentence, e.g. 'X units')}
 }
 \value{
-List of values to be applyed to various visualization methods.
+List of values to be applied to various visualization methods:
+\describe{
+\item{lab_title}{First portion of the visualization title.}
+\item{lab_title_val}{Shorthand unit description intended to be appended to the title.}
+\item{lab_subtitle}{Information with which varaible was applied, in addition to the minimum and maximum values of the set. Intended to be used as a subtitle or caption.}
+\item{lab_fill}{Full unit description intended to be applied to the fill label (or axis labels).}
+\item{fill_colors}{Colorblind-friendly fill color to be applied to a plot using \link[viridis]{scale_fill_viridis}, colored appropriately based on the variable of interest with matching min & max values if applicable:
+\itemize{
+\item Default: inferno, with the minimum set to 0
+\item PM: plasma, with the minimum set to 0
+\item humidity: mako (reversed direction), with the scale having a minimum of 0 and maximum of 100
+\item temperature (ºF or ºC): cividis, with no scale minimum or maximum
+}
+}
+\item{cap_guide}{Legend settings (see \link[ggplot2]{guides}) for arranging legend order in order to properly arrange values at or above the \code{cap_value}, and to set the aesthetics to match \code{cap_color} where appropraite.}
+}
 }
 \description{
 A series of arguments to detect the appropriate visualization labels and settings to apply to a dataset provided said dataset and a varaible of interest.
 Additionally, an optional "cap" value (and custom color) can be provided in order to distinguish values at or above said specified values to prevent color scale washout (e.g. if a few observations are extremely high to the point where all other values are washed out on the color scale).
 }
 \examples{
-units_results <- settings_units(data_pm25, "pm25_atm", cap_value = 150)
-ggplot() + fill_colors + cap_guide + labs(fill = units_results$lab_fill)
+units_results <- settings_units(july_api_daily, "pm25_atm", cap_value = 17, cap_color = "green")
+ggplot() + labs(title = paste(units_results$lab_title, units_results$lab_title_val), fill = units_results$lab_fill)
 }

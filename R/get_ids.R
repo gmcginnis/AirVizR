@@ -6,13 +6,13 @@
 #' @param inside Logical argument to include/exclude indoor monitors
 #' @return A list of IDs from a provided PAS
 #' @examples 
-#' id_default <- get_ids()
-#' id_outside <- get_ids(outside = TRUE, inside = FALSE)
+#' outside_ids <- get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "RI"), outside = TRUE, inside = FALSE)
+#' many_ids <- get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "CA"), outside = TRUE, inside = TRUE)
 #' @export
 get_ids <- function(pas = pas_area, outside = include_outside, inside = include_inside){
   
-  ids_outside <- pas_getDeviceDeploymentIDs(pas_area, isOutside = TRUE)
-  ids_inside <- pas_getDeviceDeploymentIDs(pas_area, isOutside = FALSE)
+  ids_outside <- pas_getDeviceDeploymentIDs(pas, isOutside = TRUE)
+  ids_inside <- pas_getDeviceDeploymentIDs(pas, isOutside = FALSE)
   
   if (outside == TRUE & inside == TRUE) {
     ids <- c(ids_outside, ids_inside)

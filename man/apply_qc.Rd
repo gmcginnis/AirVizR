@@ -16,12 +16,16 @@ apply_qc(dataset, drop_hi = input_drop_hi, avg_ab = TRUE, loc_data = raw_meta)
 \item{loc_data}{The dataset containing site IDs and flag_highValue}
 }
 \value{
-Dataset with columns
+Dataset with improbable values removed, and (optionally) additional columns for averaged A & B monitor values:
+\describe{
+\item{pm25_cf1}{Rowwise mean of \code{pm25_cf1_A} and \code{pm25_cf1_B}}
+\item{pm25_atm}{Rowwise mean of \code{pm25_atm_A} and \code{pm25_atm_B}}
+}
 }
 \description{
 Apply basic quality control to a dataset: PM2.5 between 0 and 2000, temperature (ºF) between -40 and 185, and humidity (\%) between 0 and 100.
 Also provides an option to average PM2.5 columns A and B of a dataset
 }
 \examples{
-corrected_data <- apply_qt(raw_data)
+corrected_data <- apply_qc(slice(july_api_raw, 1:5))
 }

@@ -18,12 +18,19 @@ add_cap(dataset, var_qt, cap_value, cap_color, type = "filter")
 \item{type}{Character choice: "filter" or "flag"; the former will replace values at or above \code{cap_value} with 'NA', while the latter will add a logical column ("above_cap") for if the respective row's value is at or above the \code{cap_value}.}
 }
 \value{
-Character versions rounded to the number of digits specified, including trailing zeroes
+Series of visualization options to apply a discrete color cap to a continuous variable:
+\describe{
+\item{dataset}{Dataset with the values at or above the cap value either replaced with 'NA's or flagged (see \code{type} argument above).}
+\item{lab_subtitle_cap}{Character value which will include information of the cap value and color.}
+\item{cap_guide}{Guide (see \link[ggplot2]{guides}) containing fill and color arguments to allow the color cap to remain seprate in the legend.}
+}
 }
 \description{
 Apply a cap value of a specified color to numeric variables, either by replacing them with 'NA', or flagging them in a new column.
 }
 \examples{
-cap_results <- add_cap(data_pm25, "pm25_atm", 150, "red")
-ggplot() + cap_results$cap_guide + labs(subtitle = cap_results$lab_subtitle_cap)
+cap_results <- add_cap(july_api_daily, "pm25_atm", cap_value = 15, cap_color = "red")
+ggplot(july_api_daily, aes(date, pm25_atm)) +
+  labs(subtitle = cap_results$lab_subtitle_cap)
+  
 }

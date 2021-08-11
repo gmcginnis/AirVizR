@@ -6,7 +6,13 @@
 \alias{AirVizR-package}
 \title{AirVizR: Visualization Tools for Air Quality Data}
 \description{
-A series of tools for extracting, wrangling, correcting, and visualizing air quality data, with an emphasis on PM2.5 data from PurpleAir.
+A series of tools for extracting, wrangling, correcting, and visualizing 
+     spatio-temporal atmospheric data, with an emphasis on fine particulate matter 
+     (PM2.5, i.e. Particulate Matter with a diameter <2.5 µm) data from PurpleAir. 
+     Correction factor equations from the Environmental Protection Agency (EPA) 
+     and Lane Regional Air Protection Agency (LRAPA) are implemented to allow 
+     for greatest data accuracy. Visualization functions have been carefully selected
+     to maximize accessibility and data transparency.
 }
 \author{
 \strong{Maintainer}: Gillian McGinnis \email{gmcginnis@reed.edu}

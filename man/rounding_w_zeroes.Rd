@@ -18,6 +18,6 @@ Character versions rounded to the number of digits specified, including trailing
 When pasting labels, R will not display trailing zeroes; this is a way to work around it. The result can be returned to a numeric class if desired.
 }
 \examples{
-daytime_data <- filter_df(data_pm25, hour_tag, include = c("Morning", "Afternoon"))
-no_lighthouse <- filter_df(data_pm25, label, exclude = c("Lighthouse"))
+rounding_w_zeroes(10.501, 2) # Will output 10.50
+rounding_w_zeroes(10.591, 2) # Will output 10.59
 }

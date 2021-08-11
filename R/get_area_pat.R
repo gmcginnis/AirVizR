@@ -7,9 +7,10 @@
 #' @param cols List of variables of interest to keep. Site ID info will autmatically be collected
 #' @return List: dataframes of sensor meta info, and a dataframe of raw data for the variables of interest
 #' @examples 
-#' results <- get_area_pat(startdate = "2021-07-01", enddate = "2021-07-07")
+#' results <- get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), startdate = "2020-07-01", enddate = "2020-07-07")
 #' meta_data <- results$raw_meta
 #' raw_data <- results$raw_data
+#' @importFrom AirSensor pat_downloadParseRawData
 #' @export
 get_area_pat <- function(id_list = ids, startdate = input_startdate, enddate = input_enddate, cols = c("created_at", "temperature", "humidity", "pm2.5_cf1", "pm2.5_atm")){
   ## Setup for iteration

@@ -8,8 +8,8 @@
 #' @param location_data The data set containing monitor meta data
 #' @return Data frame filtered by the specifiecations above
 #' @examples 
-#' daytime_data <- filter_df(data_pm25, hour_tag, include = c("Morning", "Afternoon"))
-#' no_lighthouse <- filter_df(data_pm25, label, exclude = c("Lighthouse"))
+#' daytime_data <- filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"), location_data = july_api_meta)
+#' no_lighthouse <- filter_df(july_api_diurnal, label, exclude = c("Lighthouse"), location_data = july_api_meta)
 #' @export
 filter_df <- function(dataframe, var = label, include = c(""), exclude = c(""), location_data = data_meta) {
   
