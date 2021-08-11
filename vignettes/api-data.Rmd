@@ -1,0 +1,164 @@
+---
+title: "Importing and Using API Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{api-data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# Import the necessary package:
+library(AirVizR)
+```
+
+# Importing using PurpleAir API
+The following showcases an example of retrieving PurpleAir data using functions derived from those in the [AirSensor](https://github.com/MazamaScience/AirSensor/) package.
+Because this process is dependent on external functions, it is possible that changes to the PurpleAir API structure could result in depreciation or failures to compile.
+
+---
+
+## Inputs
+Many functions rely on the same inputs, therefore default to the same defined objects in the environment.
+It is highly recommended to specify inputs upfront in their own chunk to simplify functionality.
+Various environment cleans are present in this document to showcase where and when these objects can be disgarded.
+
+```{r inputs}
+### REQUIRED inputs
+
+# REQUIRED: Start and end dates of interest. Please use the following format: "YYYY-MM-DD", with leading zeros where appropriate
+# Data will be pulled from the start of the start date through the end of the end date
+input_startdate <- "2020-07-01"
+input_enddate <- "2020-07-07"
+
+# Drop monitors flagged as reporting high values?
+# TRUE is recommended, but keep in mind that EPA correction factors can account for high values and A/B monitor disparity
+input_drop_hi <- TRUE
+
+## REQUIRED: Inside/Outside argument. At least one must be TRUE.
+# Grab data for outdoor sensors?
+include_outside <- TRUE
+# Grab data for indoor sensors?
+include_inside <- TRUE
+
+
+### RECOMMENDED inputs
+# Set to NULL if not interested in filtering by the following.
+
+# State of monitors to include. If NULL/unspecified, all monitors specified in the above boundaries will be included regardless of state
+input_stateCode <- "OR"
+
+# Boundaries (in degrees) of monitors to include. It can also evaluate n/s or e/w pairs of bounds individually.
+# Helpful website: bboxfinder [dot] com
+input_west <- -122.854
+input_south <- 45.4
+input_east <- -122.58
+input_north <- 45.6
+
+# Labels of monitors to include. If NULL/unspecified, all monitors will be included.
+# The labels are based on string detection, so for instance having "STAR" will pull all that have the word "STAR" in the label.
+# \\b is added where we want only values that report those words on their own (ex. STAR Lab and not MYSTARSYSTEM1)
+# An example format is below. Capitalization matters!
+input_labels <- c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b", "(C|c)ollege", "(R|r)ow", "Richmond")
+
+
+# Degrees Fahrenheit difference between reported temperature (raw data) and ambient temperature
+# This will not impact correction factors, but will allow for a corrected temperature output (temperature_ambient)
+temperature_change <- 8
+# See ambient_temperature() for more information
+
+
+## Optional grouping settings (which will NOT impact raw data output, but can be useful when graphing!)
+
+## DATE GROUPING
+# Run date grouping? If set to "FALSE", the date inputs below will not matter (but will still appear in the environment)
+run_date_grouping <- TRUE
+# If TRUE, specify the groupings below as respective items in their lists
+# (i.e. the first item in each list is one "group", the second item in each list is another "group", etc.)
+# Date grouping categories:
+input_date_tags <- c("Before", "Independence Day", "After")
+# Start dates (in a list, "YYYY-MM-DD")
+input_date_starts <- c("2020-07-01", "2020-07-04", "2020-07-05")
+# End dates (in a list, "YYYY-MM-DD")
+input_date_ends <- c("2020-07-03", "2020-07-04", "2020-07-07")
+
+## HOUR GROUPING
+# Run hour grouping? If set to "FALSE", the hour inputs below will not matter (but will still appear in the environment)
+run_hour_grouping <- TRUE
+# If TRUE, specify the groupings below as respective items in their lists
+# (i.e. the first item in each list is one "group", the second item in each list is another "group", etc.)
+# Hour grouping categories:
+input_hour_tags <- c("Morning", "Afternoon", "Evening", "Night")
+# Start hours (in a list, using full hours in 24 hour format)
+input_hour_starts <- c(5, 12, 17, 21)
+# End hours will be automatically generated; no need to add "end" hours
+```
+
+---
+
+## Loading Data
+The data import process iterates over a loop and will take the greatest amount of time. Keep in mind that if many IDs and/or a long time span is chosen, it will take longer to load.
+If more than 100 IDs are detected, a message will appear in the console to warm of a large data load. This is also why `get_ids()` is not automatically integrated into `get_area_pat()`.
+
+```{r getting_data}
+pas_area <- get_area_pas()
+
+ids <- get_ids()
+
+# The following step will take the longest time
+results <- get_area_pat()
+
+# For ease of functionality, separate the results into their own respective files
+raw_meta <- results$raw_meta
+raw_data <- results$raw_data
+```
+
+```{r eclean_loading}
+# OPTIONAL
+# Cleaning the global environment
+remove(input_stateCode, input_north, input_east, input_south, input_west, input_labels, ids, pas_area)
+```
+
+
+## Wrangling Data
+Now that we have the raw data imported, we will wrangle them by applying basic quality control, time adjustments, and correction factors.
+
+```{r clean_data}
+# Wrangling the data
+data_meta <- wrangle_meta(raw_meta)
+data_pm <- wrangle_data(raw_data)
+
+# Creating data sets for each grouping option
+data_hourly <- apply_functions(data_pm, by_day = TRUE, by_hour = TRUE)
+data_daily <- apply_functions(data_pm, by_day = TRUE, by_hour = FALSE)
+data_diurnal <- apply_functions(data_pm, by_day = FALSE, by_hour = TRUE)
+
+# Apply date and/or hour tags to the original data set, if specified in the inputs
+if (run_date_grouping == TRUE){
+  data_pm <- data_pm %>% apply_date_tags()
+}
+if (run_hour_grouping == TRUE) {
+  data_pm <- data_pm %>% apply_hour_tags()
+}
+```
+
+```{r eclean_applying}
+# OPTIONAL
+# Cleaning the global environment
+remove(temperature_change, input_drop_hi, results, run_date_grouping, run_hour_grouping, include_outside, include_inside)
+remove(list = c(ls(pattern = "input_(hour|date)_")))
+# It is recommended to keep raw_meta and raw_data
+```
+
+---
+
+## Next steps
+
+Now we're ready to visualize! See the `visualize-data` vignette for instructions.

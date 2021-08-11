@@ -1,0 +1,94 @@
+---
+title: "visualize-data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{visualize-data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AirVizR)
+
+# Looading data; the 'july_api_*' files are imported with the package.
+data_meta <- july_api_meta
+data_pm <- july_api_full
+data_hourly <- july_api_hourly
+data_daily <- july_api_daily
+data_diurnal <- july_api_diurnal
+```
+
+```{r map, eval = FALSE}
+# Most basic heat map
+# Note that this will average by location and no other variables. Use with caution if data spans over large periods of time.
+map_stad(data_hourly, pm25_epa_2021)
+
+# Grouping variables
+map_stad(data_hourly, pm25_epa_2021,
+         grouping_vars = c("hour_tag", "date_tag"))
+
+# Further customization
+map_stad(data_daily, pm25_epa_2021,
+         grouping_vars = "date_tag",
+         maptype = "terrain", tint_color = "white", tint_alpha = 0.7)
+```
+
+```{r heatmap_singular, eval = FALSE}
+# Most basic single heatmap
+heatmap_single(pm25_epa_2021, "Rose City")
+
+# Example using a different variable, and further customization
+heatmap_single(humidity, "Rose City")
+
+# For a more minimal look, you can hide text labels:
+heatmap_single(humidity, "Rose City", data_labels = FALSE)
+```
+
+```{r heatmap_spatial, eval = FALSE}
+# Most basic example
+heatmap_cross(data_pm, pm25_atm)
+
+# Further customization. You can avoid washing out the color scale by adding a cap:
+heatmap_cross(data_pm, pm25_atm, cap_value = 75, cap_color = "green")
+
+# Consider adding data labels for visualizations with fewer cell counts:
+heatmap_cross(data_daily, temperature_ambient, data_labels = TRUE)
+```
+
+```{r timeseries_line, eval = FALSE}
+# Most basic example
+ts_line(data_hourly, pm25_epa_2021)
+
+# For a more advanced look, add data points. You can also cap as above.
+ts_line(data_hourly, pm25_epa_2021, add_points = TRUE)
+
+# For a cleaner look, hide extrama labels and the rolling average:
+ts_line(data_hourly, pm25_epa_2021, add_extrema = FALSE, add_average = FALSE)
+
+# Further customization:
+# Filter by site label to spotlight specific monitors without removing others in the set
+# Consider plotting on a single column if few monitors are selected, for ease of visualizaing temporal variation
+ts_line(data_hourly, pm25_epa_2021, add_points = TRUE, label_filter = c("Lighthouse", "PSU"), single_column = TRUE)
+
+# Using other functions to exclude monitors:
+filter_df(data_hourly, label, exclude = "Sunset") %>% 
+  ts_line(., pm25_epa_2021, add_points = TRUE)
+```
+
+```{r timeseries_variation, eval = FALSE}
+# Most basic example
+ts_variation(data_hourly, "pm25_epa_2021")
+
+# Multiple pollutants. Remember that LRAPA does not calculate values above 65 µg/m^3
+ts_variation(data_hourly, c("pm25_epa_atm", "pm25_lrapa"))
+
+# Grouping, and selecting one plot of interest
+ts_variation(data_hourly, "pm25_epa_2021", group = "date_tag", subset = "hour")
+```
