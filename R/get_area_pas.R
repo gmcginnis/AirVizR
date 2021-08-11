@@ -9,6 +9,11 @@
 #' @param labels Character list, optional; Labels of monitors to include. If \code{NULL}/unspecified, all monitors will be included. The labels are based on string detection (\link[stringr]{str_detect}), so for instance having "STAR" will pull all that have the word "STAR" in the label. Capitalization matters.
 #' @param datestamp Character; Important argument for loading historical data, as not all monitors might be actively reporting anymore. Format: "YYYY-MM-DD".
 #' @param startdate Character; Relevant for calculating lookback days (the maximum number of days to go back and try to load data if the requested date cannot be retrieved). Format: "YYYY-MM-DD".
+#' @param archive_url Character; see \link[AirSensor]{setArchiveBaseUrl}. Known options include:
+#' \itemize{
+#'   \item "https://airsensor.aqmd.gov/PurpleAir/v1/" (default) - The archive URL which works given that inputs are at least a few months prior to current date
+#'   \item "http://data.mazamascience.com/PurpleAir/v1" - The archive URL used when designing these functions, which has recently stopped working
+#' }
 #' @return A dataframe returning all PAS within the defined area
 #' @examples 
 #' get_area_pas(
@@ -22,10 +27,10 @@
 get_area_pas <- function(state_code = input_stateCode,
                          west = input_west, east = input_east, south = input_south, north = input_north,
                          labels = input_labels,
-                         datestamp = input_enddate, startdate = input_startdate){
+                         datestamp = input_enddate, startdate = input_startdate,
+                         archive_url = "https://airsensor.aqmd.gov/PurpleAir/v1/"){
   
-  # setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1/")
+  setArchiveBaseUrl(archive_url)
   
   # Stringing the selected labels as one argument to be used as a string
   labels_string <- paste0("(", paste(labels, collapse = ")|("), ")")

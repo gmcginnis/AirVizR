@@ -5,10 +5,10 @@
 #' @param var The varaible which to filter (not in quotation marks)
 #' @param include Character list; the list of values to keep for the data frame (optional if \code{exclude} specified)
 #' @param exclude Character list; the list of values to remove from the data frame (optional if \code{include} specified)
-#' @param location_data The data set containing monitor meta data
-#' @return Data frame filtered by the specifiecations above
+#' @param location_data Optional, unless \code{var} not in \code{dataset}; the data set containing monitor meta data
+#' @return Data frame filtered by the specifications above
 #' @examples 
-#' filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"), location_data = july_api_meta)
+#' filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"))
 #' filter_df(july_api_diurnal, label, exclude = c("Lighthouse"), location_data = july_api_meta)
 #' @export
 filter_df <- function(dataframe, var = label, include = c(""), exclude = c(""), location_data = data_meta) {
@@ -16,16 +16,21 @@ filter_df <- function(dataframe, var = label, include = c(""), exclude = c(""), 
   to_include <- paste0("(", paste(include, collapse = ")|("), ")")
   to_exclude <- paste0("(", paste(exclude, collapse = ")|("), ")")
   
-  df <- dataframe %>% left_join(location_data)
+  if (exists(deparse(substitute(location_data))) == TRUE) {
+    print("Joining meta data")
+    if (deparse(substitute(var)) %in% colnames(location_data)){
+      dataframe <- dataframe %>% left_join(location_data)
+    }
+  } else { print("Meta data not needed for filtering") }
   
-  df <- df %>% 
+  dataframe <- dataframe %>% 
     filter(str_detect({{var}}, to_include))
   
   if (to_exclude != "()"){
-    df <- df %>% 
+    dataframe <- dataframe %>% 
       filter(!str_detect({{var}}, to_exclude))
   }
   
-  df %>% 
+  dataframe %>% 
     select(all_of(names(dataframe)))
 }

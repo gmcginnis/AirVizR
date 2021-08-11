@@ -12,7 +12,8 @@ get_area_pas(
   north = input_north,
   labels = input_labels,
   datestamp = input_enddate,
-  startdate = input_startdate
+  startdate = input_startdate,
+  archive_url = "https://airsensor.aqmd.gov/PurpleAir/v1/"
 )
 }
 \arguments{
@@ -31,6 +32,12 @@ get_area_pas(
 \item{datestamp}{Character; Important argument for loading historical data, as not all monitors might be actively reporting anymore. Format: "YYYY-MM-DD".}
 
 \item{startdate}{Character; Relevant for calculating lookback days (the maximum number of days to go back and try to load data if the requested date cannot be retrieved). Format: "YYYY-MM-DD".}
+
+\item{archive_url}{Character; see \link[AirSensor]{setArchiveBaseUrl}. Known options include:
+\itemize{
+\item "https://airsensor.aqmd.gov/PurpleAir/v1/" (default) - The archive URL which works given that inputs are at least a few months prior to current date
+\item "http://data.mazamascience.com/PurpleAir/v1" - The archive URL used when designing these functions, which has recently stopped working
+}}
 }
 \value{
 A dataframe returning all PAS within the defined area

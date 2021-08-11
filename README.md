@@ -24,21 +24,32 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
+# You only need to install "devtools" once:
 # install.packages("devtools")
+
+# Then, install the package:
 devtools::install_github("gmcginnis/AirVizR")
+#> readr (2.0.0 -> 2.0.1) [CRAN]
+#>      checking for file ‘/tmp/RtmpH6cYfE/remotes1a684227ab9e/gmcginnis-AirVizR-e3088c0/DESCRIPTION’ ...  ✓  checking for file ‘/tmp/RtmpH6cYfE/remotes1a684227ab9e/gmcginnis-AirVizR-e3088c0/DESCRIPTION’
+#>   ─  preparing ‘AirVizR’:
+#>    checking DESCRIPTION meta-information ...  ✓  checking DESCRIPTION meta-information
+#>   ─  checking for LF line-endings in source and make files and shell scripts
+#>   ─  checking for empty or unneeded directories
+#>   ─  building ‘AirVizR_0.0.0.9000.tar.gz’
+#>      Warning in sprintf(gettext(fmt, domain = domain), ...) :
+#>      one argument not used by format 'invalid uid value replaced by that for user 'nobody''
+#>      Warning: invalid uid value replaced by that for user 'nobody'
+#>    
+#> 
 ```
 
 ``` r
-library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-#> ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-#> ✓ tibble  3.1.3     ✓ dplyr   1.0.7
-#> ✓ tidyr   1.1.3     ✓ stringr 1.4.0
-#> ✓ readr   2.0.0     ✓ forcats 0.5.1
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> x dplyr::filter() masks stats::filter()
-#> x dplyr::lag()    masks stats::lag()
+# Load the library
 library(AirVizR)
+
+# It is also recommended to load the tidyverse
+# install.packages("tidyverse")
+library(tidyverse)
 ```
 
 ## Wrangling options:
@@ -76,12 +87,13 @@ Visual options, such as point size and background graphics, can also be
 customized.
 
 ``` r
-map_stad(july_api_daily, pm25_epa_2021, location_data = july_api_meta, grouping_vars = "date_tag")
+map_stad(july_api_daily,
+         pm25_epa_2021,
+         location_data = july_api_meta,
+         grouping_vars = "date_tag")
 #> [1] "Daily set detected: x-axis will map across in units of 24 hours, with axis breaks each day"
-#> Joining, by = "site_id"
 #> [1] "Data now grouped and averaged. Location data added."
 #> [1] "PM 2.5 detected"
-#> Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
 #> [1] "Base plot created."
 #> [1] "Plot now faceted by date_tag"
 #> [1] "Final plot created."
@@ -105,8 +117,10 @@ y-axis. By default, cell data will also be supplemented with a text
 label (which is color-customizable).
 
 ``` r
-heatmap_single(dataset = july_api_hourly, pm25_epa_2021, "Lighthouse", location_data = july_api_meta)
-#> Joining, by = "site_id"
+heatmap_single(dataset = july_api_hourly,
+               pm25_epa_2021,
+               "Lighthouse",
+               location_data = july_api_meta)
 #> [1] "PM 2.5 detected"
 #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
 ```
@@ -134,14 +148,14 @@ heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta)
 #> [1] "All monitors will be plotted."
 #> [1] "PM 2.5 detected"
 #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-#> Joining, by = "site_id"
 ```
 
 <img src="man/figures/README-example_heatmap_cross-1.png" width="100%" />
 
 ``` r
 # AFTER dropping incomplete sets and applying a color cap
-heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta, drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
+heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta,
+              drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
 #> [1] "Monitors with incomplete temporal data that will be dropped:"
 #> [1] "1b10dd8f4c3b95cf_21429" "65b3dca6d412ed31_55407" "83d4548499837cd9_43023"
 #> [4] "b8a3ff485ef60d6d_7018"  "b9b7db32f74ef0bd_31197" "bde741b2b71bcfb4_15187"
@@ -149,7 +163,6 @@ heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta, dro
 #> [1] "PM 2.5 detected"
 #> [1] "Values greater than or equal to 50 in pm25_epa_2021 will be colored green"
 #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-#> Joining, by = "site_id"
 ```
 
 <img src="man/figures/README-example_heatmap_cross-2.png" width="100%" />
@@ -169,11 +182,13 @@ single “column” of results if desired, allowing for easier temporal
 cross-comparisons.
 
 ``` r
-ts_line(july_api_hourly, pm25_atm, label_filter = "STAR", location_data = july_api_meta, add_points = TRUE)
-#> Joining, by = "site_id"
+ts_line(july_api_hourly,
+        pm25_atm,
+        label_filter = "STAR",
+        location_data = july_api_meta,
+        add_points = TRUE)
 #> [1] "Charts will be arranged in multiple rows and columns."
 #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-#> Joining, by = "site_id"
 #> [1] "Average data added."
 #> [1] "PM 2.5 detected"
 #> [1] "Data points will be added."
@@ -191,17 +206,10 @@ It can be modified to compare multiple groups (such as date ranges) or
 multiple pollutants.
 
 ``` r
-ts_variation(july_api_hourly, "pm25_epa_2021", include = "Lighthouse", group = "date_tag", location_data = july_api_meta, subset = "hour")
-#> Joining, by = "site_id"
-#> [1] "PM 2.5 detected"
-#> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-#> Detected data with Daylight Saving Time.
+ts_variation(july_api_hourly,
+             "pm25_epa_2021",
+             include = "Lighthouse",
+             group = "date_tag",
+             location_data = july_api_meta,
+             subset = "hour")
 ```
-
-<img src="man/figures/README-example_ts_variation-1.png" width="100%" />
-
-    #> [1] "Plot selected: hour"
-
-<img src="man/figures/README-example_ts_variation-2.png" width="100%" />
-
-    #> NULL

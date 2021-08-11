@@ -19,17 +19,17 @@ filter_df(
 
 \item{exclude}{Character list; the list of values to remove from the data frame (optional if \code{include} specified)}
 
-\item{location_data}{The data set containing monitor meta data}
+\item{location_data}{Optional, unless \code{var} not in \code{dataset}; the data set containing monitor meta data}
 
 \item{dataset}{The dataset which to filter}
 }
 \value{
-Data frame filtered by the specifiecations above
+Data frame filtered by the specifications above
 }
 \description{
 Filter a data frame based on any character variable, including varaibles from meta data, without having to conduct joins or string arguments yourself.
 }
 \examples{
-filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"), location_data = july_api_meta)
+filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"))
 filter_df(july_api_diurnal, label, exclude = c("Lighthouse"), location_data = july_api_meta)
 }

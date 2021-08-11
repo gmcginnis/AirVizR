@@ -74,7 +74,7 @@ input_labels <- c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b", "(C|c)ollege", "(
 ## DATE GROUPING
 # Run date grouping? If set to "FALSE", the date inputs below will not matter (but will still appear in the environment)
 run_date_grouping <- TRUE
-# If TRUE, specify the groupings below as respective items in their lists
+# If TRUE, specify the groupings below as respective items in their lists. Dates that are not included in these ranges will be dropped.
 # (i.e. the first item in each list is one "group", the second item in each list is another "group", etc.)
 # Date grouping categories:
 input_date_tags <- c("Before", "Independence Day", "After")
@@ -92,14 +92,15 @@ run_hour_grouping <- TRUE
 input_hour_tags <- c("Morning", "Afternoon", "Evening", "Night")
 # Start hours (in a list, using full hours in 24 hour format)
 input_hour_starts <- c(5, 12, 17, 21)
-# End hours will be automatically generated; no need to add "end" hours
+# End hours will be automatically generated; no need to add "end" hours. This also means that no hours will be dropped.
+# If you would like to drop specific hours, consider using the filter_df() function
 ```
 
 ---
 
 ## Loading Data
 The data import process iterates over a loop and will take the greatest amount of time. Keep in mind that if many IDs and/or a long time span is chosen, it will take longer to load.
-If more than 100 IDs are detected, a message will appear in the console to warm of a large data load. This is also why `get_ids()` is not automatically integrated into `get_area_pat()`.
+If more than 100 IDs are detected, a message will appear in the console to warm of a large data load; run `example(get_ids)` to see an example of this message. This is also why `get_ids()` is not automatically integrated into `get_area_pat()`.
 
 ```{r getting_data}
 pas_area <- get_area_pas()
@@ -146,7 +147,7 @@ if (run_hour_grouping == TRUE) {
 ```{r eclean_applying}
 # OPTIONAL
 # Cleaning the global environment
-remove(temperature_change, input_drop_hi, results, run_date_grouping, run_hour_grouping, include_outside, include_inside)
+remove(input_drop_hi, results, run_date_grouping, run_hour_grouping, include_outside, include_inside)
 remove(list = c(ls(pattern = "input_(hour|date)_")))
 # It is recommended to keep raw_meta and raw_data
 ```

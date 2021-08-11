@@ -26,14 +26,21 @@ Visualization functions have been carefully selected to maximize accessibility a
 
 You can install the development version from [GitHub](https://github.com/) with:  
 
-``` r
+``` {r, message = FALSE, warning = FALSE}
+# You only need to install "devtools" once:
 # install.packages("devtools")
+
+# Then, install the package:
 devtools::install_github("gmcginnis/AirVizR")
 ```
 
-```{r libraries}
-library(tidyverse)
+```{r libraries, message = FALSE, warning = FALSE}
+# Load the library
 library(AirVizR)
+
+# It is also recommended to load the tidyverse
+# install.packages("tidyverse")
+library(tidyverse)
 ```
 
 ## Wrangling options:
@@ -55,8 +62,11 @@ Many of the functions in this package are intended to work hand-in-hand with a s
 To represent both the spatial and temporal aspects of atmospheric data, maps can be used to visualize multiple monitors.  
 Visual options, such as point size and background graphics, can also be customized.
 
-```{r example_map_stad}
-map_stad(july_api_daily, pm25_epa_2021, location_data = july_api_meta, grouping_vars = "date_tag")
+```{r example_map_stad, warning = FALSE, message = FALSE}
+map_stad(july_api_daily,
+         pm25_epa_2021,
+         location_data = july_api_meta,
+         grouping_vars = "date_tag")
 ```
 
 
@@ -69,8 +79,11 @@ The heatmap options in this package are designed for continuous numeric variable
 
 To show hourly changes over time for a single monitor, data can be visualized with the date on the x-axis, and hour of the day on the y-axis. By default, cell data will also be supplemented with a text label (which is color-customizable).
 
-```{r example_heatmap_single}
-heatmap_single(dataset = july_api_hourly, pm25_epa_2021, "Lighthouse", location_data = july_api_meta)
+```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height=8}
+heatmap_single(dataset = july_api_hourly,
+               pm25_epa_2021,
+               "Lighthouse",
+               location_data = july_api_meta)
 ```
 
 #### Multiple monitors
@@ -79,12 +92,13 @@ To compare multiple monitors in a set over time (of any temporal resolution), da
 This visualization option is ideal for larger data sets with many monitors. Optionally, monitors with incomplete data can be filtered out.  
 Below, an example is shown with the defaults, followed by one with only complete monitors included and a "color cap" applied to avoid a washed out color palette. This color "cap" can be applied to all visualization types with continuous colors in this package.  
 
-```{r example_heatmap_cross}
+```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=8}
 # BEFORE dropping incomplete sets and applying a color cap
 heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta)
 
 # AFTER dropping incomplete sets and applying a color cap
-heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta, drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
+heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta,
+              drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
 ```
 
 ### Timeseries line graphs
@@ -95,8 +109,12 @@ Time series visualizations are useful for representing changes over time.
 
 The following is a visualization option intended to spotlight specific monitors in a data set. Optional arguments allow for points to be added, color caps (as above) to be applied, and show/hide maximum & minimum values for each monitor. Additionally, data can be visualized in a single "column" of results if desired, allowing for easier temporal cross-comparisons.
 
-```{r example_ts_line}
-ts_line(july_api_hourly, pm25_atm, label_filter = "STAR", location_data = july_api_meta, add_points = TRUE)
+```{r example_ts_line, warning = FALSE, message = FALSE, fig.retina=2}
+ts_line(july_api_hourly,
+        pm25_atm,
+        label_filter = "STAR",
+        location_data = july_api_meta,
+        add_points = TRUE)
 ```
 
 #### Variation
@@ -104,6 +122,11 @@ ts_line(july_api_hourly, pm25_atm, label_filter = "STAR", location_data = july_a
 A visualization option that builds upon the [timeVariation() function](https://bookdown.org/david_carslaw/openair/sec-timeVariation.html) from the [OpenAir package](https://bookdown.org/david_carslaw/openair/) is also available.  
 It can be modified to compare multiple groups (such as date ranges) or multiple pollutants.
 
-```{r example_ts_variation}
-ts_variation(july_api_hourly, "pm25_epa_2021", include = "Lighthouse", group = "date_tag", location_data = july_api_meta, subset = "hour")
+```{r example_ts_variation, warning = FALSE, message = FALSE, eval = FALSE}
+ts_variation(july_api_hourly,
+             "pm25_epa_2021",
+             include = "Lighthouse",
+             group = "date_tag",
+             location_data = july_api_meta,
+             subset = "hour")
 ```
