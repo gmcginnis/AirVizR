@@ -24,6 +24,6 @@ Dataframe with new columns for EPA-corrected and LRAPA-corrected PM2.5.
 Apply EPA correction factors to PurpleAir PM2.5 data: a combination of \link{apply_lrapa} and \link{apply_epa}.
 }
 \examples{
-corrected_data <- apply_corrections(july_api_full)
-corrected_hourly <- apply_corrections(july_api_full, hourly = TRUE)
+apply_corrections(july_api_full)
+\donttest{apply_corrections(july_api_full, hourly = TRUE)}
 }

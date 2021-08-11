@@ -4,10 +4,18 @@
 \alias{wrangle_data}
 \title{Wrangle PurpleAir PM Data}
 \usage{
-wrangle_data(raw_pm_data = raw_data)
+wrangle_data(
+  raw_pm_data = raw_data,
+  raw_meta_data = raw_meta,
+  drop_high = input_drop_hi
+)
 }
 \arguments{
 \item{raw_pm_data}{The dataset which to wrangle.}
+
+\item{raw_meta_data}{Monitor meta data that \link{apply_qc} and \link{adjust_timezone} will rely upon}
+
+\item{drop_high}{Logical; see \code{drop_hi} in \link{apply_qc}.}
 }
 \value{
 Data frame with rows removed from quality control, timezone adjusted to be that of the location, and improved temperature values (ºC and ambient calculated for both ºF and ºC).
@@ -16,5 +24,5 @@ Data frame with rows removed from quality control, timezone adjusted to be that 
 Apply quality control functions (\link{apply_qc}), timezone adjustments (\link{unit_convert} and \link{adjust_timezone}), and temperature conversions (\link{ambient_temperature}) to a provided raw dataset.
 }
 \examples{
-data_pm25 <- wrangle_data(slice(july_api_raw, 1:5))
+wrangle_data(slice(july_api_raw, 1:5), july_api_raw_meta, drop_high = TRUE)
 }

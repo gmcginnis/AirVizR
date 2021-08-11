@@ -25,5 +25,6 @@ Dataset with column(s) of newly specified time unit by row:
 Creating a new column in a data set with a specified date or time rounding/conversion
 }
 \examples{
-column_dt(slice(july_api_full, 1:5), c("date", "hour"))
+column_dt(july_api_full \%>\% slice(1:5) \%>\% select(site_id, datetime, humidity), c("date", "hour_minute"))
+column_dt(july_api_hourly \%>\% slice(1:5) \%>\% select(site_id, date_hour, humidity), "hour")
 }

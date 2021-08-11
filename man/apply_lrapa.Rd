@@ -33,6 +33,6 @@ Futhermore, this correction factor only reliably applies to PM2.5 values of ≤ 
 For more information on the correction factor, see the \href{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}{LRAPA documentation}.
 }
 \examples{
-data_lrapa <- apply_lrapa(july_api_full)
-data_hourly <- apply_lrapa(july_api_full, keep_cols = TRUE, by_hour = TRUE)
+apply_lrapa(july_api_full)
+\donttest{apply_lrapa(july_api_full, by_hour = TRUE, keep_cols = TRUE)}
 }

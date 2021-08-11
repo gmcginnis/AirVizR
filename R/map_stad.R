@@ -16,6 +16,10 @@
 #' @return Data visualization: map with data points colored by a specified numeric variable, located by a provided data frame of lat/long data.
 #' @examples 
 #' map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
+#' map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag",
+#'   cap_value = 50, cap_color = "green",
+#'   maptype = "terrain", tint_color = "white", point_size = 5
+#' )
 #' @importFrom ggmap qmplot
 #' @export
 map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, location_data = data_meta,

@@ -1,13 +1,13 @@
-#' Average Data by Time Groupings
+#' Group temporal data by a specified time unit
 #'
-#' Average numeric values in a dataset by day and/or by hour.
-#' @param dataset The dataset for which to average
+#' Average numeric values in a data set by day and/or by hour. This is intended to be applied to raw or otherwise high-frequency temporal data.
+#' @param dataset The data set for which to average
 #' @param by_day Logical; average data by day
 #' @param by_hour Logical; average data by hour
-#' @return Dataframe with numeric values averaged by specified timestamp(s)
+#' @return Data frame with numeric values averaged by specified time stamp(s)
 #' @examples 
-#' data_daily <- group_stad(july_api_full, by_day = TRUE)
-#' data_diurnal <- group_stad(july_api_full, by_day = FALSE, by_hour = TRUE)
+#' group_stad(july_api_full)
+#' group_stad(july_api_full %>% select(!starts_with("pm")), by_day = FALSE, by_hour = TRUE)
 #' @export
 group_stad <- function(dataset, by_day = TRUE, by_hour = FALSE) {
   

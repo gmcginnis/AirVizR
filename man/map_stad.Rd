@@ -50,4 +50,8 @@ Relevant information (such as date ranges, averaging methods, facets, and min/ma
 }
 \examples{
 map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
+map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag",
+  cap_value = 50, cap_color = "green",
+  maptype = "terrain", tint_color = "white", point_size = 5
+)
 }

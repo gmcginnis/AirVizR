@@ -7,14 +7,14 @@
 wrangle_meta(raw_location_data = raw_meta)
 }
 \arguments{
-\item{raw_location_data}{The dataset which to wrangle.}
+\item{raw_location_data}{The data set which to wrangle.}
 }
 \value{
 Dataframe with selected columns of interest.
 }
 \description{
-Select variables of interest from location data, and (importantly) make monitor labels unique from one another.
+Select variables of interest from location data, and (importantly!) make monitor labels unique from one another.
 }
 \examples{
-data_meta <- wrangle_meta(july_api_raw_meta)
+wrangle_meta(july_api_raw_meta)
 }

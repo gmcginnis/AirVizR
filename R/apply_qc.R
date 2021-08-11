@@ -12,7 +12,7 @@
 #'   \item{pm25_atm}{Rowwise mean of \code{pm25_atm_A} and \code{pm25_atm_B}}
 #' }
 #' @examples 
-#' corrected_data <- apply_qc(slice(july_api_raw, 1:5))
+#' apply_qc(july_api_raw, drop_hi = TRUE, loc_data = july_api_raw_meta)
 #' @export
 apply_qc <- function(dataset, drop_hi = input_drop_hi, avg_ab = TRUE, loc_data = raw_meta){
   

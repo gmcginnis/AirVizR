@@ -6,7 +6,11 @@
 #' @param tags Character list of tags
 #' @return Dataframe with a new column ("hour_tag") containing the appropriate hour tag with respect to each row's timestamp.
 #' @examples 
-#' tagged_data <- apply_hour_tags(july_api_diurnal, starts = c(5, 12, 17, 21), tags = c("Morning", "Afternoon", "Evening", "Night"))
+#' apply_hour_tags(
+#'   july_api_diurnal %>% filter(site_id == "0441c6b9f431d0e4_23361") %>% select(site_id, hour, temperature),
+#'   starts = c(5, 12, 17, 21),
+#'   tags = c("Morning", "Afternoon", "Evening", "Night")
+#' )
 #' @export
 apply_hour_tags <- function(dataset, starts = input_hour_starts, tags = input_hour_tags){
   

@@ -53,6 +53,6 @@ Unlike the LRAPA correction factor (\link{apply_lrapa}) which uses CF=ATM PM2.5 
 More information about EPA correction factors can be found on the \href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{Air Sensor Toolbox}.
 }
 \examples{
-data_epa <- apply_epa(july_api_full)
-data_hourly <- apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)
+apply_epa(july_api_full)
+\donttest{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
 }

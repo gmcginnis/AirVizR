@@ -17,7 +17,7 @@
 #' @param location_data Data set containing latitude and longitude data
 #' @return Data visualization: line graph time series spotlighting individual monitors, with background graphics representing the time series data for all other monitors in the set.
 #' @examples 
-#' ts_line(july_api_diurnal, pm25_atm, location_data = july_api_meta)
+#' ts_line(july_api_hourly, pm25_atm, label_filter = "\\bPSU\\b", location_data = july_api_meta)
 #' ts_line(july_api_hourly, pm25_atm, label_filter = c("\\bPSU\\b"), add_points = TRUE, single_column = TRUE, add_average = FALSE, location_data = july_api_meta)
 #' @importFrom ggrepel geom_text_repel
 #' @export

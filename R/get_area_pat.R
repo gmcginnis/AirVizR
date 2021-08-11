@@ -1,18 +1,17 @@
-#' Get raw timeseries and sensor meta data
+#' Get PurpleAir Timeseries (PAT) raw data and sensor meta data
 #'
 #' Iterate over a list of PurpleAir sensor IDs to extract sensor meta data and timeseries data given specified start and end dates
-#' @param id_list A list of PAS IDs
-#' @param startdate Date at which to start the collection (format: "YYYY-MM-DD")
-#' @param enddate Date through which the data will be collected (format: "YYYY-MM-DD")
-#' @param cols List of variables of interest to keep. Site ID info will autmatically be collected
+#' @param id_list Character list; A list of PAS IDs
+#' @param pas_input PAS object; see \link{get_area_pas}.
+#' @param startdate Character; Date at which to start the collection (format: "YYYY-MM-DD")
+#' @param enddate Character; Date through which the data will be collected (format: "YYYY-MM-DD")
+#' @param cols Character list; List of variables of interest to keep. Site ID info will autmatically be collected
 #' @return List: dataframes of sensor meta info, and a dataframe of raw data for the variables of interest
 #' @examples 
-#' results <- get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), startdate = "2020-07-01", enddate = "2020-07-07")
-#' meta_data <- results$raw_meta
-#' raw_data <- results$raw_data
+#' get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), pas_input = (example(get_area_pas))$value, startdate = "2020-07-01", enddate = "2020-07-03")
 #' @importFrom AirSensor pat_downloadParseRawData
 #' @export
-get_area_pat <- function(id_list = ids, startdate = input_startdate, enddate = input_enddate, cols = c("created_at", "temperature", "humidity", "pm2.5_cf1", "pm2.5_atm")){
+get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_startdate, enddate = input_enddate, cols = c("created_at", "temperature", "humidity", "pm2.5_cf1", "pm2.5_atm")){
   ## Setup for iteration
   # URL to be used to grab data
   input_baseUrl <- "https://api.thingspeak.com/channels/"
@@ -50,7 +49,7 @@ get_area_pat <- function(id_list = ids, startdate = input_startdate, enddate = i
     pat_single <- pat_downloadParseRawData(
       id = id,
       label = NULL,
-      pas = pas_area,
+      pas = pas_input,
       startdate = date_sequence[1],
       enddate = date_sequence[2],
       baseUrl = input_baseUrl
@@ -79,7 +78,7 @@ get_area_pat <- function(id_list = ids, startdate = input_startdate, enddate = i
         pat_single_more <- pat_downloadParseRawData(
           id = id,
           label = NULL,
-          pas = pas_area,
+          pas = pas_input,
           startdate = date_sequence[single_position],
           enddate = date_sequence[single_position + 1],
           baseUrl = input_baseUrl

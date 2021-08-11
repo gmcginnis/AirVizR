@@ -18,7 +18,7 @@ Value in the other unit
 Convert temperature from Fahrenheit to Celsius, or vice versa.
 }
 \examples{
-unit_convert(fahrenheit = 23) #Result will be -5 (ºC)
-unit_convert(celsius = 23) #Result will be 73.4 (ºF)
+unit_convert(fahrenheit = 23)
+unit_convert(celsius = 23)
 dataset <- mutate(slice(ungroup(july_api_raw), 1:5), temperature_c = unit_convert(fahrenheit = temperature))
 }

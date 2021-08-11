@@ -29,8 +29,8 @@ Series of visualization options to apply a discrete color cap to a continuous va
 Apply a cap value of a specified color to numeric variables, either by replacing them with 'NA', or flagging them in a new column.
 }
 \examples{
-cap_results <- add_cap(july_api_daily, "pm25_atm", cap_value = 15, cap_color = "red")
+example_cap_results <- add_cap(july_api_daily, "pm25_atm", cap_value = 15, cap_color = "red")
 ggplot(july_api_daily, aes(date, pm25_atm)) +
-  labs(subtitle = cap_results$lab_subtitle_cap)
-  
+  labs(subtitle = example_cap_results$lab_subtitle_cap)
+remove(example_cap_results)
 }

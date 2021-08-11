@@ -4,11 +4,7 @@
 \alias{ambient_temperature}
 \title{Ambient Temperature}
 \usage{
-ambient_temperature(
-  dataset,
-  variable = temperature,
-  change = temperature_change
-)
+ambient_temperature(dataset, variable = temperature, change = 8)
 }
 \arguments{
 \item{dataset}{The dataset containing temperature values to adjust}
@@ -18,8 +14,9 @@ ambient_temperature(
 \item{change}{Numeric: The value which to subtract from the original temperature value}
 }
 \value{
-Dataset with two new columns for ambient temperature:
+Dataset with two new columns for ambient temperature, and temperature in ºC:
 \describe{
+\item{temperature_c}{Internal temperature in ºC}
 \item{temperature_ambient}{Ambient temperature in ºF}
 \item{temperature_ambient_c}{Ambient temperature in ºC}
 }
@@ -30,7 +27,8 @@ More information can be found on \href{https://www2.purpleair.com/community/faq#
 }
 \examples{
 july_api_raw \%>\% 
+  select(!starts_with("pm25")) \%>\% 
   ungroup() \%>\% 
-  slice(1:10) \%>\% 
-  ambient_temperature(change = 8)
+  slice(1:5) \%>\% 
+  ambient_temperature()
 }

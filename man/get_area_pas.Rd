@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_area_pas.R
 \name{get_area_pas}
 \alias{get_area_pas}
-\title{Getting PAS by Area}
+\title{Getting PurpleAir Sensors (PAS) by Area and Date}
 \usage{
 get_area_pas(
   state_code = input_stateCode,
@@ -16,21 +16,21 @@ get_area_pas(
 )
 }
 \arguments{
-\item{state_code}{Optional. State of monitors to include. If NULL/unspecified, all monitors specified in the above boundaries will be included regardless of state.}
+\item{state_code}{Character, optional. State of monitors to include. If NULL/unspecified, all monitors specified in the above boundaries will be included regardless of state.}
 
-\item{west}{The western boundary coordinate}
+\item{west}{Numeric; The western boundary coordinate}
 
-\item{east}{The eastern boundary coordinate}
+\item{east}{Numeric; The eastern boundary coordinate}
 
-\item{south}{The southern boundary coordinate}
+\item{south}{Numeric; The southern boundary coordinate}
 
-\item{north}{The northern boundary coordinate}
+\item{north}{Numeric; The northern boundary coordinate}
 
-\item{labels}{Labels of monitors to include. If NULL/unspecified, all monitors will be included. The labels are based on string detection, so for instance having "STAR" will pull all that have the word "STAR" in the label. Capitalization matters.}
+\item{labels}{Character list, optional; Labels of monitors to include. If \code{NULL}/unspecified, all monitors will be included. The labels are based on string detection (\link[stringr]{str_detect}), so for instance having "STAR" will pull all that have the word "STAR" in the label. Capitalization matters.}
 
-\item{datestamp}{Important argument for loading historical data, as not all monitors might be actively reporting anymore}
+\item{datestamp}{Character; Important argument for loading historical data, as not all monitors might be actively reporting anymore. Format: "YYYY-MM-DD".}
 
-\item{startdate}{Relevant for calculating lookback days (the maximum number of days to go back and try to load data if the requested date cannot be retrieved)}
+\item{startdate}{Character; Relevant for calculating lookback days (the maximum number of days to go back and try to load data if the requested date cannot be retrieved). Format: "YYYY-MM-DD".}
 }
 \value{
 A dataframe returning all PAS within the defined area
@@ -39,5 +39,10 @@ A dataframe returning all PAS within the defined area
 Load the PAS within a specified area
 }
 \examples{
-area_pas_custom <- get_area_pas("OR", -122.854, 45.4, -122.58, 45.6, c("se", "SE", "Se", "\\\\bSTAR\\\\b", "\\\\bPSU\\\\b"), datestamp = "2020-07-07", startdate = "2020-07-01")
+get_area_pas(
+  "OR",
+  -122.854, 45.4, -122.58, 45.6,
+  c("se", "SE", "Se", "\\\\bSTAR\\\\b", "\\\\bPSU\\\\b"),
+  datestamp = "2020-07-07", startdate = "2020-07-01"
+)
 }

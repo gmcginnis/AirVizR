@@ -16,7 +16,7 @@ ts_variation(
 )
 }
 \arguments{
-\item{dataset}{The hourly data set to visualize}
+\item{dataset}{The data set to visualize. This function works best with unaveraged or hourly-averaged data.}
 
 \item{pollutants}{Character, optionally a list; in quotation marks, the pollutant(s) to map. Note that if multiple are specified, \code{group} must remain unspecified.}
 
@@ -38,9 +38,9 @@ Data visualization: diurnal, hour of day, day of the week, and/or monthly time s
 \description{
 Please note that this function will take the longest of all the visualization options.
 Visualize variation in temporal atmospheric data for multiple monitors and (optionally) multiple pollutants; a customization of \link[openair]{timeVariation} from \link[openair]{openair}.
-Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization, however limitations to the plot settings prevent all relevant information from being included.
+Relevant information (such as type of pollutant(s) and temporal scale of data set) will be reported automatically in the visualization, however limitations to the plot settings prevent all relevant information from being included.
 }
 \examples{
 ts_variation(july_api_hourly, "pm25_atm", include = "Lighthouse", group = "date_tag", location_data = july_api_meta)
-ts_variation(july_api_hourly, c("pm25_atm", "temperature"), location_data = july_api_meta, subset = "hour")
+ts_variation(july_api_hourly, c("pm25_atm", "temperature_ambient"), location_data = july_api_meta, subset = "hour")
 }

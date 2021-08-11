@@ -23,6 +23,10 @@ Arguments to detect the relevant shapes to be applied to visualizations based on
 Custom shapes are necessary for the custom visualizations, since "fill" and "color" arguments can be individually specified for the shapes below, unlike the default shapes.
 }
 \examples{
-shape_results <- settings_shapes(july_api_daily, july_api_meta)
-ggplot(full_join(july_api_daily, july_api_meta), aes(date, site_id, shape = location)) + shape_results$shape_set + shape_results$shape_guide + geom_point()
+shape_results_example <- settings_shapes(july_api_daily, july_api_meta)
+ggplot(full_join(july_api_daily, july_api_meta), aes(date, site_id, shape = location, color = location, fill = location)) +
+  geom_point(size = 3) +
+  shape_results_example$shape_set +
+  shape_results_example$shape_guide
+remove(shape_results_example)
 }

@@ -28,8 +28,8 @@
 #'   }
 #' }
 #' @examples 
-#' data_epa <- apply_epa(july_api_full)
-#' data_hourly <- apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)
+#' apply_epa(july_api_full)
+#' \donttest{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
 #' @source \href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{EPA Air Sensor Toolbox}
 #' @export
 apply_epa <- function(dataset, by_day = TRUE, by_hour = FALSE, epa_percent = 75, keep_cols = FALSE) {

@@ -15,8 +15,8 @@
 #'   \item{pm25_lrapa}{LRAPA-corrected PM2.5 value, calculated for values where PM2.5(CF=1) ≤ 65 µg/m^3 as 0.5 × PM2.5(CF=ATM) - 0.66}
 #' }
 #' @examples 
-#' data_lrapa <- apply_lrapa(july_api_full)
-#' data_hourly <- apply_lrapa(july_api_full, keep_cols = TRUE, by_hour = TRUE)
+#' apply_lrapa(july_api_full)
+#' \donttest{apply_lrapa(july_api_full, by_hour = TRUE, keep_cols = TRUE)}
 #' @source \href{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}{LRAPA documentation}
 #' @export
 apply_lrapa <- function(dataset, by_day = TRUE, by_hour = FALSE, keep_cols = FALSE){

@@ -27,8 +27,14 @@
 #'   \item{cap_guide}{Legend settings (see \link[ggplot2]{guides}) for arranging legend order in order to properly arrange values at or above the \code{cap_value}, and to set the aesthetics to match \code{cap_color} where appropraite.}
 #' }
 #' @examples 
-#' units_results <- settings_units(july_api_daily, "pm25_atm", cap_value = 17, cap_color = "green")
-#' ggplot() + labs(title = paste(units_results$lab_title, units_results$lab_title_val), fill = units_results$lab_fill)
+#' units_results_example <- settings_units(july_api_daily, "pm25_atm", cap_value = 17, cap_color = "green")
+#' ggplot(july_api_daily, aes(x = date, y = site_id, fill = pm25_atm)) +
+#'   geom_tile() +
+#'   labs(
+#'     title = paste(units_results_example$lab_title, units_results_example$lab_title_val),
+#'     fill = units_results_example$lab_fill
+#'   )
+#' remove(units_results_example)
 #' @importFrom viridis scale_fill_viridis
 #' @export
 settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
@@ -87,30 +93,6 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
       lab_fill <- paste0("Ambient temperature (", lab_unit, ")")
     }
   }
-  
-  # # Adjusting color scale and labels if the variable of interest is internal temperature
-  # if (str_detect(var_qt, "temp") == TRUE) {
-  #   lab_title_val <- "internal temperature"
-  #   fill_colors <- scale_fill_viridis(option = "cividis", begin = 0.15, na.value = cap_color)
-  #   print("Temperature detected as variable of interest; adjusting labels accordingly")
-  #   lab_unit <- "\u00B0F"
-  #   
-  #   if (str_detect(var_qt, "_c") == TRUE) {
-  #     lab_unit <- "\u00B0C"
-  #     print("Temperature detected to be in Celsius")
-  #   } else { print("Temperature assumed to be in Fahrenheit") }
-  #   
-  #   lab_fill <- paste0("Internal temperature (", lab_unit, ")")
-  # }
-  # 
-  # # Adjusting color scale and labels if the variable of interest is RH
-  # if (str_detect(var_qt, "((H|h)umid)|(rh)|(RH)") == TRUE) {
-  #   lab_title_val <- "humidity"
-  #   lab_unit <- "%"
-  #   lab_fill <- paste0("Relative humidity (", lab_unit, ")")
-  #   fill_colors <- scale_fill_viridis(option = "mako", direction = -1, limits = c(0, 100), end = 0.9, na.value = cap_color)
-  #   print("RH detected as variable of interest; adjusting labels accordingly")
-  # }
   
   # Getting min and max values from the data set
   val_min <- dataset %>% ungroup() %>% select_at(vars(var_qt)) %>% min(na.rm = TRUE)

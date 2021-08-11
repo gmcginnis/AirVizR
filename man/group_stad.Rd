@@ -2,24 +2,24 @@
 % Please edit documentation in R/group_stad.R
 \name{group_stad}
 \alias{group_stad}
-\title{Average Data by Time Groupings}
+\title{Group temporal data by a specified time unit}
 \usage{
 group_stad(dataset, by_day = TRUE, by_hour = FALSE)
 }
 \arguments{
-\item{dataset}{The dataset for which to average}
+\item{dataset}{The data set for which to average}
 
 \item{by_day}{Logical; average data by day}
 
 \item{by_hour}{Logical; average data by hour}
 }
 \value{
-Dataframe with numeric values averaged by specified timestamp(s)
+Data frame with numeric values averaged by specified time stamp(s)
 }
 \description{
-Average numeric values in a dataset by day and/or by hour.
+Average numeric values in a data set by day and/or by hour. This is intended to be applied to raw or otherwise high-frequency temporal data.
 }
 \examples{
-data_daily <- group_stad(july_api_full, by_day = TRUE)
-data_diurnal <- group_stad(july_api_full, by_day = FALSE, by_hour = TRUE)
+group_stad(july_api_full)
+group_stad(july_api_full \%>\% select(!starts_with("pm")), by_day = FALSE, by_hour = TRUE)
 }

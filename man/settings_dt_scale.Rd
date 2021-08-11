@@ -34,8 +34,9 @@ List of values to be applied to various visualization methods:
 A series of arguments to detect the minimum time stamp value within a data set, and provide an output of visualization settings to apply to allow for appropriate labeling and scaling.
 }
 \examples{
-settings_results <- settings_dt_scale(july_api_diurnal, start_date = "2020-07-01", end_date = "2020-07-07")
-ggplot(settings_results$dataset, aes(timestamp, temperature)) +
-  settings_results$x_scale +
-  labs(subtitle = settings_results$lab_caption)
+settings_results_example <- settings_dt_scale(july_api_diurnal, start_date = "2020-07-01", end_date = "2020-07-07")
+ggplot(settings_results_example$dataset, aes(timestamp, temperature)) +
+  settings_results_example$x_scale +
+  labs(subtitle = settings_results_example$lab_caption)
+remove(settings_results_example)
 }

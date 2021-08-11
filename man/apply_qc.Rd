@@ -27,5 +27,5 @@ Apply basic quality control to a dataset: PM2.5 between 0 and 2000, temperature 
 Also provides an option to average PM2.5 columns A and B of a dataset
 }
 \examples{
-corrected_data <- apply_qc(slice(july_api_raw, 1:5))
+apply_qc(july_api_raw, drop_hi = TRUE, loc_data = july_api_raw_meta)
 }

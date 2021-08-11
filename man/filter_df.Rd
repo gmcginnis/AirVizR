@@ -30,6 +30,6 @@ Data frame filtered by the specifiecations above
 Filter a data frame based on any character variable, including varaibles from meta data, without having to conduct joins or string arguments yourself.
 }
 \examples{
-daytime_data <- filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"), location_data = july_api_meta)
-no_lighthouse <- filter_df(july_api_diurnal, label, exclude = c("Lighthouse"), location_data = july_api_meta)
+filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"), location_data = july_api_meta)
+filter_df(july_api_diurnal, label, exclude = c("Lighthouse"), location_data = july_api_meta)
 }

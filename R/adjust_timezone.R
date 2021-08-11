@@ -6,7 +6,7 @@
 #' @param location_data The data set containing information on the timezone (column: "timezone") to apply
 #' @return Dataset with a column of corrected time stamp ("datetime") and the original ("datetime_utc")
 #' @examples 
-#' adjust_timezone(july_api_raw, location_data = july_api_raw_meta)
+#' adjust_timezone(slice(july_api_raw, 1:5), location_data = july_api_raw_meta)
 #' @export
 adjust_timezone <- function(dataset, location_data = raw_meta){
   

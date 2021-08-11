@@ -24,11 +24,16 @@ apply_date_tags(
 \item{stamp}{Desired date stamp format type. To avoid ambiguity, specify a day example with a value greater than 12, and a 1990s year.}
 }
 \value{
-Dataframe with a new column ("date_tag") containing the appropriate date tag with respect to each row's timestamp.
+Dataframe with a new column ("date_tag") containing the appropriate date tag with respect to each row's time stamp.
 }
 \description{
 Create a column of date tags based on specified date ranges (\code{starts} and \code{ends}) and respective names (\code{tags}).
 }
 \examples{
-tagged_data <- apply_date_tags(july_api_daily, starts = c("2021-07-01", "2021-07-04", "2021-07-05"), ends = c("2021-07-03", "2021-07-04", "2021-07-07"), tags = c("Before", "Independence Day", "After"))
+  apply_date_tags(
+    july_api_daily \%>\% filter(site_id == "0441c6b9f431d0e4_23361") \%>\% select(site_id, date, temperature),
+    starts = c("2020-07-01", "2020-07-04", "2020-07-05"),
+    ends = c("2020-07-03", "2020-07-04", "2020-07-07"),
+    tags = c("Before", "Independence Day", "After")
+  )
 }

@@ -2,23 +2,26 @@
 % Please edit documentation in R/get_area_pat.R
 \name{get_area_pat}
 \alias{get_area_pat}
-\title{Get raw timeseries and sensor meta data}
+\title{Get PurpleAir Timeseries (PAT) raw data and sensor meta data}
 \usage{
 get_area_pat(
   id_list = ids,
+  pas_input = pas_area,
   startdate = input_startdate,
   enddate = input_enddate,
   cols = c("created_at", "temperature", "humidity", "pm2.5_cf1", "pm2.5_atm")
 )
 }
 \arguments{
-\item{id_list}{A list of PAS IDs}
+\item{id_list}{Character list; A list of PAS IDs}
 
-\item{startdate}{Date at which to start the collection (format: "YYYY-MM-DD")}
+\item{pas_input}{PAS object; see \link{get_area_pas}.}
 
-\item{enddate}{Date through which the data will be collected (format: "YYYY-MM-DD")}
+\item{startdate}{Character; Date at which to start the collection (format: "YYYY-MM-DD")}
 
-\item{cols}{List of variables of interest to keep. Site ID info will autmatically be collected}
+\item{enddate}{Character; Date through which the data will be collected (format: "YYYY-MM-DD")}
+
+\item{cols}{Character list; List of variables of interest to keep. Site ID info will autmatically be collected}
 }
 \value{
 List: dataframes of sensor meta info, and a dataframe of raw data for the variables of interest
@@ -27,7 +30,5 @@ List: dataframes of sensor meta info, and a dataframe of raw data for the variab
 Iterate over a list of PurpleAir sensor IDs to extract sensor meta data and timeseries data given specified start and end dates
 }
 \examples{
-results <- get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), startdate = "2020-07-01", enddate = "2020-07-07")
-meta_data <- results$raw_meta
-raw_data <- results$raw_data
+get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), pas_input = (example(get_area_pas))$value, startdate = "2020-07-01", enddate = "2020-07-03")
 }

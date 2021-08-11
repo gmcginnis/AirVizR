@@ -16,10 +16,11 @@
 #'   \item{lab_caption}{Character; label information for details containing date range in the set.}
 #' }
 #' @examples 
-#' settings_results <- settings_dt_scale(july_api_diurnal, start_date = "2020-07-01", end_date = "2020-07-07")
-#' ggplot(settings_results$dataset, aes(timestamp, temperature)) +
-#'   settings_results$x_scale +
-#'   labs(subtitle = settings_results$lab_caption)
+#' settings_results_example <- settings_dt_scale(july_api_diurnal, start_date = "2020-07-01", end_date = "2020-07-07")
+#' ggplot(settings_results_example$dataset, aes(timestamp, temperature)) +
+#'   settings_results_example$x_scale +
+#'   labs(subtitle = settings_results_example$lab_caption)
+#' remove(settings_results_example)
 #' @importFrom ggplot2 expansion
 #' @importFrom ggplot2 scale_x_date
 #' @importFrom dplyr rename

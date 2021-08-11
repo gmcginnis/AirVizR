@@ -12,7 +12,8 @@
 #'   \item{time}{Column of the time stamp's time; class 'hms', 'difftime'.}
 #' }
 #' @examples 
-#' column_dt(slice(july_api_full, 1:5), c("date", "hour"))
+#' column_dt(july_api_full %>% slice(1:5) %>% select(site_id, datetime, humidity), c("date", "hour_minute"))
+#' column_dt(july_api_hourly %>% slice(1:5) %>% select(site_id, date_hour, humidity), "hour")
 #' @export
 column_dt <- function(dataset, unit){
   

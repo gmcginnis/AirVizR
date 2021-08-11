@@ -13,8 +13,9 @@
 #' @param location_data Data set containing latitude and longitude data
 #' @return Data visualization: heatmap colored by a specified numeric variable, with time on the x-axis (and appropriate breaks & labels) and monitor labels on the y-axis arranged from north to south and separted by location.
 #' @examples
-#' heatmap_cross(july_api_daily, humidity)
-#' heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, cap_value = 75, cap_color = "green")
+#' heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta)
+#' heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, drop_incomplete = TRUE, cap_value = 75, cap_color = "green")
+#' heatmap_cross(july_api_daily, temperature, location_data = july_api_meta, drop_incomplete = TRUE)
 #' @export
 heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE,
                           cap_value = NA, cap_color = "red",

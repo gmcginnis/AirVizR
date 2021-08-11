@@ -1,10 +1,10 @@
 #' Wrangle Location (Meta) Data
 #'
-#' Select variables of interest from location data, and (importantly) make monitor labels unique from one another.
-#' @param raw_location_data The dataset which to wrangle.
+#' Select variables of interest from location data, and (importantly!) make monitor labels unique from one another.
+#' @param raw_location_data The data set which to wrangle.
 #' @return Dataframe with selected columns of interest.
 #' @examples 
-#' data_meta <- wrangle_meta(july_api_raw_meta)
+#' wrangle_meta(july_api_raw_meta)
 #' @export
 wrangle_meta <- function(raw_location_data = raw_meta) {
   location_data <- raw_location_data %>% 
