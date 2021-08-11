@@ -69,12 +69,6 @@ input_north <- 45.6
 input_labels <- c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b", "(C|c)ollege", "(R|r)ow", "Richmond")
 
 
-# Degrees Fahrenheit difference between reported temperature (raw data) and ambient temperature
-# This will not impact correction factors, but will allow for a corrected temperature output (temperature_ambient)
-temperature_change <- 8
-# See ambient_temperature() for more information
-
-
 ## Optional grouping settings (which will NOT impact raw data output, but can be useful when graphing!)
 
 ## DATE GROUPING
