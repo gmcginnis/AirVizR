@@ -6,7 +6,13 @@ Authors@R:
            family = "McGinnis",
            role = c("aut", "cre"),
            email = "gmcginnis@reed.edu")
-Description: A series of tools for extracting, wrangling, correcting, and visualizing air quality data, with an emphasis on PM2.5 data from PurpleAir.
+Description: A series of tools for extracting, wrangling, correcting, and visualizing 
+     spatio-temporal atmospheric data, with an emphasis on fine particulate matter 
+     (PM2.5, i.e. Particulate Matter with a diameter <2.5 µm) data from PurpleAir. 
+     Correction factor equations from the Environmental Protection Agency (EPA) 
+     and Lane Regional Air Protection Agency (LRAPA) are implemented to allow 
+     for greatest data accuracy. Visualization functions have been carefully selected
+     to maximize accessibility and data transparency.
 License: GPL >= 3.0
 Encoding: UTF-8
 LazyData: true
@@ -14,14 +20,21 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     dplyr,
-    readr,
-    ggplot2,
     ggmap (>= 3.0.0.903),
+    ggplot2,
     ggrepel,
     lubridate,
+    readr,
+    stringr,
     viridis
 Suggests: 
-    testthat (>= 3.0.0),
-    AirSensor,
-    openair
+    knitr,
+    openair,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Remotes:
+    MazamaScience/AirSensor
 Config/testthat/edition: 3
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

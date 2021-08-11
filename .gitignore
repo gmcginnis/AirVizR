@@ -41,3 +41,4 @@ vignettes/*.pdf
 # More
 AirVizR.Rproj
 .Rbuildignore
+inst/doc
