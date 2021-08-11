@@ -20,6 +20,9 @@
 #' ggplot(settings_results$dataset, aes(timestamp, temperature)) +
 #'   settings_results$x_scale +
 #'   labs(subtitle = settings_results$lab_caption)
+#' @importFrom ggplot2 expansion
+#' @importFrom ggplot2 scale_x_date
+#' @importFrom dplyr rename
 #' @export
 settings_dt_scale <- function(dataset, start_date = input_startdate, end_date = input_enddate) {
   # Expanding axis to allow monitor labels to be closer to the data

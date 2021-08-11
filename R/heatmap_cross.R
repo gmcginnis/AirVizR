@@ -77,7 +77,7 @@ heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE
   
   dataset %>% 
     distinct() %>% 
-    left_join(temp_loc) %>% 
+    dplyr::left_join(temp_loc) %>% 
     ggplot(
       aes(
         x = timestamp,

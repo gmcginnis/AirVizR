@@ -16,7 +16,7 @@ filter_df <- function(dataframe, var = label, include = c(""), exclude = c(""), 
   to_include <- paste0("(", paste(include, collapse = ")|("), ")")
   to_exclude <- paste0("(", paste(exclude, collapse = ")|("), ")")
   
-  df <- dataframe %>% left_join(data_meta)
+  df <- dataframe %>% left_join(location_data)
   
   df <- df %>% 
     filter(str_detect({{var}}, to_include))

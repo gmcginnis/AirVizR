@@ -48,7 +48,7 @@ map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, locati
     summarize(mean = mean({{variable_of_interest}}, na.rm = TRUE)) %>% 
     drop_na(mean) %>% 
     # Adding location data to get lat & lon
-    left_join(location_data)
+    dplyr::left_join(location_data)
   
   # Renaming newly-created "mean" variable
   names(dataset)[names(dataset) == 'mean'] <- variable_of_interest_qt

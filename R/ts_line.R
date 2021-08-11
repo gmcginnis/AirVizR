@@ -64,7 +64,7 @@ ts_line <- function(dataset, variable_of_interest,
   
   
   dataset <- dataset %>% 
-    left_join(location_data) %>% 
+    dplyr::left_join(location_data) %>% 
     select(timestamp, site_id, label, location, {{variable_of_interest}})
   
   input_labels <- paste0("(", paste(label_filter, collapse = ")|("), ")")

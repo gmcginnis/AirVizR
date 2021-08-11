@@ -42,7 +42,7 @@ heatmap_single <- function(variable_of_interest, site_of_interest = "",
   dataset <- dataset %>% 
     ungroup() %>% 
     # Adding labels to the data set
-    left_join(temp_loc) %>% 
+    dplyr::left_join(temp_loc) %>% 
     # Filtering data set based on inputted site of interest
     filter(str_detect(label, site_of_interest)) %>% 
     # Removing empty values from variable of interest (otherwise is grey when mapping)
