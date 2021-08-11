@@ -39,19 +39,24 @@ library(AirVizR)
 ## Wrangling options:
 
 One of three methods of data importation are documented in the vignettes, via either API or local import;  
-* **API (for PurpleAir)**:  
+* **API** (PurpleAir only): Using a series of functions, some derived from the [AirSensor](https://mazamascience.github.io/AirSensor/) package, archived PurpleAir data can be pulled if provided coordinates and date ranges of interest. See the `api-data` vignette for more information. 
 * **Local data**  
-  + **PurpleAir**: Many of the same arguments as the API setup can be used. You can download data from PurpleAir's sensor [download tool](https://www.purpleair.com/sensorlist). It should be noted that this data does not include as much information as API data, including meta information regarding high values or A/B monitor sensor disparity.  
-  + **FRM**: The examples in this package use FRM data from Oregon's DEQ  
+  + **PurpleAir**: Many of the same arguments as the API setup can be used. You can download data from PurpleAir's sensor [download tool](https://www.purpleair.com/sensorlist). It should be noted that this data does not include as much information as API data, including meta information regarding high values or A/B monitor sensor disparity. See the `local-data` vignette for more information.  
+  + **FRM**: Although currently no functions are explicitly dedicated to loading FRM data, the visualization functions can be applied to them. The examples in this package use FRM data from Oregon's DEQ. See the `frm-data` vignette for more information.  
 
+
+Many of the functions in this package are intended to work hand-in-hand with a series of provided inputs, hence why many of the defaults inputs for man class types are "input_*" or "raw_". See the `api-data` vignette for a full example of inputs.
 
 ## Exaple Visualizations:
 
 
 ### Map Spatio-Temporal Data
 
+To represent both the spatial and temporal aspects of atmospheric data, maps can be used to visualize multiple monitors.  
+Visual options, such as point size and background graphics, can also be customized.
+
 ```{r example_map_stad}
-map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
+map_stad(july_api_daily, pm25_epa_2021, location_data = july_api_meta, grouping_vars = "date_tag")
 ```
 
 
@@ -71,15 +76,15 @@ heatmap_single(dataset = july_api_hourly, pm25_epa_2021, "Lighthouse", location_
 #### Multiple monitors
 
 To compare multiple monitors in a set over time (of any temporal resolution), data can be mapped to a heatmap where the time is on the x-axis, and the y-axis is monitor labels. Monitors will be separated by location (i.e. inside/outside), and arranged north to south, allowing for a general representation of spatial differences.  
-This visualization option is ideal for larger data sets with many monitors.  
-Below, an example is shown with the defaults, followed by one with a "color cap" applied to avoid a washed out color palette. This color "cap" can be applied to all visualization types with continuous colors in this package.  
+This visualization option is ideal for larger data sets with many monitors. Optionally, monitors with incomplete data can be filtered out.  
+Below, an example is shown with the defaults, followed by one with only complete monitors included and a "color cap" applied to avoid a washed out color palette. This color "cap" can be applied to all visualization types with continuous colors in this package.  
 
 ```{r example_heatmap_cross}
-#Before
+# BEFORE dropping incomplete sets and applying a color cap
 heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta)
 
-#After
-heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta, cap_value = 50, cap_color = "green")
+# AFTER dropping incomplete sets and applying a color cap
+heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta, drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
 ```
 
 ### Timeseries line graphs
@@ -88,7 +93,7 @@ Time series visualizations are useful for representing changes over time.
 
 #### Spatio-temporal
 
-The following is a visualization option intended to spotlight specific monitors in a data set. Optional arguments allow for points to be added, color caps (as above) to be applied, and show/hide maximum & minimum values for each monitor.
+The following is a visualization option intended to spotlight specific monitors in a data set. Optional arguments allow for points to be added, color caps (as above) to be applied, and show/hide maximum & minimum values for each monitor. Additionally, data can be visualized in a single "column" of results if desired, allowing for easier temporal cross-comparisons.
 
 ```{r example_ts_line}
 ts_line(july_api_hourly, pm25_atm, label_filter = "STAR", location_data = july_api_meta, add_points = TRUE)
@@ -96,7 +101,7 @@ ts_line(july_api_hourly, pm25_atm, label_filter = "STAR", location_data = july_a
 
 #### Variation
 
-The following uses the [timeVariation() function](https://bookdown.org/david_carslaw/openair/sec-timeVariation.html) from the [OpenAir package](https://bookdown.org/david_carslaw/openair/).  
+A visualization option that builds upon the [timeVariation() function](https://bookdown.org/david_carslaw/openair/sec-timeVariation.html) from the [OpenAir package](https://bookdown.org/david_carslaw/openair/) is also available.  
 It can be modified to compare multiple groups (such as date ranges) or multiple pollutants.
 
 ```{r example_ts_variation}
