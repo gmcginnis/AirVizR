@@ -16,4 +16,79 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(AirVizR)
+library(tidyverse)
+library(lubridate)
+
+library(data.table)
+```
+
+```{r manual_inputs}
+# Path to folder containing CSV files of interest
+input_path <- "data-raw/local"
+
+# Timezone in which the monitors are located
+# Run OlsonNames() for a list of valid inputs
+input_timezone <- "America/Los_Angeles"
+
+
+#OPTIONAL: filter for specific locations, e.g. for STAR labs use "*STAR*" exactly. Use NULL otherwise
+input_path_filter <- NULL
+```
+
+```{r inputs}
+## Optional grouping settings (which will NOT impact raw data output, but can be useful when graphing!)
+
+## DATE GROUPING
+# Run date grouping? If set to "FALSE", the date inputs below will not matter (but will still appear in the environment)
+run_date_grouping <- TRUE
+# If TRUE, specify the groupings below as respective items in their lists. Dates that are not included in these ranges will be dropped.
+# (i.e. the first item in each list is one "group", the second item in each list is another "group", etc.)
+# Date grouping categories:
+input_date_tags <- c("Before", "Independence Day", "After")
+# Start dates (in a list, "YYYY-MM-DD")
+input_date_starts <- c("2020-07-01", "2020-07-04", "2020-07-05")
+# End dates (in a list, "YYYY-MM-DD")
+input_date_ends <- c("2020-07-03", "2020-07-04", "2020-07-07")
+
+## HOUR GROUPING
+# Run hour grouping? If set to "FALSE", the hour inputs below will not matter (but will still appear in the environment)
+run_hour_grouping <- TRUE
+# If TRUE, specify the groupings below as respective items in their lists
+# (i.e. the first item in each list is one "group", the second item in each list is another "group", etc.)
+# Hour grouping categories:
+input_hour_tags <- c("Morning", "Afternoon", "Evening", "Night")
+# Start hours (in a list, using full hours in 24 hour format)
+input_hour_starts <- c(5, 12, 17, 21)
+# End hours will be automatically generated; no need to add "end" hours. This also means that no hours will be dropped.
+# If you would like to drop specific hours, consider using the filter_df() function
+```
+
+```{r}
+local_meta <- read_local_meta(pattern = input_path_filter)
+
+local_raw <- read_local_folder(pattern = input_path_filter)
+```
+
+
+```{r auto_apply}
+local_full <- wrangle_local(local_raw, local_meta)
+local_hourly <- apply_functions(local_full, by_day = TRUE, by_hour = TRUE)
+local_daily <- apply_functions(local_full, by_day = TRUE, by_hour = FALSE)
+local_diurnal <- apply_functions(local_full, by_day = FALSE, by_hour = TRUE)
+
+if (run_date_grouping == TRUE){
+  local_full <- local_full %>% apply_date_tags()
+}
+if (run_hour_grouping == TRUE) {
+  local_full <- local_full %>% apply_hour_tags()
+}
+```
+
+```{r start_end_dates}
+if (missing(input_startdate) == TRUE) {
+  input_startdate <- min((local_full %>% column_dt("date"))$date)
+}
+if (missing(input_enddate) == TRUE) {
+  input_enddate <- max((local_full %>% column_dt("date"))$date)
+}
 ```
