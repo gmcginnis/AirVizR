@@ -1,0 +1,113 @@
+---
+title: "Combine and Visualize STADs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Combine and Visualize STADs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AirVizR)
+library(plyr)
+```
+
+# Combine data sets
+
+Not all data sets will have the same number of columns. However, the data can still be combined into larger sets.
+
+Below is an example using package data.
+
+```{r load_data}
+# Combine meta data
+combo_meta <- organize_stad(list(july_api_meta, july_frm_meta))
+# Combine hourly data
+combo_hourly <- organize_stad(list(july_api_hourly, july_frm_hourly))
+```
+
+To compare PA and FRM PM2.5 data on the same scale, we'll first need to pivot the appropriate columns in order to be in [tidy format](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1).
+We'll use the same function as before with our combined set, and specify which columns to pivot as well as the new name.
+```{r pivot}
+combo_pm25 <- organize_stad(combo_hourly, c(pm25_epa_2021, pm25_frm), "pm25")
+```
+
+
+Alternatively, if you prefer minimal environment clutter, you could have conducted a row-bind combine AND pivot in the same action:
+
+```{r both, eval = FALSE}
+# Output will be the same as combo_pm25!
+organize_stad(
+  list(july_api_hourly, july_frm_hourly),
+  c(pm25_epa_2021, pm25_frm),
+  "pm25"
+)
+```
+
+# Visualizing
+Now that we have our combined data frames, we can visualize it. See more visualization options in the [`visualize-data` vignette](visualize-data.html).
+
+If we want to focus on data during and after the Fourth of July, filter the data frame first with `filter_df()`.
+
+```{r visualize}
+filter_df(combo_pm25, date_tag, exclude = "Before") %>% 
+  heatmap_cross(
+    dataset = ., #this dot is because the now-filtered data set is piped in from above
+    variable_of_interest = pm25,
+    location_data = combo_meta,
+    drop_incomplete = TRUE
+  )
+```
+
+To compare the accuracy of the reported PM values between PA and FRM, we can plot them on the same graph with some adjustments. First we will have to make the data grouped by time stamp, since PA data does not have `pm25_frm` and FRM does not have `pm25_epa_2021`.
+
+```{r compare}
+library(ggplot)
+library(dplyr)
+
+combo_pm25_wide <- combo_hourly %>% 
+  # Filtering to include only outdoor and FRM data
+  filter_df(location, exclude = c("inside"), location_data = combo_meta) %>% 
+  # Grouping by dates in order to plot values against one another
+  group_by(date_tag, date_hour, hour_tag) %>% 
+  summarize_at(vars(pm25_epa_2021, pm25_frm), mean, na.rm = TRUE)
+
+# Preview before and after. Notice the many NAs in combo_hourly!
+head(select(combo_hourly, date_tag, date_hour, hour_tag, pm25_epa_2021, pm25_frm))
+head(combo_pm25_wide)
+
+# Basic plot:
+ggplot(combo_pm25_wide, aes(x = pm25_epa_2021, y = pm25_frm)) +
+  geom_point()
+
+# Feeling fancy? Customize other elements:
+ggplot(combo_pm25_wide, aes(x = pm25_epa_2021, y = pm25_frm, color = date_tag)) +
+  # Separating by hour and date tags:
+  facet_grid(hour_tag~date_tag) +
+  # Adding a 1:1 line:
+  geom_abline(intercept = 0, slope = 1, linetype = "longdash", color = "purple", alpha = 0.5) +
+  # Changing shape to make overlaps more visible:
+  geom_point(shape = 1) + 
+  # Force the resulting plot to be squared (i.e. x & y min & max will be the same):
+  coord_fixed() +
+  # Changing the color scale to be darker and more colorblind-friendly
+  scale_color_brewer(palette = "Set1") +
+  # Changing theme to be more crisp:
+  theme_bw() +
+  # Removing color legend, since it's already clearly separated by date_tag:
+  theme(legend.position = "none") +
+  # Add labels:
+  labs(
+    title = "Comparing FRM and PA PM2.5",
+    subtitle = "Date from Oregon DEQ and Portland-based\nPurpleAir monitors, respectively",
+    x = "EPA-corrected PurpleAir PM2.5",
+    y = "FRM PM2.5"
+  )
+```
+
