@@ -21,7 +21,7 @@ Create a column of date tags based on specified hour ranges (created using input
 }
 \examples{
 apply_hour_tags(
-  july_api_diurnal \%>\% filter(site_id == "0441c6b9f431d0e4_23361") \%>\% select(site_id, hour, temperature),
+  head(july_api_diurnal[1:3]),
   starts = c(5, 12, 17, 21),
   tags = c("Morning", "Afternoon", "Evening", "Night")
 )

@@ -20,6 +20,11 @@ A list of IDs from a provided PAS
 Load a list of device deployment IDs from a provided PAS
 }
 \examples{
-get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "RI"), outside = TRUE, inside = FALSE)
-get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "OR"), outside = TRUE, inside = TRUE)
+get_ids((example(get_area_pas))$value, TRUE, TRUE)
+\donttest{
+get_ids(
+  pas = AirSensor::pas_filter(AirSensor::pas_load(datestamp = "20200701"), stateCode == "OR"),
+  outside = TRUE, inside = TRUE
+)
+}
 }

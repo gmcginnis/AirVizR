@@ -12,19 +12,22 @@
 #'   \item{pm25_atm}{Rowwise mean of \code{pm25_atm_A} and \code{pm25_atm_B}}
 #' }
 #' @examples 
+#' \donttest{
 #' apply_qc(july_api_raw, drop_hi = TRUE, loc_data = july_api_raw_meta)
+#' }
+#' @importFrom magrittr %>%
 #' @export
 apply_qc <- function(dataset, drop_hi = input_drop_hi, avg_ab = TRUE, loc_data = raw_meta){
   
   if (drop_hi == TRUE) {
     hi_monitors <- loc_data %>% 
-      filter(flag_highValue == TRUE)
+      dplyr::filter(flag_highValue == TRUE)
     
     print("Monitors flagged as high value to be filtered out:")
     print(hi_monitors$label)
     
     dataset <- dataset %>% 
-      filter(!site_id %in% hi_monitors$site_id)
+      dplyr::filter(!site_id %in% hi_monitors$site_id)
     
     remove(hi_monitors)
   } else { print("All monitor data will be kept.") }
@@ -32,28 +35,28 @@ apply_qc <- function(dataset, drop_hi = input_drop_hi, avg_ab = TRUE, loc_data =
   # Creating columns to average A & B data
   if (avg_ab == TRUE) {
     dataset <- dataset %>% 
-      rowwise() %>% 
-      mutate(
+      dplyr::rowwise() %>% 
+      dplyr::mutate(
         pm25_cf1 = mean(c(pm25_cf1_A, pm25_cf1_B), na.rm = TRUE),
         pm25_atm = mean(c(pm25_atm_A, pm25_atm_B), na.rm = TRUE)
       ) %>% 
-      ungroup()
+      dplyr::ungroup()
     print("Columns for averages of A & B data added")
   }
   
   dataset <- dataset %>% 
     # Basic quality control; only physically possible values (and real numbers) are kept
-    filter_at(
+    dplyr::filter_at(
       # Selecting the columns that start with 'pm25'
-      vars(starts_with("pm25")),
+      dplyr::vars(tidyselect::starts_with("pm25")),
       # Filtering said columns such that only values 0:2000 are kept
-      all_vars(between(., 0, 2000))
+      dplyr::all_vars(dplyr::between(., 0, 2000))
     ) %>% 
-    filter(
+    dplyr::filter(
       # Filtering temperature for -40:185
-      between(temperature, -40, 185),
+      dplyr::between(temperature, -40, 185),
       # Filtering humidity for 0:100
-      between(humidity, 0, 100)
+      dplyr::between(humidity, 0, 100)
     )
   
   return(dataset)

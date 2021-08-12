@@ -21,5 +21,8 @@ Average numeric values in a data set by day and/or by hour. This is intended to 
 }
 \examples{
 group_stad(july_api_full)
-group_stad(july_api_full \%>\% select(!starts_with("pm")), by_day = FALSE, by_hour = TRUE)
+\donttest{
+group_stad(july_api_full, by_day = FALSE, by_hour = TRUE)
+group_stad(july_api_full, by_day = TRUE, by_hour = TRUE)
+}
 }

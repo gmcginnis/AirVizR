@@ -12,8 +12,9 @@
 #'   \item{time}{Column of the time stamp's time; class 'hms', 'difftime'.}
 #' }
 #' @examples 
-#' column_dt(july_api_full %>% slice(1:5) %>% select(site_id, datetime, humidity), c("date", "hour_minute"))
-#' column_dt(july_api_hourly %>% slice(1:5) %>% select(site_id, date_hour, humidity), "hour")
+#' column_dt(head(july_api_full)[1:3], c("date", "hour_minute"))
+#' column_dt(head(july_api_hourly)[1:3], "hour")
+#' @importFrom magrittr %>%
 #' @export
 column_dt <- function(dataset, unit){
   
@@ -31,36 +32,36 @@ column_dt <- function(dataset, unit){
   if ("date" %in% unit) {
     if ("date_hour" %in% colnames(dataset) == TRUE) {
       dataset <- dataset %>% 
-        mutate(date = lubridate::date(date_hour))
+        dplyr::mutate(date = lubridate::date(date_hour))
       print("`date` column added from `date_hour`")
     } else {
       dataset <- dataset %>%
-        mutate(date = lubridate::date(datetime))
+        dplyr::mutate(date = lubridate::date(datetime))
       print("`date` column added")
     }
   }
   
   if ("date_hour" %in% unit & !"date_hour" %in% colnames(dataset)) {
     dataset <- dataset %>% 
-      mutate(date_hour = floor_date(datetime, unit = "hour"))
+      dplyr::mutate(date_hour = lubridate::floor_date(datetime, unit = "hour"))
     print("`date_hour` column added")
   }
   
   if ("time" %in% unit) {
     dataset <- dataset %>% 
-      mutate(time = hms::as_hms(datetime))
+      dplyr::mutate(time = hms::as_hms(datetime))
     print("`time` column added")
   }
   
   if ("hour" %in% unit) {
     if ("date_hour" %in% colnames(dataset) == TRUE) {
       dataset <- dataset %>% 
-        mutate(hour = hms::as_hms(date_hour))
+        dplyr::mutate(hour = hms::as_hms(date_hour))
       print("`hour` column added")
     } else {
       dataset <- dataset %>% 
-        mutate(
-          date_hour = floor_date(datetime, unit = "hour"),
+        dplyr::mutate(
+          date_hour = lubridate::floor_date(datetime, unit = "hour"),
           hour = hms::as_hms(date_hour)
         ) %>% 
         select(!date_hour)
@@ -70,11 +71,11 @@ column_dt <- function(dataset, unit){
   
   if ("hour_minute" %in% unit) {
     dataset <- dataset %>%
-      mutate(
-        date_minute = floor_date(datetime, unit = "minute"),
+      dplyr::mutate(
+        date_minute = lubridate::floor_date(datetime, unit = "minute"),
         hour_minute = hms::as_hms(date_minute)
       ) %>%
-      select(!date_minute)
+      dplyr::select(!date_minute)
     print("`hour_minute` column added, `date_minute` column created then disgarded")
   }
   

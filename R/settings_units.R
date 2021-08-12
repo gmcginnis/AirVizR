@@ -27,6 +27,7 @@
 #'   \item{cap_guide}{Legend settings (see \link[ggplot2]{guides}) for arranging legend order in order to properly arrange values at or above the \code{cap_value}, and to set the aesthetics to match \code{cap_color} where appropraite.}
 #' }
 #' @examples 
+#' \donttest{
 #' units_results_example <- settings_units(july_api_daily, "pm25_atm", cap_value = 17, cap_color = "green")
 #' ggplot(july_api_daily, aes(x = date, y = site_id, fill = pm25_atm)) +
 #'   geom_tile() +
@@ -35,29 +36,32 @@
 #'     fill = units_results_example$lab_fill
 #'   )
 #' remove(units_results_example)
-#' @importFrom viridis scale_fill_viridis
+#' }
+#' @importFrom magrittr %>%
 #' @export
 settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
                            cap_value = NA, cap_color = "red", digits = 2,
                            lab_title = "Graph of", lab_fill = "Units", lab_unit = "units") {
   
+  require(viridis)
+  
   # Defaults
   lab_title_val <- var_qt
   # Color scale will default set to start at 0
-  fill_colors <- scale_fill_viridis(option = "inferno", limits = c(0, NA), na.value = cap_color)
+  fill_colors <- viridis::scale_fill_viridis(option = "inferno", limits = c(0, NA), na.value = cap_color)
   
-  if (str_detect(var_qt, "pm") == TRUE) {
-    fill_colors <- scale_fill_viridis(option = "plasma", limits = c(0, NA), na.value = cap_color)
+  if (stringr::str_detect(var_qt, "pm") == TRUE) {
+    fill_colors <- viridis::scale_fill_viridis(option = "plasma", limits = c(0, NA), na.value = cap_color)
     lab_title_val <- "Particulate Matter (PM)"
     lab_unit <- '*mu*"g/m"^3*'
     
-    if (str_detect(var_qt, "(25)|(2.5)") == TRUE) {
+    if (stringr::str_detect(var_qt, "(25)|(2.5)") == TRUE) {
       pm_val <- 2.5
       print("PM 2.5 detected")
-    } else if (str_detect(var_qt, "(1.0)|(01)|(\\D1$)|(1\\D)") == TRUE) {
+    } else if (stringr::str_detect(var_qt, "(1.0)|(01)|(\\D1$)|(1\\D)") == TRUE) {
       pm_val <- 1.0
       print("PM 1.0 detected")
-    } else if (str_detect(var_qt, "(10)") == TRUE) {
+    } else if (stringr::str_detect(var_qt, "(10)") == TRUE) {
       pm_val <- 10
       print("PM 10 detected")
     } else {
@@ -66,28 +70,28 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
     }
     lab_fill <- parse(text = paste0('PM[', pm_val, ']~"("', lab_unit,'")"'))
     lab_unit <- "units"
-  } else if (str_detect(var_qt, "((H|h)umid)|(rh)|(RH)") == TRUE) {
+  } else if (stringr::str_detect(var_qt, "((H|h)umid)|(rh)|(RH)") == TRUE) {
     # Adjusting color scale and labels if the variable of interest is RH
     lab_title_val <- "humidity"
     lab_unit <- "%"
     lab_fill <- paste0("Relative humidity (", lab_unit, ")")
-    fill_colors <- scale_fill_viridis(option = "mako", direction = -1, limits = c(0, 100), end = 0.9, na.value = cap_color)
+    fill_colors <- viridis::scale_fill_viridis(option = "mako", direction = -1, limits = c(0, 100), end = 0.9, na.value = cap_color)
     print("RH detected as variable of interest; adjusting labels accordingly")
-  } else if (str_detect(var_qt, "temp") == TRUE) {
+  } else if (stringr::str_detect(var_qt, "temp") == TRUE) {
     # Adjusting color scale and labels if the variable of interest is internal temperature
     lab_title_val <- "internal temperature"
-    fill_colors <- scale_fill_viridis(option = "cividis", begin = 0.15, na.value = cap_color)
+    fill_colors <- viridis::scale_fill_viridis(option = "cividis", begin = 0.15, na.value = cap_color)
     print("Temperature detected as variable of interest; adjusting labels accordingly")
     lab_unit <- "\u00B0F"
     
-    if (str_detect(var_qt, "_c") == TRUE) {
+    if (stringr::str_detect(var_qt, "_c") == TRUE) {
       lab_unit <- "\u00B0C"
       print("Temperature detected to be in Celsius")
     } else { print("Temperature assumed to be in Fahrenheit") }
     
     lab_fill <- paste0("Internal temperature (", lab_unit, ")")
     
-    if (str_detect(var_qt, "ambient") == TRUE) {
+    if (stringr::str_detect(var_qt, "ambient") == TRUE) {
       print("Ambient temperature (not raw/internal) detected")
       lab_title_val <- "ambient temperature"
       lab_fill <- paste0("Ambient temperature (", lab_unit, ")")
@@ -95,8 +99,14 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
   }
   
   # Getting min and max values from the data set
-  val_min <- dataset %>% ungroup() %>% select_at(vars(var_qt)) %>% min(na.rm = TRUE)
-  val_max <- dataset %>% ungroup() %>% select_at(vars(var_qt)) %>% max(na.rm = TRUE)
+  val_min <- dataset %>%
+    dplyr::ungroup() %>%
+    dplyr::select_at(dplyr::vars(var_qt)) %>%
+    min(na.rm = TRUE)
+  val_max <- dataset %>%
+    dplyr::ungroup() %>%
+    dplyr::select_at(dplyr::vars(var_qt)) %>%
+    max(na.rm = TRUE)
   
   lab_subtitle <- paste0("Variable plotted: ",
                          var_qt,
@@ -113,13 +123,13 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
   if (is.na(cap_value) == FALSE) {
     # Getting number of rows at or above the cap
     nrow_hi <- dataset %>% 
-      filter_at(vars({{var_qt}}),  ~.>= cap_value) %>% 
+      dplyr::filter_at(dplyr::vars({{var_qt}}),  ~.>= cap_value) %>% 
       nrow()
     
     if ((nrow_hi > 0) == TRUE) {
       # Replacing the values above the set max to be NA so that they will be colored differently on the map
       dataset <- dataset %>% 
-        mutate_at(vars({{var_qt}}), ~replace(., which(.>={{cap_value}}), NA))
+        dplyr::mutate_at(dplyr::vars({{var_qt}}), ~replace(., which(.>={{cap_value}}), NA))
       
       # Updated lab caption to include the filter
       lab_subtitle <- paste0("Color scale manually capped at ",
@@ -133,12 +143,12 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
         "will be colored", cap_color
       ))
       
-      cap_guide <- guides(fill = guide_colorbar(order = 1, barwidth = 10),
-                          color = guide_legend(
+      cap_guide <- ggplot2::guides(fill = ggplot2::guide_colorbar(order = 1, barwidth = 10),
+                          color = ggplot2::guide_legend(
                             title = paste0(cap_value, "+"),
                             order = 2,
                             title.position = "bottom",
-                            title.theme = element_text(size = 10),
+                            title.theme = ggplot2::element_text(size = 10),
                             override.aes = list(color = cap_color, fill = cap_color)
                           ))
     } else {

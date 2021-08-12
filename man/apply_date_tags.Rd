@@ -31,7 +31,7 @@ Create a column of date tags based on specified date ranges (\code{starts} and \
 }
 \examples{
   apply_date_tags(
-    july_api_daily \%>\% filter(site_id == "0441c6b9f431d0e4_23361") \%>\% select(site_id, date, temperature),
+    dplyr::filter(july_api_daily, site_id == "0441c6b9f431d0e4_23361")[1:3],
     starts = c("2020-07-01", "2020-07-04", "2020-07-05"),
     ends = c("2020-07-03", "2020-07-04", "2020-07-07"),
     tags = c("Before", "Independence Day", "After")

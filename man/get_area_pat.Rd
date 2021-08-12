@@ -30,5 +30,11 @@ List: dataframes of sensor meta info, and a dataframe of raw data for the variab
 Iterate over a list of PurpleAir sensor IDs to extract sensor meta data and timeseries data given specified start and end dates
 }
 \examples{
-get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), pas_input = (example(get_area_pas))$value, startdate = "2020-07-01", enddate = "2020-07-03")
+\donttest{
+get_area_pat(
+  id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"),
+  pas_input = (example(get_area_pas))$value,
+  startdate = "2020-07-01", enddate = "2020-07-03"
+)
+}
 }

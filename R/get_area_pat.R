@@ -8,8 +8,15 @@
 #' @param cols Character list; List of variables of interest to keep. Site ID info will autmatically be collected
 #' @return List: dataframes of sensor meta info, and a dataframe of raw data for the variables of interest
 #' @examples 
-#' get_area_pat(id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"), pas_input = (example(get_area_pas))$value, startdate = "2020-07-01", enddate = "2020-07-03")
+#' \donttest{
+#' get_area_pat(
+#'   id_list = c("6c18a7181a09037c_47107", "9f6643766cd4ba03_7572"),
+#'   pas_input = (example(get_area_pas))$value,
+#'   startdate = "2020-07-01", enddate = "2020-07-03"
+#' )
+#' }
 #' @importFrom AirSensor pat_downloadParseRawData
+#' @importFrom magrittr %>%
 #' @export
 get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_startdate, enddate = input_enddate, cols = c("created_at", "temperature", "humidity", "pm2.5_cf1", "pm2.5_atm")){
   ## Setup for iteration
@@ -56,17 +63,17 @@ get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_
     )
     
     raw_meta_single <- pat_single$meta %>% 
-      rename(location = DEVICE_LOCATIONTYPE) %>% 
-      drop_na(location) %>% 
-      mutate("site_id" = id)
+      dplyr::rename(location = DEVICE_LOCATIONTYPE) %>% 
+      tidyr::drop_na(location) %>% 
+      dplyr::mutate("site_id" = id)
     
     data_a_single <- pat_single$A_PRIMARY %>% 
-      select(intersect(cols, names(.))) %>% 
-      mutate("site_id" = id)
+      dplyr::select(intersect(cols, names(.))) %>% 
+      dplyr::mutate("site_id" = id)
     
     data_b_single <- pat_single$B_PRIMARY %>%
-      select(intersect(cols, names(.))) %>% 
-      mutate("site_id" = id)
+      dplyr::select(intersect(cols, names(.))) %>% 
+      dplyr::mutate("site_id" = id)
     
     # If there is more than a single pair of dates in the date sequence, sub-iterations will occur
     if (length(date_sequence) > 2) {
@@ -85,12 +92,12 @@ get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_
         )
         
         data_a_more <- pat_single_more$A_PRIMARY %>% 
-          select(intersect(cols, names(.))) %>% 
-          mutate("site_id" = id)
+          dplyr::select(intersect(cols, names(.))) %>% 
+          dplyr::mutate("site_id" = id)
         
         data_b_more <- pat_single_more$B_PRIMARY %>% 
-          select(intersect(cols, names(.))) %>% 
-          mutate("site_id" = id)
+          dplyr::select(intersect(cols, names(.))) %>% 
+          dplyr::mutate("site_id" = id)
         
         data_a_single <- rbind(data_a_single, data_a_more)
         data_b_single <- rbind(data_b_single, data_b_more)
@@ -108,20 +115,24 @@ get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_
     remove(data_a_single, data_b_single, pat_single, raw_meta_single)
   }
   
-  raw_data <- full_join(data_a, data_b, # Data sets to join
+  raw_data <- dplyr::full_join(data_a, data_b, # Data sets to join
                         by = c("created_at", "site_id"), # Columns to unite
                         suffix = c("_A", "_B")) %>% # Adding custom suffixes to differentiate the columns
     # Rounding for low time increments, to allow for mostly parallel A & B reports
-    mutate(datetime = floor_date(created_at, unit = "2 minutes")) %>% 
+    dplyr::mutate(datetime = lubridate::floor_date(created_at, unit = "2 minutes")) %>% 
     # Grouping for the summarization that will follow
-    group_by(site_id, datetime) %>% 
+    dplyr::group_by(site_id, datetime) %>% 
     # Summarizing all numeric columns. Removing NAs prevents values being removed for having an NA in the group
-    summarize_if(is.numeric, mean, na.rm = TRUE) %>% 
+    dplyr::summarize_if(is.numeric, mean, na.rm = TRUE) %>% 
     # Removing periods from column headers
-    rename_with(~gsub("\\.", "", .x))
+    dplyr::rename_with(~gsub("\\.", "", .x))
   
   # Review
   print(sprintf("Successfully created %d/%d pat objects.", length(unique(raw_data$site_id)), id_count))
   remove(id_count)
-  return(list(raw_meta = raw_meta, raw_data = raw_data))
+  
+  return(list(
+    raw_meta = raw_meta,
+    raw_data = raw_data
+  ))
 }

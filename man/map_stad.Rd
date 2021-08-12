@@ -49,9 +49,12 @@ Visualize spatio-temporal atmospheric data using points on a map, colored by a s
 Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 }
 \examples{
+\donttest{
 map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
-map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag",
-  cap_value = 50, cap_color = "green",
-  maptype = "terrain", tint_color = "white", point_size = 5
+map_stad(
+  july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag",
+  point_size = 5, cap_value = 50, cap_color = "green",
+  maptype = "terrain", tint_color = "white"
 )
+}
 }

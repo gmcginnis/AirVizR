@@ -14,8 +14,12 @@
 #' @param location_data Data set containing latitude and longitude data
 #' @return Data visualization: hourly heatmap colored by a specified numeric variable, with date on the x-axis and hours on the y-axis.
 #' @examples 
+#' \donttest{
 #' heatmap_single(pm25_epa_2021, "Lighthouse", dataset = july_api_hourly, location_data = july_api_meta)
 #' heatmap_single(temperature, "Lighthouse", cap_value = 85, cap_color = "green", data_label = FALSE, dataset = july_api_hourly, location_data = july_api_meta)
+#' }
+#' @import ggplot2
+#' @importFrom magrittr %>%
 #' @export
 heatmap_single <- function(variable_of_interest, site_of_interest = "",
                            cap_value = NA, cap_color = "red",
@@ -28,28 +32,28 @@ heatmap_single <- function(variable_of_interest, site_of_interest = "",
   
   if (variable_of_interest_qt %in% colnames(dataset) == FALSE) {
     dataset %>%
-      slice(1) %>%
-      ungroup() %>%
-      select_if(is.numeric) %>%
+      dplyr::slice(1) %>%
+      dplyr::ungroup() %>%
+      dplyr::select_if(is.numeric) %>%
       colnames() %>%
       print()
     stop("ERROR: Inputted variable of interest is not in the provided data set. Execution halted. Valid inputs are listed above")
   }
   
   temp_loc <- location_data %>% 
-    select(site_id, label, location)
+    dplyr::select(site_id, label, location)
   
   dataset <- dataset %>% 
-    ungroup() %>% 
+    dplyr::ungroup() %>% 
     # Adding labels to the data set
     dplyr::left_join(temp_loc) %>% 
     # Filtering data set based on inputted site of interest
-    filter(str_detect(label, site_of_interest)) %>% 
+    dplyr::filter(stringr::str_detect(label, site_of_interest)) %>% 
     # Removing empty values from variable of interest (otherwise is grey when mapping)
-    drop_na({{variable_of_interest}}) %>% 
+    tidyr::drop_na({{variable_of_interest}}) %>% 
     # Removing duplicate rows
-    distinct() %>% 
-    mutate(val_orig = {{variable_of_interest}})
+    dplyr::distinct() %>% 
+    dplyr::mutate(val_orig = {{variable_of_interest}})
   
   # dataset_vals <- dataset %>%
   #   select("date_hour", "vals" = variable_of_interest_qt)
@@ -60,9 +64,16 @@ heatmap_single <- function(variable_of_interest, site_of_interest = "",
   }
   if (length(unique(dataset$label)) > 1) {
     print("Matching locations from meta data:")
-    temp_loc %>% filter(str_detect(label, site_of_interest)) %>% distinct() %>% pull(label) %>% print()
+    temp_loc %>%
+      dplyr::filter(stringr::str_detect(label, site_of_interest)) %>%
+      dplyr::distinct() %>%
+      dplyr::pull(label) %>%
+      print()
     print("Matching locations that contain values of interest:")
-    dataset %>% pull(label) %>% unique() %>% print()
+    dataset %>%
+      dplyr::pull(label) %>%
+      unique() %>%
+      print()
     stop("ERROR: More than one site selected. Please use a more precise string argument; matching values are listed above.")
   }
   
@@ -72,9 +83,9 @@ heatmap_single <- function(variable_of_interest, site_of_interest = "",
   lab_title <- unit_results$lab_title
   lab_title_val <- unit_results$lab_title_val
   lab_subtitle <- paste0(
-    "Monitor selected: \"", dataset %>% pull(label),
-    "\" (", dataset %>% pull(location),
-    ", ID: ", dataset %>% pull(site_id),").\n",
+    "Monitor selected: \"", dataset %>% dplyr::pull(label),
+    "\" (", dataset %>% dplyr::pull(location),
+    ", ID: ", dataset %>% dplyr::pull(site_id),").\n",
     unit_results$lab_subtitle
   )
   lab_fill <- unit_results$lab_fill
@@ -91,7 +102,7 @@ heatmap_single <- function(variable_of_interest, site_of_interest = "",
   
   scale_results <- settings_dt_scale(dataset = dataset, start_date = NA, end_date = NA)
   
-  dataset <- scale_results$dataset %>% rename(date_hour = timestamp)
+  dataset <- scale_results$dataset %>% dplyr::rename(date_hour = timestamp)
   lab_title_sub <- scale_results$lab_title_sub
   lab_caption <- scale_results$lab_caption
   

@@ -2,15 +2,18 @@
 % Please edit documentation in R/read_local_single.R
 \name{read_local_single}
 \alias{read_local_single}
-\title{Title}
+\title{Read a single local PurpleAir document of interest}
 \usage{
 read_local_single(
-  input_file,
+  folder_path,
+  single_file_path,
   selects = c("pm25_cf1", "pm25_atm", "temperature", "humidity")
 )
 }
 \arguments{
-\item{input_file}{Character; a file path}
+\item{folder_path}{Character; a file path to the folder containing the file of interest}
+
+\item{single_file_path}{Character; the full file path to the file of interest}
 
 \item{selects}{Character list of the renamed variables to keep. Time stamp automatically kept.}
 }
@@ -18,5 +21,10 @@ read_local_single(
 Data frame of input file with relevant info in columns
 }
 \description{
-Read specific file by location, skipping columns as needed; extracting info from title
+Read specific file by location, skipping columns as needed; extracting info from title. Intended to be used in iteration, as with \link{read_local_folder}.
+}
+\examples{
+\dontrun{
+read_local_single("data-raw/local", "data-raw/local/36th & SE Woodward (outside) (45.501722 -122.626231) Primary Real Time 07_01_2020 07_07_2020.csv")
+}
 }

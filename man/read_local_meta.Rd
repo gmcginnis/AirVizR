@@ -5,13 +5,13 @@
 \title{Create a data frame of locally loaded monitor data}
 \usage{
 read_local_meta(
-  file_path = input_path,
+  folder_path = input_path,
   pattern = NULL,
   timezone = input_timezone
 )
 }
 \arguments{
-\item{file_path}{Character; the file path for the folder that contains the monitor data frames}
+\item{folder_path}{Character; the file path for the folder that contains the monitor data frames}
 
 \item{pattern}{Character, optional; filter for a specific location (by label in the file title)}
 
@@ -24,6 +24,8 @@ A wrangled data frame of monitor location data from a local folder of PurpleAir 
 Load PurpleAir monitor data based on locally stored data, extracting relevant information from the file names. See
 }
 \examples{
-read_local_meta(file_path = paste0(path.package("AirVizR"), "/data-raw/local"), timezone = "America/Los_Angeles")
-read_local_meta(file_path = paste0(path.package("AirVizR"), "/data-raw/local"), pattern = "Lincoln", timezone = "America/Los_Angeles")
+\dontrun{
+read_local_meta("data-raw/local", timezone = "America/Los_Angeles")
+read_local_meta("data-raw/local", timezone = "America/Los_Angeles", pattern = "Lincoln")
+}
 }

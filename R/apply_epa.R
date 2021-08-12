@@ -29,10 +29,14 @@
 #' }
 #' @examples 
 #' apply_epa(july_api_full)
-#' \donttest{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
+#' \dontrun{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
 #' @source \href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{EPA Air Sensor Toolbox}
+#' @importFrom magrittr %>%
+#' @import dplyr
 #' @export
 apply_epa <- function(dataset, by_day = TRUE, by_hour = FALSE, epa_percent = 75, keep_cols = FALSE) {
+  
+  require(dplyr)
   
   if (by_day == FALSE & by_hour == FALSE) {
     stop("INPUT ERROR: Please set `by_day` and/or `by_hour` to TRUE.")
@@ -40,22 +44,22 @@ apply_epa <- function(dataset, by_day = TRUE, by_hour = FALSE, epa_percent = 75,
     print("Grouping by date (24 hour averages, by day) [default]")
     dataset_stamped <- dataset %>% 
       column_dt(c("date", "date_hour"))
-    groupings_drop <- vars(site_id, date, date_hour)
-    groupings <- vars(site_id, date)
+    groupings_drop <- dplyr::vars(site_id, date, date_hour)
+    groupings <- dplyr::vars(site_id, date)
     time_unit <- 24
   } else if (by_day == TRUE & by_hour == TRUE) {
     print("Grouping by date and hour (1 hour averages, by day)")
     dataset_stamped <- dataset %>% 
       column_dt(c("date_hour", "hour_minute"))
-    groupings_drop <- vars(site_id, date_hour, hour_minute)
-    groupings <- vars(site_id, date_hour)
+    groupings_drop <- dplyr::vars(site_id, date_hour, hour_minute)
+    groupings <- dplyr::vars(site_id, date_hour)
     time_unit <- 60/2
   } else if (by_day == FALSE & by_hour == TRUE) {
     print("Grouping by hour (1 hour averages)")
     dataset_stamped <- dataset %>% 
       column_dt(c("hour", "hour_minute"))
-    groupings_drop <- vars(site_id, hour, hour_minute)
-    groupings <- vars(site_id, hour)
+    groupings_drop <- dplyr::vars(site_id, hour, hour_minute)
+    groupings <- dplyr::vars(site_id, hour)
     time_unit <- 60/2
   }
   

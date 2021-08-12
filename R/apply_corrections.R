@@ -9,7 +9,7 @@
 #' @return Dataframe with new columns for EPA-corrected and LRAPA-corrected PM2.5.
 #' @examples 
 #' apply_corrections(july_api_full)
-#' \donttest{apply_corrections(july_api_full, hourly = TRUE)}
+#' \dontrun{apply_corrections(july_api_full, hourly = TRUE)}
 #' @export
 apply_corrections <- function(dataset, daily = TRUE, hourly = FALSE, epa = 75){
   epa <- apply_epa(dataset, by_day = daily, by_hour = hourly, epa_percent = epa, keep_cols = TRUE)
@@ -17,7 +17,7 @@ apply_corrections <- function(dataset, daily = TRUE, hourly = FALSE, epa = 75){
   lrapa <- apply_lrapa(dataset, by_day = daily, by_hour = hourly, keep_cols = TRUE)
   print("LRAPA corrections applied")
   
-  dataset_corrected <- full_join(epa, lrapa)
+  dataset_corrected <- dplyr::full_join(epa, lrapa)
   print("Data frame of corrected values created")
   return(dataset_corrected)
 }

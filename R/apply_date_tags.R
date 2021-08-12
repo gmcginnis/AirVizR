@@ -9,11 +9,12 @@
 #' @return Dataframe with a new column ("date_tag") containing the appropriate date tag with respect to each row's time stamp.
 #' @examples 
 #'   apply_date_tags(
-#'     july_api_daily %>% filter(site_id == "0441c6b9f431d0e4_23361") %>% select(site_id, date, temperature),
+#'     dplyr::filter(july_api_daily, site_id == "0441c6b9f431d0e4_23361")[1:3],
 #'     starts = c("2020-07-01", "2020-07-04", "2020-07-05"),
 #'     ends = c("2020-07-03", "2020-07-04", "2020-07-07"),
 #'     tags = c("Before", "Independence Day", "After")
 #'   )
+#' @importFrom magrittr %>%
 #' @export
 apply_date_tags <- function(dataset,
                             starts = input_date_starts, ends = input_date_ends, tags = input_date_tags,
@@ -22,19 +23,19 @@ apply_date_tags <- function(dataset,
   starts <- as.Date(starts)
   ends <- as.Date(ends)
   tags <- factor(tags)
-  date_format <- stamp_date(stamp)
+  custom_stamp <- lubridate::stamp_date(stamp)
   
   data_temp <- data.frame(starts, ends, tags) %>% 
-    arrange(starts) %>% 
-    mutate(
-      start_stamp = date_format(starts),
-      end_stamp = date_format(ends),
-      date_tag = fct_inorder(paste0(tags, "\n(", start_stamp, " - ", end_stamp, ")"))
+    dplyr::arrange(starts) %>% 
+    dplyr::mutate(
+      start_stamp = custom_stamp(starts),
+      end_stamp = custom_stamp(ends),
+      date_tag = forcats::fct_inorder(paste0(tags, "\n(", start_stamp, " - ", end_stamp, ")"))
     ) %>% 
-    pivot_longer(cols = c(starts, ends), values_to = "date") %>% 
-    group_by(date_tag) %>% 
-    complete(date = full_seq(date, 1)) %>% 
-    select(!c(name, tags, start_stamp, end_stamp))
+    tidyr::pivot_longer(cols = c(starts, ends), values_to = "date") %>% 
+    dplyr::group_by(date_tag) %>% 
+    tidyr::complete(date = tidyr::full_seq(date, 1)) %>% 
+    dplyr::select(!c(name, tags, start_stamp, end_stamp))
   
   remove_date <- FALSE
   
@@ -45,11 +46,11 @@ apply_date_tags <- function(dataset,
   }
   
   dataset <- dataset %>% 
-    left_join(data_temp) %>% 
-    drop_na(date_tag)
+    dplyr::left_join(data_temp) %>% 
+    tidyr::drop_na(date_tag)
   
   if (remove_date == TRUE) {
-    dataset <- select(dataset, !date)
+    dataset <- dplyr::select(dataset, !date)
     print("Temporary `date` column removed")
   }
   

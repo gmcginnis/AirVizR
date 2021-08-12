@@ -7,7 +7,11 @@
 #' @return Data frame with numeric values averaged by specified time stamp(s)
 #' @examples 
 #' group_stad(july_api_full)
-#' group_stad(july_api_full %>% select(!starts_with("pm")), by_day = FALSE, by_hour = TRUE)
+#' \donttest{
+#' group_stad(july_api_full, by_day = FALSE, by_hour = TRUE)
+#' group_stad(july_api_full, by_day = TRUE, by_hour = TRUE)
+#' }
+#' @importFrom magrittr %>%
 #' @export
 group_stad <- function(dataset, by_day = TRUE, by_hour = FALSE) {
   
@@ -15,22 +19,22 @@ group_stad <- function(dataset, by_day = TRUE, by_hour = FALSE) {
     stop("INPUT ERROR: Please set `by_day` and/or `by_hour` to TRUE.")
   } else if (by_day == TRUE & by_hour == FALSE) {
     print("Grouping by date (24 hour averages, by day) [DEFAULT]")
-    dataset <- dataset %>% column_dt("date")
-    groupings <- vars(site_id, date)
+    dataset <- column_dt(dataset, "date")
+    groupings <- dplyr::vars(site_id, date)
   } else if (by_day == TRUE & by_hour == TRUE) {
     print("Grouping by date and hour (1 hour averages, by day)")
-    dataset <- dataset %>% column_dt("date_hour")
-    groupings <- vars(site_id, date_hour)
+    dataset <- column_dt(dataset, "date_hour")
+    groupings <- dplyr::vars(site_id, date_hour)
   } else if (by_day == FALSE & by_hour == TRUE) {
     print("Grouping by hour (1 hour averages)")
-    dataset <- dataset %>% column_dt("hour")
-    groupings <- vars(site_id, hour)
+    dataset <- column_dt(dataset, "hour")
+    groupings <- dplyr::vars(site_id, hour)
   }
   
   dataset <- dataset %>% 
-    group_by_at(groupings) %>% 
-    summarize_if(is.numeric, mean, na.rm = TRUE) %>% 
-    rowwise()
+    dplyr::group_by_at(groupings) %>% 
+    dplyr::summarize_if(is.numeric, mean, na.rm = TRUE) %>% 
+    dplyr::rowwise()
   
   return(dataset)
 }

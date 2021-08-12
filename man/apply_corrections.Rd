@@ -25,5 +25,5 @@ Apply EPA correction factors to PurpleAir PM2.5 data: a combination of \link{app
 }
 \examples{
 apply_corrections(july_api_full)
-\donttest{apply_corrections(july_api_full, hourly = TRUE)}
+\dontrun{apply_corrections(july_api_full, hourly = TRUE)}
 }

@@ -5,14 +5,14 @@
 \title{Title}
 \usage{
 read_local_folder(
-  file_path = input_path,
+  folder_path = input_path,
   read_primary = TRUE,
   read_secondary = TRUE,
   pattern = NULL
 )
 }
 \arguments{
-\item{file_path}{Character; the file path for the folder that contains the monitor data frames}
+\item{folder_path}{Character; the file path for the folder that contains the monitor data frames}
 
 \item{read_primary}{Logical; read primary data}
 
@@ -27,6 +27,8 @@ Blah
 Blah
 }
 \examples{
-read_local_folder(file_path = paste0(path.package("AirVizR"), "/data-raw/local"))
-read_local_folder(file_path = paste0(path.package("AirVizR"), "/data-raw/local"), pattern = "Lincoln")
+\dontrun{
+read_local_folder(folder_path = "data-raw/local")
+read_local_folder(folder_path = "data-raw/local", pattern = "Lincoln")
+}
 }

@@ -15,12 +15,16 @@
 #' @param tint_color Character; the color of background tint overlaid on the map
 #' @return Data visualization: map with data points colored by a specified numeric variable, located by a provided data frame of lat/long data.
 #' @examples 
+#' \donttest{
 #' map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag")
-#' map_stad(july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag",
-#'   cap_value = 50, cap_color = "green",
-#'   maptype = "terrain", tint_color = "white", point_size = 5
+#' map_stad(
+#'   july_api_daily, pm25_atm, location_data = july_api_meta, grouping_vars = "date_tag",
+#'   point_size = 5, cap_value = 50, cap_color = "green",
+#'   maptype = "terrain", tint_color = "white"
 #' )
-#' @importFrom ggmap qmplot
+#' }
+#' @import ggplot2
+#' @importFrom magrittr %>%
 #' @export
 map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, location_data = data_meta,
                      cap_value = NA, cap_color = "red", point_size = 3,
@@ -45,12 +49,12 @@ map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, locati
   
   # Wrangling based on provided inputs
   dataset <- dataset %>% 
-    ungroup() %>% 
+    dplyr::ungroup() %>% 
     # Grouping by provided variables, as well as site_id
-    group_by_at(vars(site_id, {{grouping_vars}})) %>% 
+    dplyr::group_by_at(dplyr::vars(site_id, {{grouping_vars}})) %>% 
     # Calculating means by said grouping variables
-    summarize(mean = mean({{variable_of_interest}}, na.rm = TRUE)) %>% 
-    drop_na(mean) %>% 
+    dplyr::summarize(mean = mean({{variable_of_interest}}, na.rm = TRUE)) %>% 
+    tidyr::drop_na(mean) %>% 
     # Adding location data to get lat & lon
     dplyr::left_join(location_data)
   
@@ -83,12 +87,12 @@ map_stad <- function(dataset, variable_of_interest, grouping_vars = NULL, locati
   
   if ("hour" %in% grouping_vars) {
     dataset <- dataset %>% 
-      mutate(hour = paste0(formatC(lubridate::hour(hour), width = 2, flag = 0), ":00"))
+      dplyr::mutate(hour = paste0(formatC(lubridate::hour(hour), width = 2, flag = 0), ":00"))
     print("Hour column changed to class 'character' to allow for faceting.")
   }
   
   # Base plot
-  plot <- qmplot(data = dataset, x = longitude, y = latitude,
+  plot <- ggmap::qmplot(data = dataset, x = longitude, y = latitude,
                  geom = "blank", maptype = maptype, zoom = zoom, darken = c(tint_alpha, tint_color)) +
     geom_point(
       aes(fill = {{variable_of_interest}}, shape = location, color = ""),

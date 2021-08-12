@@ -16,44 +16,43 @@
 #'   \item{lab_caption}{Character; label information for details containing date range in the set.}
 #' }
 #' @examples 
+#' \donttest{
 #' settings_results_example <- settings_dt_scale(july_api_diurnal, start_date = "2020-07-01", end_date = "2020-07-07")
 #' ggplot(settings_results_example$dataset, aes(timestamp, temperature)) +
 #'   settings_results_example$x_scale +
 #'   labs(subtitle = settings_results_example$lab_caption)
 #' remove(settings_results_example)
-#' @importFrom ggplot2 expansion
-#' @importFrom ggplot2 scale_x_date
-#' @importFrom dplyr rename
+#' }
 #' @export
 settings_dt_scale <- function(dataset, start_date = input_startdate, end_date = input_enddate) {
   # Expanding axis to allow monitor labels to be closer to the data
-  options_expand <- expansion(mult = c(0.01, 0.01))
+  options_expand <- ggplot2::expansion(mult = c(0.01, 0.01))
   x_angle <- 30
   lab_title_sub <- "across time"
   
   # Setting axis breaks based on the minimum time unit in the data set
   if ("datetime" %in% colnames(dataset) == TRUE) {
     lab_title_sub <- paste0(lab_title_sub, ", unaveraged")
-    dataset <- dataset %>% rename(timestamp = datetime)
-    x_scale <- scale_x_datetime(breaks = "1 day", date_labels = "%d %b", expand = options_expand)
+    dataset <- dplyr::rename(dataset, timestamp = datetime)
+    x_scale <- ggplot2::scale_x_datetime(breaks = "1 day", date_labels = "%d %b", expand = options_expand)
     print("Raw set detected: x-axis will map across in units of apx. 2 minutes, with axis breaks each day")
     date_in_set <- TRUE
   } else if ("date_hour" %in% colnames(dataset) == TRUE) {
     lab_title_sub <- paste0(lab_title_sub, ", averaged hourly by day")
-    dataset <- dataset %>% rename(timestamp = date_hour)
-    x_scale <- scale_x_datetime(breaks = "1 day", date_labels = "%d %b", expand = options_expand)
+    dataset <- dplyr::rename(dataset, timestamp = date_hour)
+    x_scale <- ggplot2::scale_x_datetime(breaks = "1 day", date_labels = "%d %b", expand = options_expand)
     print("Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day")
     date_in_set <- TRUE
   } else if ("date" %in% colnames(dataset) == TRUE) {
     lab_title_sub <- paste0(lab_title_sub, ", averaged by day")
-    dataset <- dataset %>% rename(timestamp = date)
-    x_scale <- scale_x_date(breaks = "1 day", date_labels = "%d %b", expand = options_expand)
+    dataset <- dplyr::rename(dataset, timestamp = date)
+    x_scale <- ggplot2::scale_x_date(breaks = "1 day", date_labels = "%d %b", expand = options_expand)
     print("Daily set detected: x-axis will map across in units of 24 hours, with axis breaks each day")
     date_in_set <- TRUE
   } else if ("hour" %in% colnames(dataset) == TRUE) {
     lab_title_sub <- paste0(lab_title_sub, ", averaged by hour of day")
-    dataset <- dataset %>% mutate(time = hms::as_hms(hour), timestamp = as_datetime(time))
-    x_scale <- scale_x_datetime(breaks = "1 hour", date_labels = "%H:%M", expand = options_expand)
+    dataset <- dplyr::mutate(dataset, time = hms::as_hms(hour), timestamp = lubridate::as_datetime(time))
+    x_scale <- ggplot2::scale_x_datetime(breaks = "1 hour", date_labels = "%H:%M", expand = options_expand)
     x_angle <- 45
     print("Diurnal set detected: Data will map across by hour of day, with axis breaks each hour")
     print("Dates in the caption will default to the inputted start and end dates")

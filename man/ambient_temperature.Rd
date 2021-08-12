@@ -26,9 +26,5 @@ PurpleAir monitor reports include internal temperature, which is on average slig
 More information can be found on \href{https://www2.purpleair.com/community/faq#!hc-primary-and-secondary-data-header}{their FAQ}.
 }
 \examples{
-july_api_raw \%>\% 
-  select(!starts_with("pm25")) \%>\% 
-  ungroup() \%>\% 
-  slice(1:5) \%>\% 
-  ambient_temperature()
+ambient_temperature(head(july_api_raw[1:3]))
 }

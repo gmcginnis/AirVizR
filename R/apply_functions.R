@@ -9,7 +9,9 @@
 #' @param tag_hours Logical; Apply hour tags
 #' @return Dataframe with new columns for corrected values and appropriate tagged values ("date_tag" and "hour_tag") containing the appropriate hour/date tag with respect to each row's timestamp.
 #' @examples 
+#' \donttest{
 #' apply_functions(july_api_full, by_day = TRUE, tag_dates = FALSE, tag_hours = FALSE)
+#' }
 #' @export
 apply_functions <- function(dataset, by_day = TRUE, by_hour = FALSE, tag_dates = run_date_grouping, tag_hours = run_hour_grouping){
   
@@ -17,12 +19,12 @@ apply_functions <- function(dataset, by_day = TRUE, by_hour = FALSE, tag_dates =
   print("Correction factors applied.")
   
   if (by_day == TRUE & tag_dates == TRUE) {
-    dataset <- dataset %>% apply_date_tags()
+    dataset <- apply_date_tags(dataset)
     print("Data now tagged by provided date groupings")
   } else { print("Date groups not applied") }
   
   if (by_hour == TRUE & tag_hours == TRUE) {
-    dataset <- dataset %>% apply_hour_tags()
+    dataset <- apply_hour_tags(dataset)
     print("Data now tagged by provided hour groupings")
   } else { print("Hour groups not applied") }
   

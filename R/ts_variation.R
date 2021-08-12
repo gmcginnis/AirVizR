@@ -13,9 +13,11 @@
 #' @param color Character; color palette to use. For a full list of other defaults, see \link[openair]{openColours}.
 #' @return Data visualization: diurnal, hour of day, day of the week, and/or monthly time series variation of specified pollutant(s).
 #' @examples 
+#' \donttest{
 #' ts_variation(july_api_hourly, "pm25_atm", include = "Lighthouse", group = "date_tag", location_data = july_api_meta)
 #' ts_variation(july_api_hourly, c("pm25_atm", "temperature_ambient"), location_data = july_api_meta, subset = "hour")
-#' @importFrom openair timeVariation
+#' }
+#' @importFrom magrittr %>%
 #' @export
 ts_variation <- function(dataset, pollutants, group,
                          subset = c("hour", "day.hour", "day", "month"),
@@ -49,27 +51,27 @@ ts_variation <- function(dataset, pollutants, group,
     corr <- ""
     
     for (i in pollutants) {
-      unit_results <- settings_units(dataset = dataset %>% slice(1), var = i,
+      unit_results <- settings_units(dataset = dplyr::slice(dataset, 1), var = i,
                                      cap_color = NA, lab_title = "Timeseries variation of")
       
       lab_title_val <- paste(lab_title_val, unit_results$lab_title_val, sep = ", ") %>% 
-        str_replace("(?<=,|^)([^,]*)(,\\1)+(?=,|$)", "\\1")
+        stringr::str_replace("(?<=,|^)([^,]*)(,\\1)+(?=,|$)", "\\1")
       
       if (i != "temperature" & i != "humidity") {
         corr_new <- paste(i) %>%
-          str_replace("pm25", "") %>%
-          str_replace("temperature", "") %>%
-          str_replace("^_", "")
+          stringr::str_replace("pm25", "") %>%
+          stringr::str_replace("temperature", "") %>%
+          stringr::str_replace("^_", "")
       } else { corr_new <- paste("raw") }
       
       corr <- paste(corr, corr_new, sep = ", ")
     }
     
-    corr_final <- paste0("[", corr %>% str_replace("^, ", ""), "]")
+    corr_final <- paste0("[", corr %>% stringr::str_replace("^, ", ""), "]")
     
     lab_title_val <- lab_title_val %>%
-      str_replace_all(", ", " & ") %>% 
-      str_replace("^ & ", "")
+      stringr::str_replace_all(", ", " & ") %>% 
+      stringr::str_replace("^ & ", "")
     
     lab_title_val <- paste(lab_title_val, corr_final)
   }
@@ -79,35 +81,32 @@ ts_variation <- function(dataset, pollutants, group,
   
   if ("date" %in% colnames(dataset) == FALSE) {
     # dataset <- (settings_dt_scale(dataset))$dataset %>% rename(date = timestamp)
-    dataset <- scale_results$dataset %>% rename(date = timestamp)
+    dataset <- dplyr::rename(scale_results$dataset, date = timestamp)
   }
   
-  title <- paste(lab_title, lab_title_val, lab_title_sub) %>% str_replace(" across time", "")
+  title <- paste(lab_title, lab_title_val, lab_title_sub) %>%
+    stringr::str_replace(" across time", "")
   
   if (missing(group) == TRUE) {
-    plot_result <- timeVariation(dataset, pollutant = pollutants, cols = color, main = title, ylab = y_lab)
+    plot_result <- openair::timeVariation(dataset, pollutant = pollutants, cols = color, main = title, ylab = y_lab)
   } else {
     if (group %in% colnames(dataset) == TRUE) {
-      plot_result <- timeVariation(dataset, pollutant = pollutants, cols = color, main = title, ylab = y_lab, group = group)
+      plot_result <- openair::timeVariation(dataset, pollutant = pollutants, cols = color, main = title, ylab = y_lab, group = group)
     } else {
       print(paste("ERROR: grouping variable", group, "not found in dataset. Plot will not be grouped."))
-      plot_result <- timeVariation(dataset, pollutant = pollutants, cols = color, main = title, ylab = y_lab)
+      plot_result <- openair::timeVariation(dataset, pollutant = pollutants, cols = color, main = title, ylab = y_lab)
     }
   }
   
   if (length(subset) == 1) {
-    if (subset %in% c("hour", "day.hour", "day", "month") == FALSE) {
-      print("Invalid plotting subset value. Defaulting to plotting all.")
-      pluck <- NULL
-    } else {
+    if (subset %in% c("hour", "day.hour", "day", "month") == TRUE) {
+      plot_final <- plot(plot_result, subset = subset)
       print(paste("Plot selected:", subset))
-      pluck <- subset
+    } else {
+      print("Invalid plotting subset value. Defaulting to plotting all.")
+      plot_final <- plot_result
     }
-  } else { pluck <- NULL }
-  remove(subset)
-  
-  plot_final <- plot_result %>%
-    plot(subset = pluck)
+  } else { plot_final <- plot_result }
   
   return(plot_final)
 }

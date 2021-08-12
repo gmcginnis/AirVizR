@@ -18,8 +18,10 @@ A data frame with quality-controlled values (\link{apply_qc}), timezone correcti
 Applying various quality control functions, time rounding, and pivots to provide a more managable data frame of spatio-temporal atmospheric data.
 }
 \examples{
-example_local_raw <- read_local_folder(file_path = paste0(path.package("AirVizR"), "/data-raw/local"))
-example_local_meta <- read_local_meta(file_path = paste0(path.package("AirVizR"), "/data-raw/local"), timezone = "America/Los_Angeles")
+\donttest{
+example_local_raw <- read_local_folder(folder_path = "data-raw/local")
+example_local_meta <- read_local_meta(folder_path = "data-raw/local", timezone = "America/Los_Angeles")
 wrangle_local(example_local_raw, example_local_meta)
 remove(example_local_raw, example_local_meta)
+}
 }

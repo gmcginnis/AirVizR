@@ -17,13 +17,14 @@
 #' ggplot(july_api_daily, aes(date, pm25_atm)) +
 #'   labs(subtitle = example_cap_results$lab_subtitle_cap)
 #' remove(example_cap_results)
+#' @importFrom magrittr %>%
 #' @export
 add_cap <- function(dataset, var_qt, cap_value, cap_color, type = "filter") {
   
   # Defaults
   lab_subtitle_cap <- ""
-  cap_guide <- guides(fill = guide_colorbar(order = 1, barwidth = 10),
-                      color = "none")
+  cap_guide <- ggplot2::guides(fill = ggplot2::guide_colorbar(order = 1, barwidth = 10),
+                               color = "none")
   
   # If manually applying a max filter value
   if (is.na(cap_value) == FALSE) {
@@ -32,7 +33,7 @@ add_cap <- function(dataset, var_qt, cap_value, cap_color, type = "filter") {
     
     # Getting number of rows at or above the cap
     nrow_hi <- dataset %>% 
-      filter_at(vars({{var_qt}}), ~.>= cap_value) %>% 
+      dplyr::filter_at(dplyr::vars({{var_qt}}), ~.>= cap_value) %>% 
       nrow()
     
     if (nrow_hi == 0) {
@@ -50,10 +51,10 @@ add_cap <- function(dataset, var_qt, cap_value, cap_color, type = "filter") {
       if (type == "filter") {
         # Replacing the values above the set max to be NA so that they will be colored differently
         dataset <- dataset %>% 
-          mutate_at(vars({{var_qt}}), ~replace(., which(.>={{cap_value}}), NA))
+          dplyr::mutate_at(dplyr::vars({{var_qt}}), ~replace(., which(.>={{cap_value}}), NA))
       } else if (type == "flag") {
         dataset <- dataset %>% 
-          mutate(above_cap = case_when(
+          dplyr::mutate(above_cap = case_when(
             !!sym({{var_qt}}) >= {{cap_value}} ~ TRUE,
             !!sym({{var_qt}}) < {{cap_value}} ~ FALSE
           ))
@@ -70,16 +71,16 @@ add_cap <- function(dataset, var_qt, cap_value, cap_color, type = "filter") {
         "will be colored", cap_color
       ))
       
-      cap_guide <- guides(
-        fill = guide_colorbar(
+      cap_guide <- ggplot2::guides(
+        fill = ggplot2::guide_colorbar(
           order = 1,
           barwidth = 10
         ),
-        color = guide_legend(
+        color = ggplot2::guide_legend(
           title = paste0(cap_value, "+"),
           order = 2,
           title.position = "bottom",
-          title.theme = element_text(size = 8.5),
+          title.theme = ggplot2::element_text(size = 8.5),
           override.aes = list(
             color = cap_color,
             fill = cap_color,

@@ -41,7 +41,7 @@ get_area_pas <- function(state_code = input_stateCode,
     # archival allows for retrieval of sensor info even if they are no longer reporting
     archival = TRUE,
     # datestamp is important when loading historical data, as not all monitors might be actively reporting anymore
-    datestamp = str_replace_all(as.character(datestamp), "-", ""),
+    datestamp = stringr::str_replace_all(as.character(datestamp), "-", ""),
     # Retries (default: 30 days) are the maximum number of days to go back and try to load data if the requested date cannot be retrieved
     retries = lookback_days
   )
@@ -55,8 +55,8 @@ get_area_pas <- function(state_code = input_stateCode,
     print(paste("Sensors now filtered for the state of", state_code))
   }
   
-  pas_area <- pas_filterArea(pas = pas_state, w = west, e = east, s = south, n = north) %>% 
-    pas_filter(str_detect(label, labels_string))
+  pas_area <- pas_filter(pas_filterArea(pas = pas_state, w = west, e = east, s = south, n = north),
+                         stringr::str_detect(label, labels_string))
   
   return(pas_area)
 }

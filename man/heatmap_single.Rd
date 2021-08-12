@@ -46,6 +46,8 @@ Visualize hourly atmospheric data for a single monitor using a heatmap, with opt
 Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 }
 \examples{
+\donttest{
 heatmap_single(pm25_epa_2021, "Lighthouse", dataset = july_api_hourly, location_data = july_api_meta)
 heatmap_single(temperature, "Lighthouse", cap_value = 85, cap_color = "green", data_label = FALSE, dataset = july_api_hourly, location_data = july_api_meta)
+}
 }

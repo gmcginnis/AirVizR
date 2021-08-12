@@ -7,6 +7,7 @@
 #' @return Data frame with rows removed from quality control, timezone adjusted to be that of the location, and improved temperature values (ºC and ambient calculated for both ºF and ºC).
 #' @examples 
 #' wrangle_data(slice(july_api_raw, 1:5), july_api_raw_meta, drop_high = TRUE)
+#' @importFrom magrittr %>%
 #' @export
 wrangle_data <- function(raw_pm_data = raw_data, raw_meta_data = raw_meta, drop_high = input_drop_hi) {
   pm_data <- raw_pm_data %>% 
@@ -16,7 +17,7 @@ wrangle_data <- function(raw_pm_data = raw_data, raw_meta_data = raw_meta, drop_
     adjust_timezone(location_data = raw_meta_data) %>% 
     ambient_temperature() %>% 
     # Reordering variables for ease of reading
-    select(site_id, datetime, everything())
+    dplyr::select(site_id, datetime, everything())
   print("PM data now wrangled.")
   return(pm_data)
 }

@@ -19,18 +19,15 @@ filter_df <- function(dataframe, var = label, include = c(""), exclude = c(""), 
   if (exists(deparse(substitute(location_data))) == TRUE) {
     print("Joining meta data")
     if (deparse(substitute(var)) %in% colnames(location_data)){
-      dataframe <- dataframe %>% left_join(location_data)
+      dataframe <- dplyr::left_join(dataframe, location_data)
     }
   } else { print("Meta data not needed for filtering") }
   
-  dataframe <- dataframe %>% 
-    filter(str_detect({{var}}, to_include))
+  dataframe <- dplyr::filter(dataframe, stringr::str_detect({{var}}, to_include))
   
   if (to_exclude != "()"){
-    dataframe <- dataframe %>% 
-      filter(!str_detect({{var}}, to_exclude))
+    dataframe <- dplyr::filter(dataframe, !stringr::str_detect({{var}}, to_exclude))
   }
   
-  dataframe %>% 
-    select(all_of(names(dataframe)))
+  dplyr::select(dataframe, tidyselect::all_of(names(dataframe)))
 }

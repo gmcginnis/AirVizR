@@ -19,5 +19,5 @@ Time zones are reported as a variable when downloading the data. Time stamps in 
 If more than one time zone is reported in the data, the conversion will use the time zone most frequently used in the data set. This is because no more than one time zone can be applied to a date time variable.
 }
 \examples{
-adjust_timezone(slice(july_api_raw, 1:5), location_data = july_api_raw_meta)
+adjust_timezone(head(july_api_raw), location_data = july_api_raw_meta)
 }

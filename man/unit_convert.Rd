@@ -20,5 +20,5 @@ Convert temperature from Fahrenheit to Celsius, or vice versa.
 \examples{
 unit_convert(fahrenheit = 23)
 unit_convert(celsius = 23)
-mutate(slice(ungroup(july_api_raw), 1:5), temperature_c = unit_convert(fahrenheit = temperature))
+dplyr::mutate(head(july_api_raw), temperature_c = unit_convert(fahrenheit = temperature))
 }

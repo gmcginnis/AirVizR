@@ -5,11 +5,12 @@
 #' @return Dataframe with selected columns of interest.
 #' @examples 
 #' wrangle_meta(july_api_raw_meta)
+#' @importFrom magrittr %>%
 #' @export
 wrangle_meta <- function(raw_location_data = raw_meta) {
   location_data <- raw_location_data %>% 
-    select(site_id, location, label, longitude, latitude, timezone, flag_highValue) %>% 
-    mutate(
+    dplyr::select(site_id, location, label, longitude, latitude, timezone, flag_highValue) %>% 
+    dplyr::mutate(
       label_orig = label,
       label = make.unique(label, sep = " ")
     )

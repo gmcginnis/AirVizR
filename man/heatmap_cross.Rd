@@ -43,7 +43,9 @@ Visualize temporal atmospheric data for multiple monitors using a heatmap, with 
 Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
 }
 \examples{
+\donttest{
 heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta)
 heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, drop_incomplete = TRUE, cap_value = 75, cap_color = "green")
 heatmap_cross(july_api_daily, temperature, location_data = july_api_meta, drop_incomplete = TRUE)
+}
 }

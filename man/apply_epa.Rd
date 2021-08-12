@@ -54,5 +54,5 @@ More information about EPA correction factors can be found on the \href{https://
 }
 \examples{
 apply_epa(july_api_full)
-\donttest{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
+\dontrun{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
 }

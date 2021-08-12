@@ -13,9 +13,13 @@
 #' @param location_data Data set containing latitude and longitude data
 #' @return Data visualization: heatmap colored by a specified numeric variable, with time on the x-axis (and appropriate breaks & labels) and monitor labels on the y-axis arranged from north to south and separted by location.
 #' @examples
+#' \donttest{
 #' heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta)
 #' heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, drop_incomplete = TRUE, cap_value = 75, cap_color = "green")
 #' heatmap_cross(july_api_daily, temperature, location_data = july_api_meta, drop_incomplete = TRUE)
+#' }
+#' @import ggplot2
+#' @importFrom magrittr %>%
 #' @export
 heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE,
                           cap_value = NA, cap_color = "red",
@@ -26,8 +30,8 @@ heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE
   # NA values will appear as gaps if viewing the complete viz, rather than gray
   # Adding another column with duplicate info, in case a color cap applied AND text labeling is desired
   dataset <- dataset %>% 
-    drop_na({{variable_of_interest}}) %>% 
-    mutate(val_orig = {{variable_of_interest}})
+    tidyr::drop_na({{variable_of_interest}}) %>% 
+    dplyr::mutate(val_orig = {{variable_of_interest}})
   
   variable_of_interest_qt <- deparse(substitute(variable_of_interest))
   
@@ -37,12 +41,12 @@ heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE
   
   # Adding quotation marks
   cap_color <- deparse(substitute(cap_color)) %>%
-    str_replace_all("\\\"", "") # Removing extra quotation marks if already provided
+    stringr::str_replace_all("\\\"", "") # Removing extra quotation marks if already provided
   
   # Location data
   temp_loc <- location_data %>% 
     # Arranging such that northern-most monitors will be on top
-    mutate(label = fct_reorder(as.factor(label), desc(latitude))) %>% 
+    dplyr::mutate(label = forcats::fct_reorder(as.factor(label), dplyr::desc(latitude))) %>% 
     # Selecting only variables of interest to save space
     select(site_id, label, location)
   
@@ -77,7 +81,7 @@ heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE
   } else { data_labels <- NULL }
   
   dataset %>% 
-    distinct() %>% 
+    dplyr::distinct() %>% 
     dplyr::left_join(temp_loc) %>% 
     ggplot(
       aes(

@@ -6,7 +6,8 @@
 #' @param location_data The data set containing information on the timezone (column: "timezone") to apply
 #' @return Dataset with a column of corrected time stamp ("datetime") and the original ("datetime_utc")
 #' @examples 
-#' adjust_timezone(slice(july_api_raw, 1:5), location_data = july_api_raw_meta)
+#' adjust_timezone(head(july_api_raw), location_data = july_api_raw_meta)
+#' @importFrom magrittr %>%
 #' @export
 adjust_timezone <- function(dataset, location_data = raw_meta){
   
@@ -14,10 +15,10 @@ adjust_timezone <- function(dataset, location_data = raw_meta){
   if (length(unique(location_data$timezone)) > 1) {
     print("Multiple time zones reported. Timestamp will be based on the most frequent time zone reported.")
     timezone <- (location_data %>% 
-                   group_by(timezone) %>% 
-                   count() %>% 
-                   arrange(desc(n)) %>% 
-                   pull(timezone))[1]
+                   dplyr::group_by(timezone) %>% 
+                   dplyr::count() %>% 
+                   dplyr::arrange(dplyr::desc(n)) %>% 
+                   dplyr::pull(timezone))[1]
   } else {
     timezone <- unique(location_data$timezone)
   }

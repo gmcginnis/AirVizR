@@ -5,25 +5,26 @@
 #' @param var_qt Character; the variable of interest (in quotation marks) for which to apply the cap
 #' @return Data set with monitors without complete sets removed
 #' @examples 
-#' drop_incomplete(july_api_daily, "humidity") %>% ggplot(aes(date, site_id, fill = humidity)) + geom_tile()
+#' drop_incomplete(july_api_daily, "pm25_atm")
+#' @importFrom magrittr %>%
 #' @export
 drop_incomplete <- function(dataset, var_qt) {
   dataset <- dataset %>% 
-    drop_na({{var_qt}})
+    tidyr::drop_na({{var_qt}})
   
   # Number of values expected for a complete set
   complete_num <- (dataset %>% 
-                     ungroup() %>% 
-                     count(site_id) %>% 
-                     arrange(desc(n)) %>% 
-                     pull(n))[1]
+                     dplyr::ungroup() %>% 
+                     dplyr::count(site_id) %>% 
+                     dplyr::arrange(dplyr::desc(n)) %>% 
+                     dplyr::pull(n))[1]
   
   # List of monitors with incomplete sets
   to_drop <- dataset %>% 
-    ungroup() %>% 
-    count(site_id) %>% 
-    filter(n != complete_num) %>% 
-    pull(site_id)
+    dplyr::ungroup() %>% 
+    dplyr::count(site_id) %>% 
+    dplyr::filter(n != complete_num) %>% 
+    dplyr::pull(site_id)
   
   # Feedback
   print("Monitors with incomplete temporal data that will be dropped:")
@@ -31,5 +32,5 @@ drop_incomplete <- function(dataset, var_qt) {
   
   # Removing incomplete monitors
   dataset %>% 
-    filter(!site_id %in% to_drop)
+    dplyr::filter(!site_id %in% to_drop)
 }

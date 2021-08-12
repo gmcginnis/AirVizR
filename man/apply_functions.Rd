@@ -31,5 +31,7 @@ Average a dataset by specified time stamp groupings, apply correction factors (u
 See \link{apply_date_tags} and \link{apply_hour_tags} for more information individually.
 }
 \examples{
+\donttest{
 apply_functions(july_api_full, by_day = TRUE, tag_dates = FALSE, tag_hours = FALSE)
+}
 }

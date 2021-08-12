@@ -5,9 +5,15 @@
 #' @param outside Logical argument to include/exclude outdoor monitors
 #' @param inside Logical argument to include/exclude indoor monitors
 #' @return A list of IDs from a provided PAS
+#' @importFrom AirSensor pas_getDeviceDeploymentIDs
 #' @examples 
-#' get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "RI"), outside = TRUE, inside = FALSE)
-#' get_ids(pas = filter(pas_load(datestamp = "20200701"), stateCode == "OR"), outside = TRUE, inside = TRUE)
+#' get_ids((example(get_area_pas))$value, TRUE, TRUE)
+#' \donttest{
+#' get_ids(
+#'   pas = AirSensor::pas_filter(AirSensor::pas_load(datestamp = "20200701"), stateCode == "OR"),
+#'   outside = TRUE, inside = TRUE
+#' )
+#' }
 #' @export
 get_ids <- function(pas = pas_area, outside = include_outside, inside = include_inside){
   

@@ -55,6 +55,7 @@ A series of arguments to detect the appropriate visualization labels and setting
 Additionally, an optional "cap" value (and custom color) can be provided in order to distinguish values at or above said specified values to prevent color scale washout (e.g. if a few observations are extremely high to the point where all other values are washed out on the color scale).
 }
 \examples{
+\donttest{
 units_results_example <- settings_units(july_api_daily, "pm25_atm", cap_value = 17, cap_color = "green")
 ggplot(july_api_daily, aes(x = date, y = site_id, fill = pm25_atm)) +
   geom_tile() +
@@ -63,4 +64,5 @@ ggplot(july_api_daily, aes(x = date, y = site_id, fill = pm25_atm)) +
     fill = units_results_example$lab_fill
   )
 remove(units_results_example)
+}
 }

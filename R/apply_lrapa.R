@@ -18,19 +18,20 @@
 #' apply_lrapa(july_api_full)
 #' \donttest{apply_lrapa(july_api_full, by_hour = TRUE, keep_cols = TRUE)}
 #' @source \href{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}{LRAPA documentation}
+#' @importFrom magrittr %>%
 #' @export
 apply_lrapa <- function(dataset, by_day = TRUE, by_hour = FALSE, keep_cols = FALSE){
   dataset <- dataset %>% 
     group_stad(by_day, by_hour) %>% 
-    rowwise() %>% 
-    mutate(pm25_lrapa = case_when(pm25_cf1 <= 65 ~ 0.5 * pm25_atm - 0.66)) %>% 
+    dplyr::rowwise() %>% 
+    dplyr::mutate(pm25_lrapa = dplyr::case_when(pm25_cf1 <= 65 ~ 0.5 * pm25_atm - 0.66)) %>% 
     # Setting negative values to NA
-    mutate_at(vars(pm25_lrapa), ~replace(., which(.<0), NA))
+    dplyr::mutate_at(dplyr::vars(pm25_lrapa), ~replace(., which(.<0), NA))
   
   if (keep_cols == FALSE) {
     print("Dropping extraneous columns [default]")
     dataset <- dataset %>% 
-      select(!intersect(c("temperature", "humidity",
+      dplyr::select(!intersect(c("temperature", "humidity",
                           "temeprature_c", "temperature_ambient", "temperature_ambient_c",
                           "pm25_cf1_A", "pm25_atm_A", "pm25_cf1_B", "pm25_atm_B",
                           "pm25_cf1", "pm25_atm"), colnames(.)))

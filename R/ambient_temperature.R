@@ -12,23 +12,18 @@
 #'   \item{temperature_ambient_c}{Ambient temperature in ºC}
 #' }
 #' @examples 
-#' july_api_raw %>% 
-#'   select(!starts_with("pm25")) %>% 
-#'   ungroup() %>% 
-#'   slice(1:5) %>% 
-#'   ambient_temperature()
+#' ambient_temperature(head(july_api_raw[1:3]))
 #' @export
 ambient_temperature <- function(dataset, variable = temperature, change = 8) {
   
   var_qt <- deparse(substitute(variable))
   
-  if (var_qt %in% colnames(dataset) == TRUE & str_detect(var_qt, "_c") == FALSE) {
-    dataset <- dataset %>% 
-      mutate(
-        temperature_c = unit_convert({{variable}}),
-        temperature_ambient = {{variable}} - change,
-        temperature_ambient_c = unit_convert(temperature_ambient)
-      )
+  if (var_qt %in% colnames(dataset) == TRUE & stringr::str_detect(var_qt, "_c") == FALSE) {
+    dataset <- dplyr::mutate(dataset, 
+                             temperature_c = unit_convert({{variable}}),
+                             temperature_ambient = {{variable}} - change,
+                             temperature_ambient_c = unit_convert(temperature_ambient))
+    
     print(paste("Ambient temperature column added using an adjustment of", change))
   } else { print("Temperature not detected, or in degrees Celsius. Please rename the variable or specify it manually.") }
   return(dataset)

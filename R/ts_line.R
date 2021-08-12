@@ -19,7 +19,7 @@
 #' @examples 
 #' ts_line(july_api_hourly, pm25_atm, label_filter = "\\bPSU\\b", location_data = july_api_meta)
 #' ts_line(july_api_hourly, pm25_atm, label_filter = c("\\bPSU\\b"), add_points = TRUE, single_column = TRUE, add_average = FALSE, location_data = july_api_meta)
-#' @importFrom ggrepel geom_text_repel
+#' @importFrom magrittr %>%
 #' @export
 ts_line <- function(dataset, variable_of_interest,
                     add_extrema = TRUE, digits = 2,
@@ -31,19 +31,20 @@ ts_line <- function(dataset, variable_of_interest,
                     avg_color = "darkgreen", min_color = "royalblue", max_color = "darkorange",
                     location_data = data_meta){
   
+  require(ggplot2)
+  
   variable_of_interest_qt <- deparse(substitute(variable_of_interest))
   
   # Dropping NA values from the variable of interest
-  dataset <- dataset %>% 
-    drop_na({{variable_of_interest}})
+  dataset <- tidyr::drop_na(dataset, {{variable_of_interest}})
   
-  location_data <- location_data %>% 
-    inner_join((dataset %>% distinct(site_id)))
+  location_data <- dplyr::inner_join(location_data, (dataset %>% distinct(site_id)))
   
   if (single_column == TRUE) {
     facet <- facet_grid(label~.)
     print("Charts will be arranged in a single column (multiple rows).")
-    location_data <- location_data %>% mutate(label = str_wrap(label, label_length))
+    location_data <- location_data %>%
+      dplyr::mutate(label = stringr::str_wrap(label, label_length))
     print("Line breaks added to labels")
   } else {
     facet <- facet_wrap(~label)
@@ -65,41 +66,40 @@ ts_line <- function(dataset, variable_of_interest,
   
   dataset <- dataset %>% 
     dplyr::left_join(location_data) %>% 
-    select(timestamp, site_id, label, location, {{variable_of_interest}})
+    dplyr::select(timestamp, site_id, label, location, {{variable_of_interest}})
   
   input_labels <- paste0("(", paste(label_filter, collapse = ")|("), ")")
   
   label_order <- location_data %>% 
-    select(site_id, label, latitude) %>% 
-    distinct() %>% 
-    mutate(label = fct_reorder(as.factor(label), desc(latitude))) %>% 
-    pull(label)
+    dplyr::select(site_id, label, latitude) %>% 
+    dplyr::distinct() %>% 
+    dplyr::mutate(label = forcats::fct_reorder(as.factor(label), dplyr::desc(latitude))) %>% 
+    dplyr::pull(label)
   
-  extrema <- dataset %>% 
-    filter(str_detect(label, input_labels))
+  extrema <- dplyr::filter(dataset, stringr::str_detect(label, input_labels))
   
   if (add_extrema == TRUE) {
     extrema <- extrema %>% 
-      group_by(site_id) %>% 
-      mutate(
+      dplyr::group_by(site_id) %>% 
+      dplyr::mutate(
         date = lubridate::date(timestamp),
-        max = case_when({{variable_of_interest}} == max({{variable_of_interest}}, na.rm = TRUE) ~ {{variable_of_interest}}),
-        min = case_when({{variable_of_interest}} == min({{variable_of_interest}}, na.rm = TRUE) ~ {{variable_of_interest}})
+        max = dplyr::case_when({{variable_of_interest}} == max({{variable_of_interest}}, na.rm = TRUE) ~ {{variable_of_interest}}),
+        min = dplyr::case_when({{variable_of_interest}} == min({{variable_of_interest}}, na.rm = TRUE) ~ {{variable_of_interest}})
       ) %>% 
-      group_by(site_id, date) %>% 
-      mutate_at(vars(max, min), ~replace(., duplicated(.), NA)) %>% 
-      ungroup() %>% 
-      select(!date)
+      dplyr::group_by(site_id, date) %>% 
+      dplyr::mutate_at(dplyr::vars(max, min), ~replace(., duplicated(.), NA)) %>% 
+      dplyr::ungroup() %>% 
+      dplyr::select(!date)
   }
   
   if (add_average == TRUE) {
     
     extrema_avg <- dataset %>% 
-      ungroup() %>% 
-      select(timestamp, {{variable_of_interest}}) %>%
-      group_by(timestamp) %>% 
-      summarize(mean = mean({{variable_of_interest}}, na.rm = TRUE)) %>% 
-      mutate(
+      dplyr::ungroup() %>% 
+      dplyr::select(timestamp, {{variable_of_interest}}) %>%
+      dplyr::group_by(timestamp) %>% 
+      dplyr::summarize(mean = mean({{variable_of_interest}}, na.rm = TRUE)) %>% 
+      dplyr::mutate(
         site_id = "Averages",
         label = "AVERAGE",
         location = "average"
@@ -107,15 +107,15 @@ ts_line <- function(dataset, variable_of_interest,
     
     if (add_extrema == TRUE) {
       extrema_avg <- extrema_avg %>% 
-        mutate(
+        dplyr::mutate(
           date = lubridate::date(timestamp),
-          max = case_when(mean == max(mean, na.rm = TRUE) ~ mean),
-          min = case_when(mean == min(mean, na.rm = TRUE) ~ mean)
+          max = dplyr::case_when(mean == max(mean, na.rm = TRUE) ~ mean),
+          min = dplyr::case_when(mean == min(mean, na.rm = TRUE) ~ mean)
         ) %>%
-        group_by(date, site_id, label) %>% 
-        mutate_at(vars(max, min), ~replace(., duplicated(.), NA)) %>%
-        ungroup() %>% 
-        select(!date)
+        dplyr::group_by(date, site_id, label) %>% 
+        dplyr::mutate_at(dplyr::vars(max, min), ~replace(., duplicated(.), NA)) %>%
+        dplyr::ungroup() %>% 
+        dplyr::select(!date)
     }
     
     names(extrema_avg)[names(extrema_avg) == 'mean'] <- variable_of_interest_qt
@@ -123,7 +123,7 @@ ts_line <- function(dataset, variable_of_interest,
     extrema <- rbind(extrema, extrema_avg)
     
     # Appending the "average" label onto the set
-    label_order <- fct_inorder(c(levels(label_order), "AVERAGE"))
+    label_order <- forcats::fct_inorder(c(levels(label_order), "AVERAGE"))
     
     print("Average data added.")
     
@@ -133,12 +133,11 @@ ts_line <- function(dataset, variable_of_interest,
     )
     
   } else {
-    label_order <- fct_inorder(levels(label_order))
+    label_order <- forcats::fct_inorder(levels(label_order))
     print("No averages will be added.")
   }
   
-  dataset_full <- dataset %>% 
-    select(!label)
+  dataset_full <- select(dataset, !label)
   
   dataset <- extrema
   
@@ -152,7 +151,7 @@ ts_line <- function(dataset, variable_of_interest,
   y_lab <- lab_fill
   fill_colors <- unit_results$fill_colors
   
-  
+
   cap_results <- add_cap(dataset = dataset, var_qt = variable_of_interest_qt,
                          cap_value = cap_value, cap_color = cap_color, type = "flag")
   
@@ -176,13 +175,13 @@ ts_line <- function(dataset, variable_of_interest,
     
     if ("above_cap" %in% colnames(dataset)) {
       data_points <- geom_point(
-        data = . %>% filter(above_cap == FALSE),
+        data = . %>% dplyr::filter(above_cap == FALSE),
         aes(fill = {{variable_of_interest}}),
         alpha = 0.7,
         stroke = 0
       )
       above_cap_points <- geom_point(
-        data = . %>% filter(above_cap == TRUE),
+        data = . %>% dplyr::filter(above_cap == TRUE),
         color = {{cap_color}},
         fill = {{cap_color}},
         alpha = 0.7,
@@ -200,8 +199,8 @@ ts_line <- function(dataset, variable_of_interest,
   
   if (add_extrema == TRUE) {
     dataset <- dataset %>%
-      mutate_at(vars(max, min), ~case_when(!is.na(.) ~ rounding_w_zeroes(., digits))) %>% 
-      mutate_at(vars(max, min), ~replace_na(., ""))
+      dplyr::mutate_at(dplyr::vars(max, min), ~dplyr::case_when(!is.na(.) ~ rounding_w_zeroes(., digits))) %>% 
+      dplyr::mutate_at(dplyr::vars(max, min), ~tidyr::replace_na(., ""))
   }
   
   plot <- dataset %>%
@@ -221,11 +220,11 @@ ts_line <- function(dataset, variable_of_interest,
       alpha = 0.5
     ) +
     geom_line(
-      data = . %>% filter(site_id != "Averages"),
+      data = . %>% dplyr::filter(site_id != "Averages"),
       color = "black"
     ) +
     geom_line(
-      data = . %>% filter(site_id == "Averages"),
+      data = . %>% dplyr::filter(site_id == "Averages"),
       color = avg_color
     ) +
     data_points +
@@ -259,28 +258,28 @@ ts_line <- function(dataset, variable_of_interest,
   if (add_extrema == TRUE) {
     plot <- plot +
       geom_point(
-        data = . %>% filter(max != ""),
+        data = . %>% dplyr::filter(max != ""),
         color = max_color,
         shape = 1
       ) +
       geom_point(
-        data = . %>% filter(min != ""),
+        data = . %>% dplyr::filter(min != ""),
         color = min_color,
         shape = 1
       ) +
-      geom_text_repel(
+      ggrepel::geom_text_repel(
         aes(label = max),
         min.segment.length = 0,
         box.padding = 0.75,
         max.overlaps = Inf,
         color = max_color
       ) +
-      geom_text_repel(
+      ggrepel::geom_text_repel(
         aes(label = min),
         min.segment.length = 0,
         box.padding = 0.75,
         max.overlaps = Inf,
-        nudge_y = max(dataset %>% pull({{variable_of_interest}}), na.rm = TRUE) / 5,
+        nudge_y = max(dataset %>% dplyr::pull({{variable_of_interest}}), na.rm = TRUE) / 5,
         color = min_color
       )
   }
