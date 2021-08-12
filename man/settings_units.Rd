@@ -66,3 +66,11 @@ ggplot(july_api_daily, aes(x = date, y = site_id, fill = pm25_atm)) +
 remove(units_results_example)
 }
 }
+\seealso{
+Other {visualization settings}: 
+\code{\link{add_cap}()},
+\code{\link{drop_incomplete}()},
+\code{\link{settings_dt_scale}()},
+\code{\link{settings_shapes}()}
+}
+\concept{{visualization settings}}

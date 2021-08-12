@@ -1,6 +1,7 @@
 #' Cap a Numeric Variable
 #'
 #' Apply a cap value of a specified color to numeric variables, either by replacing them with 'NA', or flagging them in a new column.
+#' @family {visualization settings}
 #' @param dataset Data set for which to apply the cap to
 #' @param var_qt Character; the variable of interest (in quotation marks) for which to apply the cap
 #' @param cap_value Numeric; the value of the specified variable (\code{var_qt}) at and above to be capped

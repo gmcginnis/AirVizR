@@ -26,3 +26,19 @@ group_stad(july_api_full, by_day = FALSE, by_hour = TRUE)
 group_stad(july_api_full, by_day = TRUE, by_hour = TRUE)
 }
 }
+\seealso{
+\code{\link{column_dt()}}
+
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{ambient_temperature}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{filter_df}()},
+\code{\link{organize_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

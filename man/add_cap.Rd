@@ -34,3 +34,11 @@ ggplot(july_api_daily, aes(date, pm25_atm)) +
   labs(subtitle = example_cap_results$lab_subtitle_cap)
 remove(example_cap_results)
 }
+\seealso{
+Other {visualization settings}: 
+\code{\link{drop_incomplete}()},
+\code{\link{settings_dt_scale}()},
+\code{\link{settings_shapes}()},
+\code{\link{settings_units}()}
+}
+\concept{{visualization settings}}

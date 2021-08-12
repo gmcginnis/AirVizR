@@ -37,3 +37,19 @@ head(organize_stad(list(july_api_daily, july_frm_daily), c(pm25_epa_2021, pm25_f
 # Combine meta data:
 tail(organize_stad(list(july_api_meta, july_frm_meta)))
 }
+\seealso{
+\code{\link{filter_df()}}
+
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{ambient_temperature}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{filter_df}()},
+\code{\link{group_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

@@ -2,6 +2,7 @@
 #'
 #' Apply basic quality control to a dataset: PM2.5 between 0 and 2000, temperature (ºF) between -40 and 185, and humidity (%) between 0 and 100.
 #' Also provides an option to average PM2.5 columns A and B of a dataset
+#' @family {PA functions}
 #' @param dataset The dataset for which to convert timezone data (column: "datetime")
 #' @param drop_hi Logical; drop monitors for which "flag_highValue" is TRUE in the defined meta data
 #' @param avg_ab Logical; create a column to average PM2.5 values of A & B monitors

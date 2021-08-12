@@ -37,3 +37,17 @@ Create a column of date tags based on specified date ranges (\code{starts} and \
     tags = c("Before", "Independence Day", "After")
   )
 }
+\seealso{
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{ambient_temperature}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{filter_df}()},
+\code{\link{group_stad}()},
+\code{\link{organize_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

@@ -1,7 +1,8 @@
 #' Apply Corrections & Tags to Dataset
 #'
 #' Average a dataset by specified time stamp groupings, apply correction factors (using \link{apply_corrections}, which uses \link{apply_epa} and \link{apply_lrapa}), and tag dates/hours (\link{apply_date_tags} and \link{apply_hour_tags}, respectively) as appropriate.
-#' See \link{apply_date_tags} and \link{apply_hour_tags} for more information individually.
+#' @family {PA functions}
+#' @seealso \code{\link{apply_date_tags()}} and \code{\link{apply_hour_tags()}}
 #' @param dataset The dataset for which to apply the date tags to.
 #' @param by_day Logical; Average by day
 #' @param by_hour Logical; Average by hour

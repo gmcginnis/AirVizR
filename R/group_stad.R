@@ -1,6 +1,8 @@
 #' Group temporal data by a specified time unit
 #'
 #' Average numeric values in a data set by day and/or by hour. This is intended to be applied to raw or otherwise high-frequency temporal data.
+#' @family {miscellaneous functions}
+#' @seealso \code{\link{column_dt()}}
 #' @param dataset The data set for which to average
 #' @param by_day Logical; average data by day
 #' @param by_hour Logical; average data by hour

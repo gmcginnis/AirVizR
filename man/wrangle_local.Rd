@@ -25,3 +25,12 @@ wrangle_local(example_local_raw, example_local_meta)
 remove(example_local_raw, example_local_meta)
 }
 }
+\seealso{
+\code{\link{apply_qc()}}, \code{\link{adjust_temperature()}}, \code{\link{ambient_temperature()}}
+
+Other {PA local functions}: 
+\code{\link{read_local_folder}()},
+\code{\link{read_local_meta}()},
+\code{\link{read_local_single}()}
+}
+\concept{{PA local functions}}

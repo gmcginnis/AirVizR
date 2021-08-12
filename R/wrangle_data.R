@@ -1,6 +1,8 @@
 #' Wrangle PurpleAir PM Data
 #'
 #' Apply quality control functions (\link{apply_qc}), timezone adjustments (\link{unit_convert} and \link{adjust_timezone}), and temperature conversions (\link{ambient_temperature}) to a provided raw dataset.
+#' @family {PA API functions}
+#' @seealso \code{\link{apply_qc()}}, \code{\link{adjust_timezone()}}, and \code{\link{ambient_temperature()}}
 #' @param raw_pm_data The dataset which to wrangle.
 #' @param raw_meta_data Monitor meta data that \link{apply_qc} and \link{adjust_timezone} will rely upon
 #' @param drop_high Logical; see \code{drop_hi} in \link{apply_qc}.

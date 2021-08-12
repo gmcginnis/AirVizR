@@ -1,6 +1,8 @@
 #' Get PurpleAir Timeseries (PAT) raw data and sensor meta data
 #'
 #' Iterate over a list of PurpleAir sensor IDs to extract sensor meta data and timeseries data given specified start and end dates
+#' @family {PA API functions}
+#' @seealso \code{\link[AirSensor]{pat_downloadParseRawData()}}
 #' @param id_list Character list; A list of PAS IDs
 #' @param pas_input PAS object; see \link{get_area_pas}.
 #' @param startdate Character; Date at which to start the collection (format: "YYYY-MM-DD")
@@ -15,7 +17,6 @@
 #'   startdate = "2020-07-01", enddate = "2020-07-03"
 #' )
 #' }
-#' @importFrom AirSensor pat_downloadParseRawData
 #' @importFrom magrittr %>%
 #' @export
 get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_startdate, enddate = input_enddate, cols = c("created_at", "temperature", "humidity", "pm2.5_cf1", "pm2.5_atm")){
@@ -53,7 +54,7 @@ get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_
     print(sprintf("... from %s to %s", date_sequence[1], date_sequence[2]))
     
     # Creating single PAT for first date range
-    pat_single <- pat_downloadParseRawData(
+    pat_single <- AirSensor::pat_downloadParseRawData(
       id = id,
       label = NULL,
       pas = pas_input,
@@ -82,7 +83,7 @@ get_area_pat <- function(id_list = ids, pas_input = pas_area, startdate = input_
         
         print(sprintf("... from %s to %s", date_sequence[single_position], date_sequence[single_position+1]))
         
-        pat_single_more <- pat_downloadParseRawData(
+        pat_single_more <- AirSensor::pat_downloadParseRawData(
           id = id,
           label = NULL,
           pas = pas_input,

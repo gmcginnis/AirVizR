@@ -2,6 +2,7 @@
 #'
 #' Visualize spatio-temporal atmospheric data using points on a map, colored by a specified variable.
 #' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
+#' @family {STAD visualizations}
 #' @param dataset Data set for which to visualize
 #' @param variable_of_interest The variable of interest (not in quotation marks) which to visualize
 #' @param grouping_vars Character, optional; one or two variables for which to facet (grid) the plot by

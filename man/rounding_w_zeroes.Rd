@@ -22,3 +22,17 @@ It should be noted that if the digit input exceeds the actual digits in the valu
 rounding_w_zeroes(10.501, 2)
 rounding_w_zeroes(10.591, 2)
 }
+\seealso{
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{ambient_temperature}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{filter_df}()},
+\code{\link{group_stad}()},
+\code{\link{organize_stad}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

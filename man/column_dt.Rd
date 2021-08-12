@@ -28,3 +28,17 @@ Creating a new column in a data set with a specified date or time rounding/conve
 column_dt(head(july_api_full)[1:3], c("date", "hour_minute"))
 column_dt(head(july_api_hourly)[1:3], "hour")
 }
+\seealso{
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{ambient_temperature}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{filter_df}()},
+\code{\link{group_stad}()},
+\code{\link{organize_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

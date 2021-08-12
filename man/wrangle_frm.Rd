@@ -26,3 +26,8 @@ The following is based on inputs assuming an Excel input from \href{https://oraq
 2+2
 }
 }
+\seealso{
+Other {FRM functions}: 
+\code{\link{read_frm}()}
+}
+\concept{{FRM functions}}

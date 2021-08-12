@@ -60,3 +60,11 @@ Relevant information (such as date ranges, averaging methods, facets, and min/ma
 ts_line(july_api_hourly, pm25_atm, label_filter = "\\\\bPSU\\\\b", location_data = july_api_meta)
 ts_line(july_api_hourly, pm25_atm, label_filter = c("\\\\bPSU\\\\b"), add_points = TRUE, single_column = TRUE, add_average = FALSE, location_data = july_api_meta)
 }
+\seealso{
+Other {STAD visualizations}: 
+\code{\link{heatmap_cross}()},
+\code{\link{heatmap_single}()},
+\code{\link{map_stad}()},
+\code{\link{ts_variation}()}
+}
+\concept{{STAD visualizations}}

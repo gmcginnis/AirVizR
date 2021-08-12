@@ -1,6 +1,8 @@
 #' Read a single local PurpleAir document of interest
 #'
 #' Read specific file by location, skipping columns as needed; extracting info from title. Intended to be used in iteration, as with \link{read_local_folder}.
+#' @family {PA local functions}
+#' @seealso \code{\link{read_local_folder()}} for reading a full folder.
 #' @param folder_path Character; a file path to the folder containing the file of interest
 #' @param single_file_path Character; the full file path to the file of interest
 #' @param selects Character list of the renamed variables to keep. Time stamp automatically kept.

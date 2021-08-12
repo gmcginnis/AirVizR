@@ -28,3 +28,12 @@ get_ids(
 )
 }
 }
+\seealso{
+\code{\link[AirSensor]{pas_getDeviceDeploymentIDs()}}
+
+Other {PA API functions}: 
+\code{\link{get_area_pas}()},
+\code{\link{get_area_pat}()},
+\code{\link{wrangle_data}()}
+}
+\concept{{PA API functions}}

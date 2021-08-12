@@ -2,6 +2,7 @@
 #'
 #' A series of arguments to detect the appropriate visualization labels and settings to apply to a dataset provided said dataset and a varaible of interest.
 #' Additionally, an optional "cap" value (and custom color) can be provided in order to distinguish values at or above said specified values to prevent color scale washout (e.g. if a few observations are extremely high to the point where all other values are washed out on the color scale).
+#' @family {visualization settings}
 #' @param dataset The dataset which to evaluate
 #' @param var_qt Character; The variable of interest within the dataset, in quotation marks
 #' @param cap_value Numeric; The value of the color "cap" to be applied

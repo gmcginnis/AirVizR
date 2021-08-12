@@ -21,3 +21,17 @@ If more than one time zone is reported in the data, the conversion will use the 
 \examples{
 adjust_timezone(head(july_api_raw), location_data = july_api_raw_meta)
 }
+\seealso{
+Other {miscellaneous functions}: 
+\code{\link{ambient_temperature}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{filter_df}()},
+\code{\link{group_stad}()},
+\code{\link{organize_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

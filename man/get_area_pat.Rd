@@ -38,3 +38,12 @@ get_area_pat(
 )
 }
 }
+\seealso{
+\code{\link[AirSensor]{pat_downloadParseRawData()}}
+
+Other {PA API functions}: 
+\code{\link{get_area_pas}()},
+\code{\link{get_ids}()},
+\code{\link{wrangle_data}()}
+}
+\concept{{PA API functions}}

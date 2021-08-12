@@ -1,6 +1,7 @@
 #' Create a data frame of locally loaded monitor data
 #'
 #' Load PurpleAir monitor data based on locally stored data, extracting relevant information from the file names. See 
+#' @family {PA local functions}
 #' @param folder_path Character; the file path for the folder that contains the monitor data frames
 #' @param pattern Character, optional; filter for a specific location (by label in the file title)
 #' @param timezone Character of valid Olson name for timezone of the monitors

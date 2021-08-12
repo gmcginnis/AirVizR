@@ -41,10 +41,10 @@ library(AirVizR)
 Many of the functions in this package are intended to work hand-in-hand with a series of provided inputs, hence why many of the defaults inputs for man class types are "`input_*`" or "`raw_*`". For full lists of inputs, browse the vignettes.  
 
 One of three methods of data importation are documented in the vignettes, via either API or local import;  
-* **API** (PurpleAir only): Using a series of functions, some derived from the [AirSensor](https://mazamascience.github.io/AirSensor/) package, archived PurpleAir data can be pulled if provided coordinates and date ranges of interest. See the `api-data` vignette for more information. 
-* **Local data**  
-  + **PurpleAir**: Many of the same arguments as the API setup can be used. You can download data from PurpleAir's sensor [download tool](https://www.purpleair.com/sensorlist). It should be noted that this data does not include as much information as API data, including meta information regarding high values or A/B monitor sensor disparity. See the `local-data` vignette for more information.  
-  + **FRM**: Although currently no functions are explicitly dedicated to loading FRM data, the visualization functions can be applied to them. The examples in this package use FRM data from Oregon's DEQ. See the `frm-data` vignette for more information.  
+  * **API** (PurpleAir only): Using a series of functions, some derived from the [AirSensor](https://mazamascience.github.io/AirSensor/) package, archived PurpleAir data can be pulled if provided coordinates and date ranges of interest. See the `api-data` vignette for more information. 
+  * **Local data**  
+    + **PurpleAir**: Many of the same arguments as the API setup can be used. You can download data from PurpleAir's sensor [download tool](https://www.purpleair.com/sensorlist). It should be noted that this data does not include as much information as API data, including meta information regarding high values or A/B monitor sensor disparity. See the `local-data` vignette for more information.  
+    + **FRM**: Although currently no functions are explicitly dedicated to loading FRM data, the visualization functions can be applied to them. The examples in this package use FRM data from Oregon's DEQ. See the `frm-data` vignette for more information.  
   
 The data preparation functions are primarily configured for using PurpleAir data sets, however other types can be wrangled in similar methods. All spatio-temporal atmospheric data (STAD) sets can be visualized using the functions in this package, so long as the following structures are followed:  
 * A data frame of STAD with at least one column for a time stamp of any unit, one column for the atmospheric unit of interest, and one identifying column (`site_id`).  
@@ -58,7 +58,7 @@ The data preparation functions are primarily configured for using PurpleAir data
 To represent both the spatial and temporal aspects of atmospheric data, maps can be used to visualize multiple monitors.  
 Visual options, such as point size and background graphics, can also be customized.
 
-```{r example_map_stad, warning = FALSE, message = FALSE, fig.retina=2, echo = FALSE}
+```{r example_map_stad, warning = FALSE, message = FALSE, fig.retina=2, echo = FALSE, results = 'hide', fig.keep = 'all'}
 map_stad(july_api_daily,
          pm25_epa_2021,
          location_data = july_api_meta,
@@ -75,7 +75,7 @@ The heatmap options in this package are designed for continuous numeric variable
 
 To show hourly changes over time for a single monitor, data can be visualized with the date on the x-axis, and hour of the day on the y-axis. By default, cell data will also be supplemented with a text label (which is color-customizable).
 
-```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height = 7, echo = FALSE}
+```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height = 7, echo = FALSE, results = 'hide', fig.keep = 'all'}
 heatmap_single(dataset = july_api_hourly,
                pm25_epa_2021,
                "Lighthouse",
@@ -84,11 +84,11 @@ heatmap_single(dataset = july_api_hourly,
 
 #### Multiple monitors
 
-To compare multiple monitors in a set over time (of any temporal resolution), data can be mapped to a heatmap where the time is on the x-axis, and the y-axis is monitor labels. Monitors will be separated by location (i.e. inside/outside), and arranged north to south, allowing for a general representation of spatial differences.  
+To compare multiple monitors in a set over time (of any temporal resolution), data can be mapped to a heat map where the time is on the x-axis, and the y-axis is monitor labels. Monitors will be separated by location (i.e. inside/outside), and arranged north to south, allowing for a general representation of spatial differences.  
 This visualization option is ideal for larger data sets with many monitors. Optionally, monitors with incomplete data can be filtered out.  
 Below, an example is shown with the defaults, followed by one with only complete monitors included and a "color cap" applied to avoid a washed out color palette. This color "cap" can be applied to all visualization types with continuous colors in this package.  
 
-```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=10, fig.height = 7, echo = FALSE}
+```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=10, fig.height = 7, echo = FALSE, results = 'hide', fig.keep = 'all'}
 heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta,
               drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
 ```
@@ -101,7 +101,7 @@ Time series visualizations are useful for representing changes over time.
 
 The following is a visualization option intended to spotlight specific monitors in a data set. Optional arguments allow for points to be added, color caps (as above) to be applied, and show/hide maximum & minimum values for each monitor. Additionally, data can be visualized in a single "column" of results if desired, allowing for easier temporal cross-comparisons.
 
-```{r example_ts_line, warning = FALSE, message = FALSE, fig.retina=2, echo = FALSE}
+```{r example_ts_line, warning = FALSE, message = FALSE, fig.retina=2, echo = FALSE, results = 'hide', fig.keep = 'all'}
 ts_line(july_api_hourly,
         pm25_atm,
         label_filter = "STAR",
@@ -127,7 +127,7 @@ ts_variation(july_api_hourly,
 
 STADs can be combined and pivoted in order to visualize data from both FRMs and PurpleAir monitors simultaneously. The visualization functions above can be used, or custom ones can be applied:
 
-```{r comp, message = FALSE, warning = FALSE, echo = FALSE, fig.height = 8}
+```{r comp, message = FALSE, warning = FALSE, echo = FALSE, fig.height = 8, results = 'hide', fig.keep = 'all'}
 library(ggplot2)
 library(magrittr)
 

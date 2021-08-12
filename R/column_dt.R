@@ -1,6 +1,7 @@
 #' Adding new date/time column(s)
 #'
 #' Creating a new column in a data set with a specified date or time rounding/conversion
+#' @family {miscellaneous functions}
 #' @param dataset The dataset for which to convert timezone data (column: "datetime")
 #' @param unit The unit(s) for which to apply to the dataset. Options: "date", "date_hour", "hour", "hour_minute", "time"
 #' @return Dataset with column(s) of newly specified time unit by row:

@@ -1,6 +1,7 @@
 #' Apply EPA & LRAPA Correction Factors
 #'
 #' Apply EPA correction factors to PurpleAir PM2.5 data: a combination of \link{apply_lrapa} and \link{apply_epa}.
+#' @family {PA functions}
 #' @param dataset The dataset for which to apply the correction factors to
 #' @param by_day Logical; average data by day
 #' @param by_hour Logical; average data by hour

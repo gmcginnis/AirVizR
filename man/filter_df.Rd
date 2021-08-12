@@ -33,3 +33,17 @@ Filter a data frame based on any character variable, including varaibles from me
 filter_df(july_api_diurnal, hour_tag, include = c("Morning", "Afternoon"))
 filter_df(july_api_diurnal, label, exclude = c("Lighthouse"), location_data = july_api_meta)
 }
+\seealso{
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{ambient_temperature}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{group_stad}()},
+\code{\link{organize_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

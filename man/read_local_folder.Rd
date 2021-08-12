@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_local_folder.R
 \name{read_local_folder}
 \alias{read_local_folder}
-\title{Title}
+\title{Read a Local Folder of PurpleAir Data}
 \usage{
 read_local_folder(
   folder_path = input_path,
@@ -21,10 +21,10 @@ read_local_folder(
 \item{pattern}{Character, optional; filter for a specific location (by label in the file title)}
 }
 \value{
-Blah
+Raw R data frame
 }
 \description{
-Blah
+Read a folder containing PurpleAir CSV data.
 }
 \examples{
 \dontrun{
@@ -32,3 +32,12 @@ read_local_folder(folder_path = "data-raw/local")
 read_local_folder(folder_path = "data-raw/local", pattern = "Lincoln")
 }
 }
+\seealso{
+\code{\link{read_local_single()}} to read single files in a folder.
+
+Other {PA local functions}: 
+\code{\link{read_local_meta}()},
+\code{\link{read_local_single}()},
+\code{\link{wrangle_local}()}
+}
+\concept{{PA local functions}}

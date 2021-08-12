@@ -42,3 +42,11 @@ ggplot(settings_results_example$dataset, aes(timestamp, temperature)) +
 remove(settings_results_example)
 }
 }
+\seealso{
+Other {visualization settings}: 
+\code{\link{add_cap}()},
+\code{\link{drop_incomplete}()},
+\code{\link{settings_shapes}()},
+\code{\link{settings_units}()}
+}
+\concept{{visualization settings}}

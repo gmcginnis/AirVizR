@@ -32,3 +32,11 @@ ggplot(full_join(july_api_daily, july_api_meta), aes(date, site_id, shape = loca
 remove(shape_results_example)
 }
 }
+\seealso{
+Other {visualization settings}: 
+\code{\link{add_cap}()},
+\code{\link{drop_incomplete}()},
+\code{\link{settings_dt_scale}()},
+\code{\link{settings_units}()}
+}
+\concept{{visualization settings}}

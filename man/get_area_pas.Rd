@@ -50,3 +50,12 @@ get_area_pas("OR", -122.854, 45.4, -122.58, 45.6,
   c("se", "SE", "Se", "\\\\bSTAR\\\\b", "\\\\bPSU\\\\b"),
   datestamp = "2020-07-07", startdate = "2020-07-01")
 }
+\seealso{
+\code{\link[AirSensor]{pas_load()}}
+
+Other {PA API functions}: 
+\code{\link{get_area_pat}()},
+\code{\link{get_ids}()},
+\code{\link{wrangle_data}()}
+}
+\concept{{PA API functions}}

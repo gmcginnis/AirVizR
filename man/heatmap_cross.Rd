@@ -49,3 +49,11 @@ heatmap_cross(july_api_hourly, pm25_atm, location_data = july_api_meta, drop_inc
 heatmap_cross(july_api_daily, temperature, location_data = july_api_meta, drop_incomplete = TRUE)
 }
 }
+\seealso{
+Other {STAD visualizations}: 
+\code{\link{heatmap_single}()},
+\code{\link{map_stad}()},
+\code{\link{ts_line}()},
+\code{\link{ts_variation}()}
+}
+\concept{{STAD visualizations}}

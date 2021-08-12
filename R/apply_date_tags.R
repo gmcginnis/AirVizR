@@ -1,6 +1,7 @@
 #' Create a column of "Date Tags"
 #'
 #' Create a column of date tags based on specified date ranges (\code{starts} and \code{ends}) and respective names (\code{tags}).
+#' @family {miscellaneous functions}
 #' @param dataset The dataset for which to apply the date tags to.
 #' @param starts Character list of start dates (format for each date: "YYYY-MM-DD")
 #' @param ends Character list of end dates (format for each date: "YYYY-MM-DD")

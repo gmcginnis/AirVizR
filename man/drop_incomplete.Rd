@@ -20,3 +20,13 @@ Drop monitor data for which its time series data is incomplete compared to that 
 \examples{
 drop_incomplete(july_api_daily, "pm25_atm")
 }
+\seealso{
+\code{\link{heatmap_single()}} and \code{\link{heatmap_cross()}}
+
+Other {visualization settings}: 
+\code{\link{add_cap}()},
+\code{\link{settings_dt_scale}()},
+\code{\link{settings_shapes}()},
+\code{\link{settings_units}()}
+}
+\concept{{visualization settings}}

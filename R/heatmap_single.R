@@ -2,6 +2,7 @@
 #'
 #' Visualize hourly atmospheric data for a single monitor using a heatmap, with optional data labels. To visualize multiple monitors on a heatmap, see \link{heatmap_cross}.
 #' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
+#' @family {STAD visualizations}
 #' @param variable_of_interest The variable of interest (not in quotation marks) which to visualize
 #' @param site_of_interest Character; the label (or a portion of the label) of the monitor to visualize
 #' @param cap_value Numeric, optional; values at or above to be colored serpately from the regular continuous scale. See \link{add_cap} for more information.

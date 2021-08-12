@@ -28,3 +28,12 @@ Read specific file by location, skipping columns as needed; extracting info from
 read_local_single("data-raw/local", "data-raw/local/36th & SE Woodward (outside) (45.501722 -122.626231) Primary Real Time 07_01_2020 07_07_2020.csv")
 }
 }
+\seealso{
+\code{\link{read_local_folder()}} for reading a full folder.
+
+Other {PA local functions}: 
+\code{\link{read_local_folder}()},
+\code{\link{read_local_meta}()},
+\code{\link{wrangle_local}()}
+}
+\concept{{PA local functions}}

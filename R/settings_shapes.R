@@ -2,6 +2,7 @@
 #'
 #' Arguments to detect the relevant shapes to be applied to visualizations based on monitor location(s) in the data set.
 #' Custom shapes are necessary for the custom visualizations, since "fill" and "color" arguments can be individually specified for the shapes below, unlike the default shapes.
+#' @family {visualization settings}
 #' @param dataset The dataset which to evaluate
 #' @param meta The location data, related the data set
 #' @return List of values to be applied to various visualization methods:

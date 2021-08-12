@@ -1,6 +1,8 @@
 #' Drop Incomplete Sets
 #'
 #' Drop monitor data for which its time series data is incomplete compared to that of other monitors in the data set.
+#' @family {visualization settings}
+#' @seealso \code{\link{heatmap_single()}} and \code{\link{heatmap_cross()}}
 #' @param dataset Data set for which to filter incomplete monitor data
 #' @param var_qt Character; the variable of interest (in quotation marks) for which to apply the cap
 #' @return Data set with monitors without complete sets removed

@@ -2,6 +2,8 @@
 #'
 #' PurpleAir monitor reports include internal temperature, which is on average slightly higher than ambient temperature.
 #' More information can be found on \href{https://www2.purpleair.com/community/faq#!hc-primary-and-secondary-data-header}{their FAQ}.
+#' @family {miscellaneous functions}
+#' @seealso \code{\link{unit_convert()}}
 #' @param dataset The dataset containing temperature values to adjust
 #' @param variable The column name of temperature data (in ºF) which to apply the change
 #' @param change Numeric: The value which to subtract from the original temperature value

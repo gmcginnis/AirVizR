@@ -1,6 +1,8 @@
 #' Combine and/or Pivot STAD Data Set(s)
 #' 
 #' Choose to combine multiple STAD data sets, and/or pivot columns. Useful for combining FRM and PA data frames, or pivoting columns of the same pollutant type.
+#' @family {miscellaneous functions}
+#' @seealso \code{\link{filter_df()}}
 #' @param dataset Dataset(s) to pivot. If more than one data set is provided, they will be row-bound. Use \code{list()} if more than one.
 #' @param measurements Character, optional. Column headers to pivot. Use \code{c()}.
 #' @param col_rename Character, optional, only run if \code{measurements} provided. The character to rename the 'value' column output of the pivot to.

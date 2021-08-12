@@ -27,3 +27,11 @@ Apply EPA correction factors to PurpleAir PM2.5 data: a combination of \link{app
 apply_corrections(july_api_full)
 \dontrun{apply_corrections(july_api_full, hourly = TRUE)}
 }
+\seealso{
+Other {PA functions}: 
+\code{\link{apply_epa}()},
+\code{\link{apply_functions}()},
+\code{\link{apply_lrapa}()},
+\code{\link{apply_qc}()}
+}
+\concept{{PA functions}}

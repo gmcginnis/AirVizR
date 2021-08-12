@@ -29,3 +29,10 @@ read_local_meta("data-raw/local", timezone = "America/Los_Angeles")
 read_local_meta("data-raw/local", timezone = "America/Los_Angeles", pattern = "Lincoln")
 }
 }
+\seealso{
+Other {PA local functions}: 
+\code{\link{read_local_folder}()},
+\code{\link{read_local_single}()},
+\code{\link{wrangle_local}()}
+}
+\concept{{PA local functions}}

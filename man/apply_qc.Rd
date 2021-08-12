@@ -31,3 +31,11 @@ Also provides an option to average PM2.5 columns A and B of a dataset
 apply_qc(july_api_raw, drop_hi = TRUE, loc_data = july_api_raw_meta)
 }
 }
+\seealso{
+Other {PA functions}: 
+\code{\link{apply_corrections}()},
+\code{\link{apply_epa}()},
+\code{\link{apply_functions}()},
+\code{\link{apply_lrapa}()}
+}
+\concept{{PA functions}}

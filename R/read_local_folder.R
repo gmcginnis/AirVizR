@@ -1,11 +1,13 @@
-#' Title
+#' Read a Local Folder of PurpleAir Data
 #'
-#' Blah
+#' Read a folder containing PurpleAir CSV data.
+#' @family {PA local functions}
+#' @seealso \code{\link{read_local_single()}} to read single files in a folder.
 #' @param folder_path Character; the file path for the folder that contains the monitor data frames
 #' @param read_primary Logical; read primary data
 #' @param read_secondary Logical; read secondary data
 #' @param pattern Character, optional; filter for a specific location (by label in the file title)
-#' @return Blah
+#' @return Raw R data frame
 #' @examples 
 #' \dontrun{
 #' read_local_folder(folder_path = "data-raw/local")

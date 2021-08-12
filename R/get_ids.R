@@ -1,11 +1,12 @@
 #' Get IDs from a PAS
 #'
 #' Load a list of device deployment IDs from a provided PAS
+#' @family {PA API functions}
+#' @seealso \code{\link[AirSensor]{pas_getDeviceDeploymentIDs()}}
 #' @param pas A dataframe of PAS containing a column of device deployment IDs
 #' @param outside Logical argument to include/exclude outdoor monitors
 #' @param inside Logical argument to include/exclude indoor monitors
 #' @return A list of IDs from a provided PAS
-#' @importFrom AirSensor pas_getDeviceDeploymentIDs
 #' @examples 
 #' get_ids((example(get_area_pas))$value, TRUE, TRUE)
 #' \donttest{
@@ -17,8 +18,8 @@
 #' @export
 get_ids <- function(pas = pas_area, outside = include_outside, inside = include_inside){
   
-  ids_outside <- pas_getDeviceDeploymentIDs(pas, isOutside = TRUE)
-  ids_inside <- pas_getDeviceDeploymentIDs(pas, isOutside = FALSE)
+  ids_outside <- AirSensor::pas_getDeviceDeploymentIDs(pas, isOutside = TRUE)
+  ids_inside <- AirSensor::pas_getDeviceDeploymentIDs(pas, isOutside = FALSE)
   
   if (outside == TRUE & inside == TRUE) {
     ids <- c(ids_outside, ids_inside)

@@ -46,3 +46,13 @@ ts_variation(july_api_hourly, "pm25_atm", include = "Lighthouse", group = "date_
 ts_variation(july_api_hourly, c("pm25_atm", "temperature_ambient"), location_data = july_api_meta, subset = "hour")
 }
 }
+\seealso{
+\code{\link[openair]{timeVariation()}}
+
+Other {STAD visualizations}: 
+\code{\link{heatmap_cross}()},
+\code{\link{heatmap_single}()},
+\code{\link{map_stad}()},
+\code{\link{ts_line}()}
+}
+\concept{{STAD visualizations}}

@@ -51,3 +51,11 @@ heatmap_single(pm25_epa_2021, "Lighthouse", dataset = july_api_hourly, location_
 heatmap_single(temperature, "Lighthouse", cap_value = 85, cap_color = "green", data_label = FALSE, dataset = july_api_hourly, location_data = july_api_meta)
 }
 }
+\seealso{
+Other {STAD visualizations}: 
+\code{\link{heatmap_cross}()},
+\code{\link{map_stad}()},
+\code{\link{ts_line}()},
+\code{\link{ts_variation}()}
+}
+\concept{{STAD visualizations}}

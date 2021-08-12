@@ -26,3 +26,12 @@ Apply quality control functions (\link{apply_qc}), timezone adjustments (\link{u
 \examples{
 wrangle_data(slice(july_api_raw, 1:5), july_api_raw_meta, drop_high = TRUE)
 }
+\seealso{
+\code{\link{apply_qc()}}, \code{\link{adjust_timezone()}}, and \code{\link{ambient_temperature()}}
+
+Other {PA API functions}: 
+\code{\link{get_area_pas}()},
+\code{\link{get_area_pat}()},
+\code{\link{get_ids}()}
+}
+\concept{{PA API functions}}

@@ -1,6 +1,7 @@
 #' Filter a Data Frame
 #'
 #' Filter a data frame based on any character variable, including varaibles from meta data, without having to conduct joins or string arguments yourself.
+#' @family {miscellaneous functions}
 #' @param dataset The dataset which to filter
 #' @param var The varaible which to filter (not in quotation marks)
 #' @param include Character list; the list of values to keep for the data frame (optional if \code{exclude} specified)

@@ -56,3 +56,11 @@ More information about EPA correction factors can be found on the \href{https://
 apply_epa(july_api_full)
 \dontrun{apply_epa(july_api_full, keep_cols = TRUE, by_hour = TRUE)}
 }
+\seealso{
+Other {PA functions}: 
+\code{\link{apply_corrections}()},
+\code{\link{apply_functions}()},
+\code{\link{apply_lrapa}()},
+\code{\link{apply_qc}()}
+}
+\concept{{PA functions}}

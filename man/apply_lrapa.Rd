@@ -4,6 +4,8 @@
 \alias{apply_lrapa}
 \title{Apply LRAPA Corrections}
 \source{
+\url{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}
+
 \href{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}{LRAPA documentation}
 }
 \usage{
@@ -36,3 +38,11 @@ For more information on the correction factor, see the \href{https://www.lrapa.o
 apply_lrapa(july_api_full)
 \donttest{apply_lrapa(july_api_full, by_hour = TRUE, keep_cols = TRUE)}
 }
+\seealso{
+Other {PA functions}: 
+\code{\link{apply_corrections}()},
+\code{\link{apply_epa}()},
+\code{\link{apply_functions}()},
+\code{\link{apply_qc}()}
+}
+\concept{{PA functions}}

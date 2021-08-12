@@ -58,3 +58,11 @@ map_stad(
 )
 }
 }
+\seealso{
+Other {STAD visualizations}: 
+\code{\link{heatmap_cross}()},
+\code{\link{heatmap_single}()},
+\code{\link{ts_line}()},
+\code{\link{ts_variation}()}
+}
+\concept{{STAD visualizations}}

@@ -5,6 +5,7 @@
 #' The late 2020 correction factor includes consideration for high-PM events (such as wildfires); the low-PM values have the same correction factor as 2020.
 #' Unlike the LRAPA correction factor (\link{apply_lrapa}) which uses CF=ATM PM2.5 values, the major EPA correction factors use CF=1 values. If needed, an additional EPA-based output column using CF=ATM is included. More information on this variable can be found on the \href{https://www2.purpleair.com/community/faq#hc-what-is-the-difference-between-cf-1-and-cf-atm}{PurpleAir FAQ}.
 #' More information about EPA correction factors can be found on the \href{https://www.epa.gov/air-sensor-toolbox/technical-approaches-sensor-data-airnow-fire-and-smoke-map}{Air Sensor Toolbox}.
+#' @family {PA functions}
 #' @param dataset The dataset for which to apply the correction factors to
 #' @param by_day Logical; average data by day
 #' @param by_hour Logical; average data by hour

@@ -6,6 +6,8 @@
 #' It should also be noted that this correction factor might not apply to all airsheds, and was developed in Oregon, where (along with much of the Pacific Northwest) woodsmoke is a major contributor to PM2.5.
 #' Futhermore, this correction factor only reliably applies to PM2.5 values of ≤ 65 µg/m^3.
 #' For more information on the correction factor, see the \href{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}{LRAPA documentation}.
+#' @source \url{https://www.lrapa.org/DocumentCenter/View/4147/PurpleAir-Correction-Summary}
+#' @family {PA functions}
 #' @param dataset The dataset for which to apply the correction factors to
 #' @param by_day Logical; average data by day
 #' @param by_hour Logical; average data by hour

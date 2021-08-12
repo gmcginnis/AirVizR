@@ -1,6 +1,7 @@
 #' Wrangle federal reference monitor (FRM)
 #' 
 #' The following is based on inputs assuming an Excel input from \href{https://oraqi.deq.state.or.us/report/SingleStationReport}{Oregon DEQ single station report}.
+#' @family {FRM functions}
 #' @param file_path File path to the Excel sheet of FRM data set to wrangle.
 #' @return A raw R data set, prepared to be passed to \link{wrangle_frm}.
 #' @examples 

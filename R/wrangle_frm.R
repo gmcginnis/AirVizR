@@ -1,6 +1,7 @@
 #' Wrangle federal reference monitor (FRM)
 #' 
 #' The following is based on inputs assuming an Excel input from \href{https://oraqi.deq.state.or.us/report/SingleStationReport}{Oregon DEQ single station report}.
+#' @family {FRM functions}
 #' @param data_frm_raw Raw FRM data set to wrangle.
 #' @param data_frm_meta User-created location data for the FRM (key component: presence of a \code{site_id} and \code{timezone}).
 #' @param timezone_original Character of valid Olson name; the original timezone of the raw file.

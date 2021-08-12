@@ -3,6 +3,8 @@
 #' Please note that this function will take the longest of all the visualization options.
 #' Visualize variation in temporal atmospheric data for multiple monitors and (optionally) multiple pollutants; a customization of \link[openair]{timeVariation} from \link[openair]{openair}.
 #' Relevant information (such as type of pollutant(s) and temporal scale of data set) will be reported automatically in the visualization, however limitations to the plot settings prevent all relevant information from being included.
+#' @family {STAD visualizations}
+#' @seealso \code{\link[openair]{timeVariation()}}
 #' @param dataset The data set to visualize. This function works best with unaveraged or hourly-averaged data.
 #' @param pollutants Character, optionally a list; in quotation marks, the pollutant(s) to map. Note that if multiple are specified, \code{group} must remain unspecified.
 #' @param group Character; in quotation marks, the variable for which to group the data (i.e. what will distinguish values from one another). Note that if specified, \code{pollutants} must be singular.

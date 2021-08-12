@@ -2,6 +2,7 @@
 #'
 #' Visualize temporal atmospheric data for multiple monitors using a heatmap, with optional data labels. To visualize one monitor on a heatmap, see \link{heatmap_single}.
 #' Relevant information (such as date ranges, averaging methods, facets, and min/max values in the set) will be reported automatically in the visualization.
+#' @family {STAD visualizations}
 #' @param dataset The hourly dataset to visualize
 #' @param variable_of_interest The variable of interest (not in quotation marks) which to visualize
 #' @param drop_incomplete Logical; drop/keep incomplete monitors, see \link{drop_incomplete} for more information.

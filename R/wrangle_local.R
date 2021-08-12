@@ -1,6 +1,8 @@
 #' Wrangle local raw PurpleAir data frames
 #' 
 #' Applying various quality control functions, time rounding, and pivots to provide a more managable data frame of spatio-temporal atmospheric data.
+#' @family {PA local functions}
+#' @seealso \code{\link{apply_qc()}}, \code{\link{adjust_temperature()}}, \code{\link{ambient_temperature()}}
 #' @param data_local_raw Character; the file path for the folder that contains the monitor data frames
 #' @param data_local_meta Character, optional; filter for a specific location (by label in the file title)
 #' @return A data frame with quality-controlled values (\link{apply_qc}), timezone correction (\link{adjust_timezone}), and ambient temperature calculations (\link{ambient temperature}).

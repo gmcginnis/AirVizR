@@ -1,6 +1,8 @@
 #' Wrangle Location (Meta) Data
 #'
 #' Select variables of interest from location data, and (importantly!) make monitor labels unique from one another.
+#' @family {miscellaneous functions}
+#' @seealso \code{\link{wrangle_frm()}} and \code{\link{wrangle_local()}}
 #' @param raw_location_data The data set which to wrangle.
 #' @return Dataframe with selected columns of interest.
 #' @examples 

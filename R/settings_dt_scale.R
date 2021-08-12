@@ -1,6 +1,7 @@
 #' Visualization Settings for a Date/Time Scale
 #'
 #' A series of arguments to detect the minimum time stamp value within a data set, and provide an output of visualization settings to apply to allow for appropriate labeling and scaling.
+#' @family {visualization settings}
 #' @param dataset The data set which to evaluate
 #' @param start_date The start date (to be pasted into captions); will be automatically adjusted based on actual start date of the data set, if possible
 #' @param end_date The end date (to be pasted into captions); will be automatically adjusted based on actual end date of the data set, if possible

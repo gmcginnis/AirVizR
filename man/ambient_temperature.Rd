@@ -29,3 +29,19 @@ More information can be found on \href{https://www2.purpleair.com/community/faq#
 \examples{
 ambient_temperature(head(july_api_raw[1:3]))
 }
+\seealso{
+\code{\link{unit_convert()}}
+
+Other {miscellaneous functions}: 
+\code{\link{adjust_timezone}()},
+\code{\link{apply_date_tags}()},
+\code{\link{apply_hour_tags}()},
+\code{\link{column_dt}()},
+\code{\link{filter_df}()},
+\code{\link{group_stad}()},
+\code{\link{organize_stad}()},
+\code{\link{rounding_w_zeroes}()},
+\code{\link{unit_convert}()},
+\code{\link{wrangle_meta}()}
+}
+\concept{{miscellaneous functions}}

@@ -1,6 +1,7 @@
 #' Create a column of "Date Tags"
 #'
 #' Create a column of date tags based on specified hour ranges (created using inputted \code{starts}) and respective names (\code{tags}).
+#' @family {miscellaneous functions}
 #' @param dataset The dataset for which to apply the date tags to.
 #' @param starts Numeric list of start hours (in 24 hour format)
 #' @param tags Character list of tags

@@ -28,10 +28,19 @@ Dataframe with new columns for corrected values and appropriate tagged values ("
 }
 \description{
 Average a dataset by specified time stamp groupings, apply correction factors (using \link{apply_corrections}, which uses \link{apply_epa} and \link{apply_lrapa}), and tag dates/hours (\link{apply_date_tags} and \link{apply_hour_tags}, respectively) as appropriate.
-See \link{apply_date_tags} and \link{apply_hour_tags} for more information individually.
 }
 \examples{
 \donttest{
 apply_functions(july_api_full, by_day = TRUE, tag_dates = FALSE, tag_hours = FALSE)
 }
 }
+\seealso{
+\code{\link{apply_date_tags()}} and \code{\link{apply_hour_tags()}}
+
+Other {PA functions}: 
+\code{\link{apply_corrections}()},
+\code{\link{apply_epa}()},
+\code{\link{apply_lrapa}()},
+\code{\link{apply_qc}()}
+}
+\concept{{PA functions}}
