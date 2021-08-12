@@ -59,9 +59,9 @@ input_hour_starts <- c(5, 12, 17, 21)
 # End hours will be automatically generated; no need to add "end" hours
 ```
 
-```{r location_data}
+```{r load_raw_data}
 # The following is location data for the DEQ FRM in Portland
-frm_meta <- data.frame(
+frm_raw_meta <- data.frame(
   label = "DEQ SE Lafayette",
   location = factor("FRM"), # The device is outside but this will label it separately
   latitude = 45.496641,
@@ -70,13 +70,13 @@ frm_meta <- data.frame(
   timezone = "America/Los_Angeles", # Use OlsonNames() to see valid inputs.
   flag_highValue = FALSE # Being an FRM, it is not expected to be reporting poorly
 )
-```
 
-```{r load_data}
 raw_frm <- read_frm()
 ```
 
-```{r}
+
+```{r wrangle_data}
+frm_meta <- wrangle_meta(frm_raw_meta)
 frm_full <- wrangle_frm(raw_frm, frm_meta)
 
 frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE)
@@ -105,94 +105,6 @@ if (exists("input_enddate") == FALSE) {
 # Cleaning the global environment
 remove(run_date_grouping, run_hour_grouping)
 remove(list = c(ls(pattern = "input_(hour|date|frm)_")))
-# It is recommended to keep raw_meta and raw_data since it takes the longest to load,
-# as well as the input start & end dates (since the diurnal set does not contain date information)
-```
-
-
-```{r data_import}
-
-# Creating a list of variable names
-deq_names <- read_excel(input_deq_path,
-                        sheet = 1, # Selecting sheet 1
-                        skip = 2, # Skipping the empty rows at the top
-                        n_max = 0) %>% names() # Selecting 0 observations, and extracting the names only
-
-# All DEQ data aside from time stamps is numeric
-# To avoid R from identifying columns with lots of missing data as logical, all columns except date time are set to numeric:
-deq_coltypes <- ifelse(grepl("Date Time", deq_names), "text", "numeric")
-
-# Creating a data frame of the data
-raw_deq <- read_excel(input_deq_path,
-                      sheet = 1, # Selecting sheet 1
-                      skip = 4, # Skipping the topmost rows naming the variables, etc
-                      na = "----", # NAs are reported using this symbol in the Excel file
-                      col_names = deq_names, # Setting column names to be those listed above
-                      col_types = deq_coltypes) # Setting column types
-
-# Data frame of units, for reference if needed.
-deq_units <- read_excel(input_deq_path,
-                        sheet = 1, # Selecting sheet 1
-                        skip = 2, # Skipping the empty rows at the top
-                        n_max = 1) # Selecting 1 "observation" (next row)
-```
-
-```{r eclean_read}
-## OPTIONAL
-remove(deq_names, deq_coltypes, deq_units, input_deq_path)
-```
-
-
-```{r data_wrangling}
-data_deq <- raw_deq %>% 
-  mutate(
-    # Oregon DEQ reports time stamps in Pacific Standard Time, meaning DST is NOT accounted for.
-    # Using Etc/GMT+8 here will mark the time stamps as the appropriate -8 ("PST")
-    datetime_standard = parse_date_time(`Date Time`, "%H:%M %m/%d/%Y", tz = "Etc/GMT+8"),
-    # The following will adjust time stamps for DST appropriately:
-    `Date Time` = with_tz(datetime_standard, tzone = "America/Los_Angeles")
-  ) %>% 
-  rename(datetime = `Date Time`) %>% 
-  # Renaming variables based on inputs at the top
-  plyr::rename(warn_missing = FALSE, input_deq_renames) %>% 
-  mutate(site_id = data_deq_meta$site_id) %>% 
-  # Selecting only renamed variables in addition to time stamps
-  select(c(site_id, datetime, intersect(all_of(input_deq_renames), names(.)), datetime_standard))
-
-# Converting deg Ç (units in which DEQ reports) to deg F (units in which PA reports)
-if ("temperature_c" %in% colnames(data_deq) == TRUE & "temperature" %in% colnames(data_deq) == FALSE) {
-  data_deq <- data_deq %>% 
-    mutate(temperature = unit_convert(celsius = temperature_c))
-}
-```
-
-```{r data_applying}
-data_deq_hourly <- group_stad(data_deq, by_day = TRUE, by_hour = TRUE)
-data_deq_daily <- group_stad(data_deq, by_day = TRUE, by_hour = FALSE)
-data_deq_diurnal <- group_stad(data_deq, by_day = FALSE, by_hour = TRUE)
-
-if (run_date_grouping == TRUE){
-  data_deq <- data_deq %>% apply_date_tags()
-}
-if (run_hour_grouping == TRUE) {
-  data_deq <- data_deq %>% apply_hour_tags()
-}
-```
-
-```{r start_end_dates}
-if (exists("input_startdate") == FALSE) {
-  input_startdate <- as.character(min((data_deq %>% column_dt("date"))$date))
-}
-if (exists("input_enddate") == FALSE) {
-  input_enddate <- as.character(max((data_deq %>% column_dt("date"))$date))
-}
-```
-
-```{r eclean_applying}
-# OPTIONAL
-# Cleaning the global environment
-remove(run_date_grouping, run_hour_grouping)
-remove(list = c(ls(pattern = "input_(hour|date)_")))
 # It is recommended to keep raw_meta and raw_data since it takes the longest to load,
 # as well as the input start & end dates (since the diurnal set does not contain date information)
 ```

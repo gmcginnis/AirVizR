@@ -16,9 +16,10 @@ ambient_temperature(dataset, variable = temperature, change = 8)
 \value{
 Dataset with two new columns for ambient temperature, and temperature in ºC:
 \describe{
-\item{temperature_c}{Internal temperature in ºC}
-\item{temperature_ambient}{Ambient temperature in ºF}
-\item{temperature_ambient_c}{Ambient temperature in ºC}
+\item{temperature}{Ambient temperature in ºF}
+\item{temperature_c}{Ambient temperature in ºC}
+\item{temperature_inernal}{Internal temperature in ºF}
+\item{temperature_internal_c}{Internal temperature in ºC}
 }
 }
 \description{

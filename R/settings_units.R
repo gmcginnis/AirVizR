@@ -78,8 +78,8 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
     fill_colors <- viridis::scale_fill_viridis(option = "mako", direction = -1, limits = c(0, 100), end = 0.9, na.value = cap_color)
     print("RH detected as variable of interest; adjusting labels accordingly")
   } else if (stringr::str_detect(var_qt, "temp") == TRUE) {
-    # Adjusting color scale and labels if the variable of interest is internal temperature
-    lab_title_val <- "internal temperature"
+    # Adjusting color scale and labels if the variable of interest is ambient temperature
+    lab_title_val <- "ambient temperature"
     fill_colors <- viridis::scale_fill_viridis(option = "cividis", begin = 0.15, na.value = cap_color)
     print("Temperature detected as variable of interest; adjusting labels accordingly")
     lab_unit <- "\u00B0F"
@@ -89,12 +89,12 @@ settings_units <- function(dataset = dataset, var_qt = variable_of_interest_qt,
       print("Temperature detected to be in Celsius")
     } else { print("Temperature assumed to be in Fahrenheit") }
     
-    lab_fill <- paste0("Internal temperature (", lab_unit, ")")
+    lab_fill <- paste0("Ambient temperature (", lab_unit, ")")
     
-    if (stringr::str_detect(var_qt, "ambient") == TRUE) {
-      print("Ambient temperature (not raw/internal) detected")
-      lab_title_val <- "ambient temperature"
-      lab_fill <- paste0("Ambient temperature (", lab_unit, ")")
+    if (stringr::str_detect(var_qt, "internal") == TRUE) {
+      print("Internal temperature (not raw/internal) detected")
+      lab_title_val <- "internal temperature"
+      lab_fill <- paste0("Internal temperature (", lab_unit, ")")
     }
   }
   

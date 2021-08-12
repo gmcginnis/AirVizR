@@ -16,12 +16,9 @@
 #' }
 #' @return A dataframe returning all PAS within the defined area
 #' @examples 
-#' get_area_pas(
-#'   "OR",
-#'   -122.854, 45.4, -122.58, 45.6,
+#' get_area_pas("OR", -122.854, 45.4, -122.58, 45.6,
 #'   c("se", "SE", "Se", "\\bSTAR\\b", "\\bPSU\\b"),
-#'   datestamp = "2020-07-07", startdate = "2020-07-01"
-#' )
+#'   datestamp = "2020-07-07", startdate = "2020-07-01")
 #' @import AirSensor
 #' @export
 get_area_pas <- function(state_code = input_stateCode,

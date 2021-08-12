@@ -41,9 +41,7 @@ july_api_meta <- data_meta
 july_api_hourly <- apply_functions(data_pm, by_day = TRUE, by_hour = TRUE)
 july_api_daily <- apply_functions(data_pm, by_day = TRUE, by_hour = FALSE)
 july_api_diurnal <- apply_functions(data_pm, by_day = FALSE, by_hour = TRUE)
-july_api_full <- data_pm %>%
-  apply_date_tags() %>% 
-  apply_hour_tags()
+july_api_full <- apply_date_tags(apply_hour_tags(data_pm))
 
 july_api_raw <- raw_data
 july_api_raw_meta <- raw_meta

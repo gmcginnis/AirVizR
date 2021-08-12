@@ -83,10 +83,10 @@ if (run_hour_grouping == TRUE) {
 
 ```{r start_end_dates}
 if (exists("input_startdate") == FALSE) {
-  input_startdate <- min((local_full %>% column_dt("date"))$date)
+  input_startdate <- as.character(min((local_full %>% column_dt("date"))$date))
 }
 if (exists("input_enddate") == FALSE) {
-  input_enddate <- max((local_full %>% column_dt("date"))$date)
+  input_enddate <- as.character(max((local_full %>% column_dt("date"))$date))
 }
 ```
 

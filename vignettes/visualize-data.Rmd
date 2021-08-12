@@ -18,28 +18,36 @@ knitr::opts_chunk$set(
 library(AirVizR)
 ```
 
-```{r, eval = FALSE}
-# # Loading data if not already present. The 'july_api_*' files are imported with the package.
-# data_files <- c("data_meta", "data_full", "data_hourly", "data_daily", "data_diurnal")
-# file_list <- list()
-# for(i in data_files){file_list <- append(file_list, exists(i))}
-# if(FALSE %in% file_list){
-#   data_meta <- july_api_meta
-#   data_full <- july_api_full
-#   data_hourly <- july_api_hourly
-#   data_daily <- july_api_daily
-#   data_diurnal <- july_api_diurnal
-# }
-# remove(data_files, file_list, i)
+```{r, eval = FALSE, echo = FALSE}
+# Loading data if not already present. The 'july_api_*' files are imported with the package.
+data_files <- c("data_meta", "data_full", "data_hourly", "data_daily", "data_diurnal")
+file_list <- list()
+for(i in data_files){file_list <- append(file_list, exists(i))}
+if(FALSE %in% file_list){
+  data_meta <- july_api_meta
+  data_full <- july_api_full
+  data_hourly <- july_api_hourly
+  data_daily <- july_api_daily
+  data_diurnal <- july_api_diurnal
+}
+remove(data_files, file_list, i)
 
-# Load data if not already present. The 'july_api_*' files are imported with the package.
-data_meta <- july_api_meta
-data_full <- july_api_full
-data_hourly <- july_api_hourly
-data_daily <- july_api_daily
-data_diurnal <- july_api_diurnal
+if (exists("input_startdate") == FALSE) {
+  input_startdate <- as.character(min((data_full %>% column_dt("date"))$date))
+}
+if (exists("input_enddate") == FALSE) {
+  input_enddate <- as.character(max((data_full %>% column_dt("date"))$date))
+}
+
+# # Load data if not already present. The 'july_api_*' files are imported with the package.
+# data_meta <- july_api_meta
+# data_full <- july_api_full
+# data_hourly <- july_api_hourly
+# data_daily <- july_api_daily
+# data_diurnal <- july_api_diurnal
 ```
 
+# Default functions
 
 ```{r map, eval = FALSE}
 # Most basic heat map
@@ -108,3 +116,41 @@ ts_variation(data_hourly, c("pm25_epa_atm", "pm25_lrapa"))
 # Grouping, and selecting one plot of interest
 ts_variation(data_hourly, "pm25_epa_2021", group = "date_tag", subset = "hour")
 ```
+
+# Custom plots
+
+To cross-compare calculations, the data can be transformed into [tidy format](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1), where it can be visualized with non-specialized functions:
+
+```{r gg,  eval = FALSE}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+data_hourly %>% 
+  pivot_longer(c("pm25_atm", "pm25_epa_2021"), names_to = "equation", values_to = "pm25") %>% 
+  ggplot(aes(x = date_hour, y = pm25, color = equation)) +
+  geom_point(alpha = 0.1, size = 1)
+
+data_daily %>% 
+  pivot_longer(c("pm25_atm", "pm25_epa_2021"), names_to = "equation", values_to = "pm25") %>% 
+  ggplot(aes(x = as.character(date), y = pm25, color = equation)) +
+  geom_boxplot()
+```
+
+# Combine data sets
+
+Not all data sets will have the same number of columns. However, the data can still be combined into larger sets.
+Below are examples combining existing PurpleAir and FRM data that exist in the pacage.
+
+```{r combine,eval=FALSE}
+library(plyr)
+
+july_meta <- rbind(july_api_meta, july_frm_meta)
+tail(july_meta)
+
+july_daily <- rbind.fill(july_api_daily, july_frm_daily)
+head(july_daily)
+
+names(july_daily)
+```
+

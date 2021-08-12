@@ -7,9 +7,10 @@
 #' @param change Numeric: The value which to subtract from the original temperature value
 #' @return Dataset with two new columns for ambient temperature, and temperature in ºC:
 #' \describe{
-#'   \item{temperature_c}{Internal temperature in ºC}
-#'   \item{temperature_ambient}{Ambient temperature in ºF}
-#'   \item{temperature_ambient_c}{Ambient temperature in ºC}
+#'   \item{temperature}{Ambient temperature in ºF}
+#'   \item{temperature_c}{Ambient temperature in ºC}
+#'   \item{temperature_inernal}{Internal temperature in ºF}
+#'   \item{temperature_internal_c}{Internal temperature in ºC}
 #' }
 #' @examples 
 #' ambient_temperature(head(july_api_raw[1:3]))
@@ -20,9 +21,13 @@ ambient_temperature <- function(dataset, variable = temperature, change = 8) {
   
   if (var_qt %in% colnames(dataset) == TRUE & stringr::str_detect(var_qt, "_c") == FALSE) {
     dataset <- dplyr::mutate(dataset, 
-                             temperature_c = unit_convert({{variable}}),
-                             temperature_ambient = {{variable}} - change,
-                             temperature_ambient_c = unit_convert(temperature_ambient))
+                             temperature_internal = {{variable}},
+                             temperature_internal_c = unit_convert(temperature_internal),
+                             temperature = temperature_internal - change,
+                             temperature_c = unit_convert(temperature))
+                             # temperature_c = unit_convert({{variable}}),
+                             # temperature_ambient = {{variable}} - change,
+                             # temperature_ambient_c = unit_convert(temperature_ambient))
     
     print(paste("Ambient temperature column added using an adjustment of", change))
   } else { print("Temperature not detected, or in degrees Celsius. Please rename the variable or specify it manually.") }
