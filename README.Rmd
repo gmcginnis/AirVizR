@@ -28,7 +28,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 
 ``` {r, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("gmcginnis/AirVizR")
+devtools::install_github("gmcginnis/AirVizR", build_vignettes = TRUE)
 ```
 
 ```{r libraries, message = FALSE, warning = FALSE}
