@@ -16,9 +16,14 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(AirVizR)
+
+# For custom plots:
+library(ggplot2) # For plotting
+library(tidyr) # For pivoting
+library(dplyr) # For piping
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, echo = FALSE}
 # Loading data if not already present. The 'july_api_*' files are imported with the package.
 data_files <- c("data_meta", "data_full", "data_hourly", "data_daily", "data_diurnal")
 file_list <- list()
@@ -38,20 +43,18 @@ if (exists("input_startdate") == FALSE) {
 if (exists("input_enddate") == FALSE) {
   input_enddate <- as.character(max((data_full %>% column_dt("date"))$date))
 }
-
-# # Load data if not already present. The 'july_api_*' files are imported with the package.
-# data_meta <- july_api_meta
-# data_full <- july_api_full
-# data_hourly <- july_api_hourly
-# data_daily <- july_api_daily
-# data_diurnal <- july_api_diurnal
 ```
+
+---
 
 # Default functions
 
+## `map_stad()` - Map Spatio-Temporal Atmospheric Data
+
 ```{r map, eval = FALSE}
 # Most basic heat map
-# Note that this will average by location and no other variables. Use with caution if data spans over large periods of time.
+# Note that this will average by location and no other variables.
+# Use with caution if data spans over large periods of time.
 map_stad(data_hourly, pm25_epa_2021)
 
 # Grouping variables
@@ -64,6 +67,10 @@ map_stad(data_daily, pm25_epa_2021,
          maptype = "terrain", tint_color = "white", tint_alpha = 0.7)
 ```
 
+## `heatmap_single()` - Heatmap of a single monitor of interest
+
+Uses hourly data
+
 ```{r heatmap_singular, eval = FALSE}
 # Most basic single heatmap
 heatmap_single(pm25_epa_2021, "Rose City")
@@ -75,6 +82,10 @@ heatmap_single(humidity, "Rose City")
 heatmap_single(humidity, "Rose City", data_labels = FALSE)
 ```
 
+## `heatmap_cross()` - Heatmap of many monitors
+
+Uses data of any time concentration
+
 ```{r heatmap_spatial, eval = FALSE}
 # Most basic example
 heatmap_cross(data_full, pm25_atm)
@@ -85,6 +96,8 @@ heatmap_cross(data_full, pm25_atm, cap_value = 75, cap_color = "green")
 # Consider adding data labels for visualizations with fewer cell counts:
 heatmap_cross(data_daily, temperature_ambient, data_labels = TRUE)
 ```
+
+## `ts_line()` - Time series line graph
 
 ```{r timeseries_line, eval = FALSE}
 # Most basic example
@@ -98,13 +111,18 @@ ts_line(data_hourly, pm25_epa_2021, add_extrema = FALSE, add_average = FALSE)
 
 # Further customization:
 # Filter by site label to spotlight specific monitors without removing others in the set
-# Consider plotting on a single column if few monitors are selected, for ease of visualizaing temporal variation
-ts_line(data_hourly, pm25_epa_2021, add_points = TRUE, label_filter = c("Lighthouse", "PSU"), single_column = TRUE)
+# Consider plotting on a single column if few monitors are selected,
+# for ease of visualizaing temporal variation
+ts_line(data_hourly, pm25_epa_2021, add_points = TRUE,
+        label_filter = c("Lighthouse", "PSU"), single_column = TRUE)
 
 # Using other functions to exclude monitors (including from the background graphics):
 filter_df(data_hourly, label, exclude = "Sunset") %>% 
   ts_line(., pm25_epa_2021, add_points = TRUE)
 ```
+
+
+## `ts_variation()` - Time series variation, building upon `openair`'s `timeVariation()`.
 
 ```{r timeseries_variation, eval = FALSE}
 # Most basic example
@@ -117,23 +135,23 @@ ts_variation(data_hourly, c("pm25_epa_atm", "pm25_lrapa"))
 ts_variation(data_hourly, "pm25_epa_2021", group = "date_tag", subset = "hour")
 ```
 
+---
+
 # Custom plots
 
 To cross-compare calculations, the data can be transformed into [tidy format](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1), where it can be visualized with non-specialized functions:
 
-```{r gg,  eval = FALSE}
-library(ggplot2) # For plotting
-library(tidyr) # For pivoting
-library(dplyr) # For piping
-
+```{r gg, warning = FALSE, fig.height = 7, fig.width = 7}
+# scatterplot
 data_hourly %>% 
-  pivot_longer(c("pm25_atm", "pm25_epa_2021"), names_to = "equation", values_to = "pm25") %>% 
-  ggplot(aes(x = date_hour, y = pm25, color = equation)) +
+  organize_stad(c(pm25_atm, pm25_epa_2021), "pm25") %>% 
+  ggplot(aes(x = date_hour, y = pm25, color = measurement)) +
   geom_point(alpha = 0.1, size = 1)
 
+# boxplot
 data_daily %>% 
-  pivot_longer(c("pm25_atm", "pm25_epa_2021"), names_to = "equation", values_to = "pm25") %>% 
-  ggplot(aes(x = as.character(date), y = pm25, color = equation)) +
+  organize_stad(c(pm25_atm, pm25_epa_2021), "pm25") %>% 
+  ggplot(aes(x = as.character(date), y = pm25, color = measurement)) + 
   geom_boxplot()
 ```
 

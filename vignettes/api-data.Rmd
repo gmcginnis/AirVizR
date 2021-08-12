@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE,
+  tidy = TRUE
 )
 ```
 
@@ -20,12 +22,14 @@ library(AirVizR)
 ```
 
 # Importing using PurpleAir API
+
 The following showcases an example of retrieving PurpleAir data using functions derived from those in the [AirSensor](https://github.com/MazamaScience/AirSensor/) package.
 Because this process is dependent on external functions, it is possible that changes to the PurpleAir API structure could result in depreciation or failures to compile.
 
 ---
 
 ## Inputs
+
 Many functions rely on the same inputs, therefore default to the same defined objects in the environment.
 It is highly recommended to specify inputs upfront in their own chunk to simplify functionality.
 Various environment cleans are present in this document to showcase where and when these objects can be disgarded.
@@ -115,7 +119,7 @@ raw_meta <- results$raw_meta
 raw_data <- results$raw_data
 ```
 
-```{r eclean_loading}
+```{r eclean_loading, echo = FALSE}
 # OPTIONAL - clean the (digital) environment
 remove(input_stateCode, input_north, input_east, input_south, input_west, input_labels, ids, pas_area, results, include_inside, include_outside)
 ```
@@ -143,7 +147,7 @@ if (run_hour_grouping == TRUE) {
 }
 ```
 
-```{r eclean_applying}
+```{r eclean_applying, echo = FALSE}
 # OPTIONAL
 # Cleaning the global environment
 remove(input_drop_hi, run_date_grouping, run_hour_grouping)

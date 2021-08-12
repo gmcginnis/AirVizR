@@ -10,15 +10,17 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  tidy = TRUE,
+  eval = FALSE
 )
 ```
 
 ```{r setup}
 library(AirVizR)
-library(readxl)
-library(lubridate)
 library(magrittr)
+# library(readxl)
+# library(lubridate)
 ```
 
 # Importing local Federal Reference Monitor (FRM) data
@@ -29,6 +31,10 @@ Other FRM data can be imported in a similar manner, but might require customizat
 ---
 
 ## Inputs
+
+Many functions rely on the same inputs, therefore default to the same defined objects in the environment.
+It is highly recommended to specify inputs upfront in their own chunk to simplify functionality.
+Environment cleans are present in this document to showcase where and when these objects can be disgarded.
 
 ```{r inputs}
 # File path to the file of interest
@@ -60,7 +66,11 @@ input_hour_starts <- c(5, 12, 17, 21)
 # End hours will be automatically generated; no need to add "end" hours
 ```
 
-```{r load_raw_data}
+---
+
+## Loading Data
+
+```{r load_raw_data, results = 'hide'}
 # The following is location data for the DEQ FRM in Portland
 frm_raw_meta <- data.frame(
   label = "DEQ SE Lafayette",
@@ -75,8 +85,9 @@ frm_raw_meta <- data.frame(
 raw_frm <- read_frm()
 ```
 
+## Wrangling Data
 
-```{r wrangle_data}
+```{r wrangle_data, message = FALSE, results = 'hide'}
 frm_meta <- wrangle_meta(frm_raw_meta)
 frm_full <- wrangle_frm(raw_frm, frm_meta)
 
@@ -92,7 +103,7 @@ if (run_hour_grouping == TRUE) {
 }
 ```
 
-```{r start_end_dates}
+```{r start_end_dates, results = 'hide'}
 if (exists("input_startdate") == FALSE) {
   input_startdate <- min((frm_full %>% column_dt("date"))$date)
 }
@@ -101,7 +112,7 @@ if (exists("input_enddate") == FALSE) {
 }
 ```
 
-```{r eclean_applying}
+```{r eclean_applying, echo = FALSE}
 # OPTIONAL
 # Cleaning the global environment
 remove(run_date_grouping, run_hour_grouping)

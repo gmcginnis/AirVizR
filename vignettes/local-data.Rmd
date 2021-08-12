@@ -10,15 +10,24 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  tidy = TRUE,
+  eval = FALSE
 )
 ```
 
 ```{r setup}
 library(AirVizR)
+library(magrittr)
 ```
 
-```{r manual_inputs}
+## Inputs
+
+Many functions rely on the same inputs, therefore default to the same defined objects in the environment.
+It is highly recommended to specify inputs upfront in their own chunk to simplify functionality.
+Various environment cleans are present in this document to showcase where and when these objects can be disgarded.
+
+```{r inputs}
 # Path to folder containing CSV files of interest
 input_path <- "data-raw/local"
 
@@ -29,9 +38,8 @@ input_timezone <- "America/Los_Angeles"
 
 #OPTIONAL: filter for specific locations, e.g. for STAR labs use "*STAR*" exactly. Use NULL otherwise
 input_path_filter <- NULL
-```
 
-```{r inputs}
+
 ## Optional grouping settings (which will NOT impact raw data output, but can be useful when graphing!)
 
 ## DATE GROUPING
@@ -59,11 +67,18 @@ input_hour_starts <- c(5, 12, 17, 21)
 # If you would like to drop specific hours, consider using the filter_df() function
 ```
 
+---
+
+## Loading Data
+
 ```{r reading_data}
 local_meta <- read_local_meta(pattern = input_path_filter)
 
 local_raw <- read_local_folder(pattern = input_path_filter)
 ```
+
+
+## Wrangling Data
 
 
 ```{r clean_data}
@@ -80,6 +95,8 @@ if (run_hour_grouping == TRUE) {
   local_full <- local_full %>% apply_hour_tags()
 }
 ```
+
+Pulling start and end dates (for other functions):
 
 ```{r start_end_dates}
 if (exists("input_startdate") == FALSE) {

@@ -42,3 +42,5 @@ vignettes/*.pdf
 AirVizR.Rproj
 .Rbuildignore
 inst/doc
+/doc/
+/Meta/

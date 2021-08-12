@@ -27,6 +27,7 @@ Imports:
     ggrepel,
     lubridate,
     magrittr,
+    plyr,
     readr,
     scales,
     stringr,

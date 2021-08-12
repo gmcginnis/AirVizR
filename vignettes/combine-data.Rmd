@@ -14,9 +14,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message = FALSE, warning = FALSE}
 library(AirVizR)
 library(plyr)
+library(magrittr)
+
+# For combo visualizations:
+library(ggplot2)
+library(dplyr)
 ```
 
 # Combine data sets
@@ -55,7 +60,7 @@ Now that we have our combined data frames, we can visualize it. See more visuali
 
 If we want to focus on data during and after the Fourth of July, filter the data frame first with `filter_df()`.
 
-```{r visualize}
+```{r visualize, fig.width = 7, fig.height = 7, results = 'hide', fig.keep = 'all'}
 filter_df(combo_pm25, date_tag, exclude = "Before") %>% 
   heatmap_cross(
     dataset = ., #this dot is because the now-filtered data set is piped in from above
@@ -68,24 +73,27 @@ filter_df(combo_pm25, date_tag, exclude = "Before") %>%
 To compare the accuracy of the reported PM values between PA and FRM, we can plot them on the same graph with some adjustments. First we will have to make the data grouped by time stamp, since PA data does not have `pm25_frm` and FRM does not have `pm25_epa_2021`.
 
 ```{r compare}
-library(ggplot)
-library(dplyr)
-
 combo_pm25_wide <- combo_hourly %>% 
   # Filtering to include only outdoor and FRM data
   filter_df(location, exclude = c("inside"), location_data = combo_meta) %>% 
   # Grouping by dates in order to plot values against one another
   group_by(date_tag, date_hour, hour_tag) %>% 
   summarize_at(vars(pm25_epa_2021, pm25_frm), mean, na.rm = TRUE)
+```
 
+```{r preview, eval = FALSE}
 # Preview before and after. Notice the many NAs in combo_hourly!
 head(select(combo_hourly, date_tag, date_hour, hour_tag, pm25_epa_2021, pm25_frm))
 head(combo_pm25_wide)
+```
 
+```{r fig_simple}
 # Basic plot:
 ggplot(combo_pm25_wide, aes(x = pm25_epa_2021, y = pm25_frm)) +
   geom_point()
+```
 
+```{r fig_fancy, fig.width = 7, fig.height = 7}
 # Feeling fancy? Customize other elements:
 ggplot(combo_pm25_wide, aes(x = pm25_epa_2021, y = pm25_frm, color = date_tag)) +
   # Separating by hour and date tags:
