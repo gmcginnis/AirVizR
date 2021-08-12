@@ -104,4 +104,4 @@ remove(list = c(ls(pattern = "input_(path|timezone)")))
 
 ## Next steps
 
-Now we're ready to visualize! See the `visualize-data` vignette for instructions.
+Now we're ready to visualize! See the [`visualize-data` vignette](visualize-data.html) for instructions.

@@ -122,9 +122,9 @@ ts_variation(data_hourly, "pm25_epa_2021", group = "date_tag", subset = "hour")
 To cross-compare calculations, the data can be transformed into [tidy format](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1), where it can be visualized with non-specialized functions:
 
 ```{r gg,  eval = FALSE}
-library(ggplot2)
-library(tidyr)
-library(dplyr)
+library(ggplot2) # For plotting
+library(tidyr) # For pivoting
+library(dplyr) # For piping
 
 data_hourly %>% 
   pivot_longer(c("pm25_atm", "pm25_epa_2021"), names_to = "equation", values_to = "pm25") %>% 
@@ -137,20 +137,8 @@ data_daily %>%
   geom_boxplot()
 ```
 
-# Combine data sets
+---
 
-Not all data sets will have the same number of columns. However, the data can still be combined into larger sets.
-Below are examples combining existing PurpleAir and FRM data that exist in the pacage.
+# Further customization
 
-```{r combine,eval=FALSE}
-library(plyr)
-
-july_meta <- rbind(july_api_meta, july_frm_meta)
-tail(july_meta)
-
-july_daily <- rbind.fill(july_api_daily, july_frm_daily)
-head(july_daily)
-
-names(july_daily)
-```
-
+Visualization options can also be applied to combine data sets. See the [`combine-data` vignette](combine-data.html) for more information!

@@ -34,9 +34,9 @@ raw_frm <- read_frm(input_frm_path)
 frm_full <- wrangle_frm(raw_frm, frm_meta)
 
 july_frm_meta <- frm_meta
-july_frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE)
-july_frm_daily <- group_stad(frm_full, by_day = TRUE, by_hour = FALSE)
-july_frm_diurnal <- group_stad(frm_full, by_day = FALSE, by_hour = TRUE)
+july_frm_hourly <- apply_hour_tags(apply_date_tags(group_stad(frm_full, by_day = TRUE, by_hour = TRUE)))
+july_frm_daily <- apply_date_tags(group_stad(frm_full, by_day = TRUE, by_hour = FALSE))
+july_frm_diurnal <- apply_hour_tags(group_stad(frm_full, by_day = FALSE, by_hour = TRUE))
 july_frm_full <- apply_hour_tags(apply_date_tags(frm_full))
 
 usethis::use_data(july_frm_meta, overwrite = TRUE)

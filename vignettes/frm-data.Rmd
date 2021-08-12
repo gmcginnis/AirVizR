@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(AirVizR)
 library(readxl)
 library(lubridate)
+library(magrittr)
 ```
 
 # Importing local Federal Reference Monitor (FRM) data
@@ -79,9 +80,9 @@ raw_frm <- read_frm()
 frm_meta <- wrangle_meta(frm_raw_meta)
 frm_full <- wrangle_frm(raw_frm, frm_meta)
 
-frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE)
-frm_daily <- group_stad(frm_full, by_day = TRUE, by_hour = FALSE)
-frm_diurnal <- group_stad(frm_full, by_day = FALSE, by_hour = TRUE)
+frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE) %>% apply_hour_tags()
+frm_daily <- group_stad(frm_full, by_day = TRUE, by_hour = FALSE) %>% apply_date_tags()
+frm_diurnal <- group_stad(frm_full, by_day = FALSE, by_hour = TRUE) %>% apply_hour_tags()
 
 if (run_date_grouping == TRUE){
   frm_full <- apply_date_tags(frm_full)
@@ -113,4 +114,4 @@ remove(list = c(ls(pattern = "input_(hour|date|frm)_")))
 
 ## Next steps
 
-Now we're ready to visualize! See the `visualize-data` vignette for instructions.
+Now we're ready to visualize! See the [`visualize-data` vignette](visualize-data.html) for instructions.

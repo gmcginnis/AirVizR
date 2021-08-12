@@ -16,7 +16,7 @@
 wrangle_frm <- function(data_frm_raw, data_frm_meta, timezone_original = "Etc/GMT+8") {
   
   input_deq_renames <- c(
-    "PM2.5" = "pm25_deq",
+    "PM2.5" = "pm25_frm",
     "Temperature" = "temperature_c",
     "Relative Humidity" = "humidity",
     "Wind Direction" = "wind_direction",

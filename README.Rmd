@@ -34,10 +34,6 @@ devtools::install_github("gmcginnis/AirVizR")
 ```{r libraries, message = FALSE, warning = FALSE}
 # Load the library
 library(AirVizR)
-
-# It is also recommended to load the tidyverse
-# install.packages("tidyverse")
-library(tidyverse)
 ```
 
 ## Wrangling options:
@@ -62,7 +58,7 @@ The data preparation functions are primarily configured for using PurpleAir data
 To represent both the spatial and temporal aspects of atmospheric data, maps can be used to visualize multiple monitors.  
 Visual options, such as point size and background graphics, can also be customized.
 
-```{r example_map_stad, warning = FALSE, message = FALSE, fig.retina=2}
+```{r example_map_stad, warning = FALSE, message = FALSE, fig.retina=2, echo = FALSE}
 map_stad(july_api_daily,
          pm25_epa_2021,
          location_data = july_api_meta,
@@ -79,7 +75,7 @@ The heatmap options in this package are designed for continuous numeric variable
 
 To show hourly changes over time for a single monitor, data can be visualized with the date on the x-axis, and hour of the day on the y-axis. By default, cell data will also be supplemented with a text label (which is color-customizable).
 
-```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height = 7}
+```{r example_heatmap_single, warning = FALSE, message = FALSE, fig.height = 7, echo = FALSE}
 heatmap_single(dataset = july_api_hourly,
                pm25_epa_2021,
                "Lighthouse",
@@ -92,11 +88,7 @@ To compare multiple monitors in a set over time (of any temporal resolution), da
 This visualization option is ideal for larger data sets with many monitors. Optionally, monitors with incomplete data can be filtered out.  
 Below, an example is shown with the defaults, followed by one with only complete monitors included and a "color cap" applied to avoid a washed out color palette. This color "cap" can be applied to all visualization types with continuous colors in this package.  
 
-```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=9}
-# BEFORE dropping incomplete sets and applying a color cap
-heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta)
-
-# AFTER dropping incomplete sets and applying a color cap
+```{r example_heatmap_cross, warning = FALSE, message = FALSE, fid.width=10, fig.height = 7, echo = FALSE}
 heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta,
               drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
 ```
@@ -109,7 +101,7 @@ Time series visualizations are useful for representing changes over time.
 
 The following is a visualization option intended to spotlight specific monitors in a data set. Optional arguments allow for points to be added, color caps (as above) to be applied, and show/hide maximum & minimum values for each monitor. Additionally, data can be visualized in a single "column" of results if desired, allowing for easier temporal cross-comparisons.
 
-```{r example_ts_line, warning = FALSE, message = FALSE, fig.retina=2}
+```{r example_ts_line, warning = FALSE, message = FALSE, fig.retina=2, echo = FALSE}
 ts_line(july_api_hourly,
         pm25_atm,
         label_filter = "STAR",
@@ -122,7 +114,7 @@ ts_line(july_api_hourly,
 A visualization option that builds upon the `timeVariation()` function from the [OpenAir package](https://bookdown.org/david_carslaw/openair/) is also available.  
 It can be modified to compare multiple groups (such as date ranges) or multiple pollutants.
 
-```{r example_ts_variation, warning = FALSE, message = FALSE, eval = FALSE}
+```{r example_ts_variation, warning = FALSE, message = FALSE, eval = FALSE, tidy = TRUE}
 ts_variation(july_api_hourly,
              "pm25_epa_2021",
              include = "Lighthouse",
@@ -130,3 +122,53 @@ ts_variation(july_api_hourly,
              location_data = july_api_meta,
              subset = "hour")
 ```
+
+### Combine FRM and PurpleAir Data
+
+STADs can be combined and pivoted in order to visualize data from both FRMs and PurpleAir monitors simultaneously. The visualization functions above can be used, or custom ones can be applied:
+
+```{r comp, message = FALSE, warning = FALSE, echo = FALSE, fig.height = 8}
+library(ggplot2)
+library(magrittr)
+
+# Combine meta data
+combo_meta <- organize_stad(list(july_api_meta, july_frm_meta))
+# Combine hourly data
+combo_hourly <- organize_stad(list(july_api_hourly, july_frm_hourly))
+
+combo_pm25_wide <- combo_hourly %>% 
+  # Filtering to include only outdoor and FRM data
+  # filter_df(var = location, exclude = c("inside"), location_data = combo_meta) %>% 
+  dplyr::left_join(combo_meta) %>% 
+  dplyr::filter(!stringr::str_detect(location, "inside")) %>% 
+  # Grouping by dates in order to plot values against one another
+  dplyr::group_by(date_tag, date_hour, hour_tag) %>% 
+  dplyr::summarize_at(dplyr::vars(pm25_epa_2021, pm25_frm), mean, na.rm = TRUE) %>% 
+  tidyr::drop_na()
+
+ggplot(combo_pm25_wide, aes(x = pm25_epa_2021, y = pm25_frm, color = date_tag)) +
+  # Separating by hour and date tags:
+  facet_grid(hour_tag~date_tag) +
+  # Adding a 1:1 line:
+  geom_abline(intercept = 0, slope = 1, linetype = "longdash", color = "purple", alpha = 0.5) +
+  # Changing shape to make overlaps more visible:
+  geom_point(shape = 1) + 
+  # Force the resulting plot to be squared (i.e. x & y min & max will be the same):
+  coord_fixed() +
+  # Changing the color scale to be darker and more colorblind-friendly
+  scale_color_brewer(palette = "Set1") +
+  # Changing theme to be more crisp:
+  theme_bw() +
+  # Removing color legend, since it's already clearly separated by date_tag:
+  theme(legend.position = "none") +
+  # Add labels:
+  labs(
+    title = "Comparing FRM and PA PM2.5",
+    subtitle = "Date from Oregon DEQ and Portland-based\nPurpleAir monitors, respectively",
+    x = "EPA-corrected PurpleAir PM2.5",
+    y = "FRM PM2.5"
+  )
+
+remove(combo_meta, combo_hourly, combo_pm25_wide)
+```
+

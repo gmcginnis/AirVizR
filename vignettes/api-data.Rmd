@@ -126,20 +126,20 @@ Now that we have the raw data imported, we will wrangle them by applying basic q
 
 ```{r clean_data}
 # Wrangling the data
-data_meta <- wrangle_meta(raw_meta)
-data_full <- wrangle_data(raw_data)
+pa_meta <- wrangle_meta(raw_meta)
+pa_full <- wrangle_data(raw_data)
 
 # Creating data sets for each grouping option
-data_hourly <- apply_functions(data_full, by_day = TRUE, by_hour = TRUE)
-data_daily <- apply_functions(data_full, by_day = TRUE, by_hour = FALSE)
-data_diurnal <- apply_functions(data_full, by_day = FALSE, by_hour = TRUE)
+pa_hourly <- apply_functions(pa_full, by_day = TRUE, by_hour = TRUE)
+pa_daily <- apply_functions(pa_full, by_day = TRUE, by_hour = FALSE)
+pa_diurnal <- apply_functions(pa_full, by_day = FALSE, by_hour = TRUE)
 
 # Apply date and/or hour tags to the original data set, if specified in the inputs
 if (run_date_grouping == TRUE){
-  data_full <- apply_date_tags(data_full)
+  pa_full <- apply_date_tags(pa_full)
 }
 if (run_hour_grouping == TRUE) {
-  data_full <- apply_hour_tags(data_full)
+  pa_full <- apply_hour_tags(pa_full)
 }
 ```
 
@@ -156,4 +156,4 @@ remove(list = c(ls(pattern = "input_(hour|date)_")))
 
 ## Next steps
 
-Now we're ready to visualize! See the `visualize-data` vignette for instructions.
+Now we're ready to visualize! See the [`visualize-data` vignette](visualize-data.html) for instructions.

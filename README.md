@@ -31,10 +31,6 @@ devtools::install_github("gmcginnis/AirVizR")
 ``` r
 # Load the library
 library(AirVizR)
-
-# It is also recommended to load the tidyverse
-# install.packages("tidyverse")
-library(tidyverse)
 ```
 
 ## Wrangling options:
@@ -82,18 +78,12 @@ maps can be used to visualize multiple monitors.
 Visual options, such as point size and background graphics, can also be
 customized.
 
-``` r
-map_stad(july_api_daily,
-         pm25_epa_2021,
-         location_data = july_api_meta,
-         grouping_vars = "date_tag")
-#> [1] "Daily set detected: x-axis will map across in units of 24 hours, with axis breaks each day"
-#> [1] "Data now grouped and averaged. Location data added."
-#> [1] "PM 2.5 detected"
-#> [1] "Base plot created."
-#> [1] "Plot now faceted by date_tag"
-#> [1] "Final plot created."
-```
+    #> [1] "Daily set detected: x-axis will map across in units of 24 hours, with axis breaks each day"
+    #> [1] "Data now grouped and averaged. Location data added."
+    #> [1] "PM 2.5 detected"
+    #> [1] "Base plot created."
+    #> [1] "Plot now faceted by date_tag"
+    #> [1] "Final plot created."
 
 <img src="man/figures/README-example_map_stad-1.png" width="100%" />
 
@@ -112,14 +102,8 @@ visualized with the date on the x-axis, and hour of the day on the
 y-axis. By default, cell data will also be supplemented with a text
 label (which is color-customizable).
 
-``` r
-heatmap_single(dataset = july_api_hourly,
-               pm25_epa_2021,
-               "Lighthouse",
-               location_data = july_api_meta)
-#> [1] "PM 2.5 detected"
-#> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-```
+    #> [1] "PM 2.5 detected"
+    #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
 
 <img src="man/figures/README-example_heatmap_single-1.png" width="100%" />
 
@@ -138,30 +122,15 @@ complete monitors included and a “color cap” applied to avoid a washed
 out color palette. This color “cap” can be applied to all visualization
 types with continuous colors in this package.
 
-``` r
-# BEFORE dropping incomplete sets and applying a color cap
-heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta)
-#> [1] "All monitors will be plotted."
-#> [1] "PM 2.5 detected"
-#> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-```
+    #> [1] "Monitors with incomplete temporal data that will be dropped:"
+    #> [1] "1b10dd8f4c3b95cf_21429" "65b3dca6d412ed31_55407" "83d4548499837cd9_43023"
+    #> [4] "b8a3ff485ef60d6d_7018"  "b9b7db32f74ef0bd_31197" "bde741b2b71bcfb4_15187"
+    #> [7] "fd592e6f0a68d9de_12821" "ff72451b47552941_23805"
+    #> [1] "PM 2.5 detected"
+    #> [1] "Values greater than or equal to 50 in pm25_epa_2021 will be colored green"
+    #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
 
 <img src="man/figures/README-example_heatmap_cross-1.png" width="100%" />
-
-``` r
-# AFTER dropping incomplete sets and applying a color cap
-heatmap_cross(july_api_hourly, pm25_epa_2021, location_data = july_api_meta,
-              drop_incomplete = TRUE, cap_value = 50, cap_color = "green")
-#> [1] "Monitors with incomplete temporal data that will be dropped:"
-#> [1] "1b10dd8f4c3b95cf_21429" "65b3dca6d412ed31_55407" "83d4548499837cd9_43023"
-#> [4] "b8a3ff485ef60d6d_7018"  "b9b7db32f74ef0bd_31197" "bde741b2b71bcfb4_15187"
-#> [7] "fd592e6f0a68d9de_12821" "ff72451b47552941_23805"
-#> [1] "PM 2.5 detected"
-#> [1] "Values greater than or equal to 50 in pm25_epa_2021 will be colored green"
-#> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-```
-
-<img src="man/figures/README-example_heatmap_cross-2.png" width="100%" />
 
 ### Timeseries line graphs
 
@@ -177,18 +146,11 @@ values for each monitor. Additionally, data can be visualized in a
 single “column” of results if desired, allowing for easier temporal
 cross-comparisons.
 
-``` r
-ts_line(july_api_hourly,
-        pm25_atm,
-        label_filter = "STAR",
-        location_data = july_api_meta,
-        add_points = TRUE)
-#> [1] "Charts will be arranged in multiple rows and columns."
-#> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
-#> [1] "Average data added."
-#> [1] "PM 2.5 detected"
-#> [1] "Data points will be added."
-```
+    #> [1] "Charts will be arranged in multiple rows and columns."
+    #> [1] "Hourly set detected: x-axis will map across in units of hour in each day, with axis breaks each day"
+    #> [1] "Average data added."
+    #> [1] "PM 2.5 detected"
+    #> [1] "Data points will be added."
 
 <img src="man/figures/README-example_ts_line-1.png" width="100%" />
 
@@ -201,10 +163,17 @@ It can be modified to compare multiple groups (such as date ranges) or
 multiple pollutants.
 
 ``` r
-ts_variation(july_api_hourly,
-             "pm25_epa_2021",
-             include = "Lighthouse",
-             group = "date_tag",
-             location_data = july_api_meta,
-             subset = "hour")
+ts_variation(july_api_hourly, "pm25_epa_2021", include = "Lighthouse", group = "date_tag",
+    location_data = july_api_meta, subset = "hour")
 ```
+
+### Combine FRM and PurpleAir Data
+
+STADs can be combined and pivoted in order to visualize data from both
+FRMs and PurpleAir monitors simultaneously. The visualization functions
+above can be used, or custom ones can be applied:
+
+    #> [1] "Data sets now row-bound"
+    #> [1] "Data sets now row-bound"
+
+<img src="man/figures/README-comp-1.png" width="100%" />
