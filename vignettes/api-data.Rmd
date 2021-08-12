@@ -2,7 +2,7 @@
 title: "Importing and Using API Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{api-data}
+  %\VignetteIndexEntry{Importing and Using API Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -116,9 +116,8 @@ raw_data <- results$raw_data
 ```
 
 ```{r eclean_loading}
-# OPTIONAL
-# Cleaning the global environment
-remove(input_stateCode, input_north, input_east, input_south, input_west, input_labels, ids, pas_area)
+# OPTIONAL - clean the (digital) environment
+remove(input_stateCode, input_north, input_east, input_south, input_west, input_labels, ids, pas_area, results, include_inside, include_outside)
 ```
 
 
@@ -128,28 +127,29 @@ Now that we have the raw data imported, we will wrangle them by applying basic q
 ```{r clean_data}
 # Wrangling the data
 data_meta <- wrangle_meta(raw_meta)
-data_pm <- wrangle_data(raw_data)
+data_full <- wrangle_data(raw_data)
 
 # Creating data sets for each grouping option
-data_hourly <- apply_functions(data_pm, by_day = TRUE, by_hour = TRUE)
-data_daily <- apply_functions(data_pm, by_day = TRUE, by_hour = FALSE)
-data_diurnal <- apply_functions(data_pm, by_day = FALSE, by_hour = TRUE)
+data_hourly <- apply_functions(data_full, by_day = TRUE, by_hour = TRUE)
+data_daily <- apply_functions(data_full, by_day = TRUE, by_hour = FALSE)
+data_diurnal <- apply_functions(data_full, by_day = FALSE, by_hour = TRUE)
 
 # Apply date and/or hour tags to the original data set, if specified in the inputs
 if (run_date_grouping == TRUE){
-  data_pm <- data_pm %>% apply_date_tags()
+  data_full <- apply_date_tags(data_full)
 }
 if (run_hour_grouping == TRUE) {
-  data_pm <- data_pm %>% apply_hour_tags()
+  data_full <- apply_hour_tags(data_full)
 }
 ```
 
 ```{r eclean_applying}
 # OPTIONAL
 # Cleaning the global environment
-remove(input_drop_hi, results, run_date_grouping, run_hour_grouping, include_outside, include_inside)
+remove(input_drop_hi, run_date_grouping, run_hour_grouping)
 remove(list = c(ls(pattern = "input_(hour|date)_")))
-# It is recommended to keep raw_meta and raw_data
+# It is recommended to keep raw_meta and raw_data since it takes the longest to load,
+# as well as the input start & end dates (since the diurnal set does not contain date information)
 ```
 
 ---

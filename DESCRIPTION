@@ -21,16 +21,21 @@ RoxygenNote: 7.1.1
 Imports: 
     data.table,
     dplyr,
+    forcats,
     ggmap (>= 3.0.0.903),
     ggplot2,
     ggrepel,
     lubridate,
+    magrittr,
     readr,
+    scales,
     stringr,
+    tidyr,
     viridis
 Suggests: 
     knitr,
     openair,
+    readxl,
     rmarkdown,
     testthat (>= 3.0.0)
 Remotes:

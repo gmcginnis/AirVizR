@@ -1,8 +1,8 @@
 ---
-title: "local-data"
+title: "Importing and Using Local PurpleAir Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{local-data}
+  %\VignetteIndexEntry{Importing and Using Local PurpleAir Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(AirVizR)
-library(tidyverse)
-library(lubridate)
-
-library(data.table)
 ```
 
 ```{r manual_inputs}
@@ -63,15 +59,16 @@ input_hour_starts <- c(5, 12, 17, 21)
 # If you would like to drop specific hours, consider using the filter_df() function
 ```
 
-```{r}
+```{r reading_data}
 local_meta <- read_local_meta(pattern = input_path_filter)
 
 local_raw <- read_local_folder(pattern = input_path_filter)
 ```
 
 
-```{r auto_apply}
+```{r clean_data}
 local_full <- wrangle_local(local_raw, local_meta)
+
 local_hourly <- apply_functions(local_full, by_day = TRUE, by_hour = TRUE)
 local_daily <- apply_functions(local_full, by_day = TRUE, by_hour = FALSE)
 local_diurnal <- apply_functions(local_full, by_day = FALSE, by_hour = TRUE)
@@ -85,10 +82,26 @@ if (run_hour_grouping == TRUE) {
 ```
 
 ```{r start_end_dates}
-if (missing(input_startdate) == TRUE) {
+if (exists("input_startdate") == FALSE) {
   input_startdate <- min((local_full %>% column_dt("date"))$date)
 }
-if (missing(input_enddate) == TRUE) {
+if (exists("input_enddate") == FALSE) {
   input_enddate <- max((local_full %>% column_dt("date"))$date)
 }
 ```
+
+```{r eclean_applying}
+# OPTIONAL
+# Cleaning the global environment
+remove(run_date_grouping, run_hour_grouping)
+remove(list = c(ls(pattern = "input_(hour|date)_")))
+remove(list = c(ls(pattern = "input_(path|timezone)")))
+# It is recommended to keep raw_meta and raw_data since it takes the longest to load,
+# as well as the input start & end dates (since the diurnal set does not contain date information)
+```
+
+---
+
+## Next steps
+
+Now we're ready to visualize! See the `visualize-data` vignette for instructions.

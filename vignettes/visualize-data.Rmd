@@ -1,8 +1,8 @@
 ---
-title: "visualize-data"
+title: "Visualizing STAD"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{visualize-data}
+  %\VignetteIndexEntry{Visualizing STAD}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,19 +16,30 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(AirVizR)
-
-data_files <- c("data_meta", "data_pm", "data_hourly", "data_daily", "data_diurnal")
-file_list <- list()
-for(i in data_files){file_list <- append(file_list, exists(i))}
-if(FALSE %in% file_list){
-  # Looading data; the 'july_api_*' files are imported with the package.
-  data_meta <- july_api_meta
-  data_pm <- july_api_full
-  data_hourly <- july_api_hourly
-  data_daily <- july_api_daily
-  data_diurnal <- july_api_diurnal
-}
 ```
+
+```{r, eval = FALSE}
+# # Loading data if not already present. The 'july_api_*' files are imported with the package.
+# data_files <- c("data_meta", "data_full", "data_hourly", "data_daily", "data_diurnal")
+# file_list <- list()
+# for(i in data_files){file_list <- append(file_list, exists(i))}
+# if(FALSE %in% file_list){
+#   data_meta <- july_api_meta
+#   data_full <- july_api_full
+#   data_hourly <- july_api_hourly
+#   data_daily <- july_api_daily
+#   data_diurnal <- july_api_diurnal
+# }
+# remove(data_files, file_list, i)
+
+# Load data if not already present. The 'july_api_*' files are imported with the package.
+data_meta <- july_api_meta
+data_full <- july_api_full
+data_hourly <- july_api_hourly
+data_daily <- july_api_daily
+data_diurnal <- july_api_diurnal
+```
+
 
 ```{r map, eval = FALSE}
 # Most basic heat map
@@ -58,10 +69,10 @@ heatmap_single(humidity, "Rose City", data_labels = FALSE)
 
 ```{r heatmap_spatial, eval = FALSE}
 # Most basic example
-heatmap_cross(data_pm, pm25_atm)
+heatmap_cross(data_full, pm25_atm)
 
 # Further customization. You can avoid washing out the color scale by adding a cap.
-heatmap_cross(data_pm, pm25_atm, cap_value = 75, cap_color = "green")
+heatmap_cross(data_full, pm25_atm, cap_value = 75, cap_color = "green")
 
 # Consider adding data labels for visualizations with fewer cell counts:
 heatmap_cross(data_daily, temperature_ambient, data_labels = TRUE)

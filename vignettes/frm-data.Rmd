@@ -1,8 +1,8 @@
 ---
-title: "frm-data"
+title: "Importing and Using FRM Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{frm-data}
+  %\VignetteIndexEntry{Importing and Using FRM Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(AirVizR)
 library(readxl)
+library(lubridate)
 ```
 
 # Importing local Federal Reference Monitor (FRM) data
@@ -30,7 +31,7 @@ Other FRM data can be imported in a similar manner, but might require customizat
 
 ```{r inputs}
 # File path to the file of interest
-input_deq_path <- "data-raw/frm_july.xlsx"
+input_frm_path <- "data-raw/frm_july.xlsx"
 
 ## Optional grouping settings (which will NOT impact raw data output, but can be useful when graphing!)
 
@@ -60,7 +61,7 @@ input_hour_starts <- c(5, 12, 17, 21)
 
 ```{r location_data}
 # The following is location data for the DEQ FRM in Portland
-data_deq_meta <- data.frame(
+frm_meta <- data.frame(
   label = "DEQ SE Lafayette",
   location = factor("FRM"), # The device is outside but this will label it separately
   latitude = 45.496641,
@@ -71,17 +72,41 @@ data_deq_meta <- data.frame(
 )
 ```
 
-```{r settings}
-# Input of renames. Those listed will be included in the final data frame. All others will be discarded.
-# Time stamp will be automatically renamed and kept.
-input_deq_renames <- c(
-  "PM2.5" = "pm25_deq",
-  "Temperature" = "temperature_c",
-  "Relative Humidity" = "humidity",
-  "Wind Direction" = "wind_direction",
-  "Wind Speed (mph)" = "wind_speed",
-  "Black Carbon (BC6 880nm)" = "black_carbon"
-)
+```{r load_data}
+raw_frm <- read_frm()
+```
+
+```{r}
+frm_full <- wrangle_frm(raw_frm, frm_meta)
+
+frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE)
+frm_daily <- group_stad(frm_full, by_day = TRUE, by_hour = FALSE)
+frm_diurnal <- group_stad(frm_full, by_day = FALSE, by_hour = TRUE)
+
+if (run_date_grouping == TRUE){
+  frm_full <- apply_date_tags(frm_full)
+}
+if (run_hour_grouping == TRUE) {
+  frm_full <- apply_hour_tags(frm_full)
+}
+```
+
+```{r start_end_dates}
+if (exists("input_startdate") == FALSE) {
+  input_startdate <- min((frm_full %>% column_dt("date"))$date)
+}
+if (exists("input_enddate") == FALSE) {
+  input_enddate <- max((frm_full %>% column_dt("date"))$date)
+}
+```
+
+```{r eclean_applying}
+# OPTIONAL
+# Cleaning the global environment
+remove(run_date_grouping, run_hour_grouping)
+remove(list = c(ls(pattern = "input_(hour|date|frm)_")))
+# It is recommended to keep raw_meta and raw_data since it takes the longest to load,
+# as well as the input start & end dates (since the diurnal set does not contain date information)
 ```
 
 
@@ -141,19 +166,6 @@ if ("temperature_c" %in% colnames(data_deq) == TRUE & "temperature" %in% colname
 }
 ```
 
-```{r eclean_wrangle}
-remove(input_deq_renames)
-```
-
-```{r start_end_dates}
-if (exists("input_startdate") == FALSE) {
-  input_startdate <- as.character(min((data_deq %>% column_dt("date"))$date))
-}
-if (exists("input_enddate") == FALSE) {
-  input_enddate <- as.character(max((data_deq %>% column_dt("date"))$date))
-}
-```
-
 ```{r data_applying}
 data_deq_hourly <- group_stad(data_deq, by_day = TRUE, by_hour = TRUE)
 data_deq_daily <- group_stad(data_deq, by_day = TRUE, by_hour = FALSE)
@@ -166,3 +178,27 @@ if (run_hour_grouping == TRUE) {
   data_deq <- data_deq %>% apply_hour_tags()
 }
 ```
+
+```{r start_end_dates}
+if (exists("input_startdate") == FALSE) {
+  input_startdate <- as.character(min((data_deq %>% column_dt("date"))$date))
+}
+if (exists("input_enddate") == FALSE) {
+  input_enddate <- as.character(max((data_deq %>% column_dt("date"))$date))
+}
+```
+
+```{r eclean_applying}
+# OPTIONAL
+# Cleaning the global environment
+remove(run_date_grouping, run_hour_grouping)
+remove(list = c(ls(pattern = "input_(hour|date)_")))
+# It is recommended to keep raw_meta and raw_data since it takes the longest to load,
+# as well as the input start & end dates (since the diurnal set does not contain date information)
+```
+
+---
+
+## Next steps
+
+Now we're ready to visualize! See the `visualize-data` vignette for instructions.
