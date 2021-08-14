@@ -54,6 +54,7 @@ heatmap_single(temperature, "Lighthouse", cap_value = 85, cap_color = "green", d
 \seealso{
 Other {STAD visualizations}: 
 \code{\link{heatmap_cross}()},
+\code{\link{map_oa}()},
 \code{\link{map_stad}()},
 \code{\link{ts_line}()},
 \code{\link{ts_variation}()}

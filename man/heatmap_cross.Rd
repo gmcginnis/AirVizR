@@ -52,6 +52,7 @@ heatmap_cross(july_api_daily, temperature, location_data = july_api_meta, drop_i
 \seealso{
 Other {STAD visualizations}: 
 \code{\link{heatmap_single}()},
+\code{\link{map_oa}()},
 \code{\link{map_stad}()},
 \code{\link{ts_line}()},
 \code{\link{ts_variation}()}

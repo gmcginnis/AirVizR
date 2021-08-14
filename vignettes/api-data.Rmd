@@ -32,7 +32,7 @@ Because this process is dependent on external functions, it is possible that cha
 
 Many functions rely on the same inputs, therefore default to the same defined objects in the environment.
 It is highly recommended to specify inputs upfront in their own chunk to simplify functionality.
-Various environment cleans are present in this document to showcase where and when these objects can be disgarded.
+Various environment cleans are present in this document to showcase where and when these objects can be discarded.
 
 ```{r inputs}
 ### REQUIRED inputs

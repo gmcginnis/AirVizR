@@ -64,6 +64,7 @@ ts_line(july_api_hourly, pm25_atm, label_filter = c("\\\\bPSU\\\\b"), add_points
 Other {STAD visualizations}: 
 \code{\link{heatmap_cross}()},
 \code{\link{heatmap_single}()},
+\code{\link{map_oa}()},
 \code{\link{map_stad}()},
 \code{\link{ts_variation}()}
 }

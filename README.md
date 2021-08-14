@@ -80,6 +80,16 @@ customized.
 
 <img src="man/figures/README-example_map_stad-1.png" width="100%" />
 
+### Map Temporal Data
+
+Functions allow for the use of data from
+[ObservAir®](https://www.dstech.io/), which is an air monitor that
+records changes over time as well as location. Below is an example of
+temperature changes during a commute.  
+In RStudio and HTML, this map is interactive!
+
+<img src='man/figures/example_oa_map.png' />
+
 ### Heatmaps
 
 Temporal heat maps use color to represent changes in a variable of
@@ -143,7 +153,7 @@ ts_variation(july_api_hourly, "pm25_epa_2021", include = "Lighthouse", group = "
     location_data = july_api_meta, subset = "hour")
 ```
 
-### Combine FRM and PurpleAir Data
+### Combine STADs
 
 STADs can be combined and pivoted in order to visualize data from both
 FRMs and PurpleAir monitors simultaneously. The visualization functions

@@ -33,11 +33,14 @@ organize_stad <- function(dataset, measurements, col_rename, keep_cols = FALSE, 
       dataset <- dplyr::select(dataset,
                                site_id,
                                intersect(
-                                 c("datetime", "date_hour", "date", "hour", "hour_minute", "time",
-                                   "date_tag", "hour_tag"),
+                                 c("datetime", "date_hour", "date", "hour", "hour_minute", "time"),
                                  colnames(dataset)
                                ),
-                               measurement, value)
+                               measurement, value,
+                               intersect(
+                                 c("date_tag", "hour_tag"),
+                                 colnames(dataset)
+                               ))
       
     } else {print("Keeping all columns.")}
     

@@ -96,18 +96,7 @@ if (run_hour_grouping == TRUE) {
 }
 ```
 
-Pulling start and end dates (for other functions):
-
-```{r start_end_dates}
-if (exists("input_startdate") == FALSE) {
-  input_startdate <- as.character(min((local_full %>% column_dt("date"))$date))
-}
-if (exists("input_enddate") == FALSE) {
-  input_enddate <- as.character(max((local_full %>% column_dt("date"))$date))
-}
-```
-
-```{r eclean_applying}
+```{r eclean_applying, echo = FALSE}
 # OPTIONAL
 # Cleaning the global environment
 remove(run_date_grouping, run_hour_grouping)

@@ -26,14 +26,14 @@ library(dplyr)
 
 # Combine data sets
 
-Not all data sets will have the same number of columns. However, the data can still be combined into larger sets.
+Not all data sets will have the same number of columns. However, the data can still be combined into larger sets.  
 
 Below is an example using package data.
 
 ```{r load_data}
-# Combine meta data
+# Combine meta data, keeping all columns
 combo_meta <- organize_stad(list(july_api_meta, july_frm_meta))
-# Combine hourly data
+# Combine hourly data, keeping all columns
 combo_hourly <- organize_stad(list(july_api_hourly, july_frm_hourly))
 ```
 
@@ -60,14 +60,13 @@ Now that we have our combined data frames, we can visualize it. See more visuali
 
 If we want to focus on data during and after the Fourth of July, filter the data frame first with `filter_df()`.
 
-```{r visualize, fig.width = 7, fig.height = 7, results = 'hide', fig.keep = 'all'}
-filter_df(combo_pm25, date_tag, exclude = "Before") %>% 
-  heatmap_cross(
-    dataset = ., #this dot is because the now-filtered data set is piped in from above
-    variable_of_interest = pm25,
-    location_data = combo_meta,
-    drop_incomplete = TRUE
-  )
+```{r visualize, message = FALSE, warning = FALSE, fig.width = 7, fig.height = 7, results = 'hide', fig.keep = 'all'}
+heatmap_cross(
+  dataset = filter_df(combo_pm25, date_tag, exclude = "Before"),
+  variable_of_interest = pm25,
+  location_data = combo_meta,
+  drop_incomplete = TRUE
+)
 ```
 
 To compare the accuracy of the reported PM values between PA and FRM, we can plot them on the same graph with some adjustments. First we will have to make the data grouped by time stamp, since PA data does not have `pm25_frm` and FRM does not have `pm25_epa_2021`.
@@ -119,3 +118,27 @@ ggplot(combo_pm25_wide, aes(x = pm25_epa_2021, y = pm25_frm, color = date_tag)) 
   )
 ```
 
+
+## Another Example: ObservAir
+
+Let's say we want to compare PM and BC values over time. We can combine all the skills from above into one quick setup.  
+
+```{r dates, echo = FALSE}
+input_startdate <- "2020-07-01"
+input_enddate <- "2020-07-02"
+```
+
+```{r big, message = FALSE, warning = FALSE, fig.width = 7, fig.height = 7, results = 'hide', fig.keep = 'last'}
+ts_variation(
+  organize_stad(
+    list(oa_static_diurnal, july_frm_diurnal, july_api_diurnal),
+    c(black_carbon, pm25_frm, pm25_epa_2021)
+  ),
+  "value",
+  location_data = organize_stad(list(oa_static_meta, july_frm_meta, july_api_meta)),
+  group = "measurement",
+  subset = "hour"
+)
+```
+
+It should be noted that the labels on the plot will not be as descriptive, however, so consider adding custom labels after!

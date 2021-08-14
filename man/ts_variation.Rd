@@ -52,6 +52,7 @@ ts_variation(july_api_hourly, c("pm25_atm", "temperature_ambient"), location_dat
 Other {STAD visualizations}: 
 \code{\link{heatmap_cross}()},
 \code{\link{heatmap_single}()},
+\code{\link{map_oa}()},
 \code{\link{map_stad}()},
 \code{\link{ts_line}()}
 }

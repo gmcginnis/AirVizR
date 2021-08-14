@@ -35,6 +35,7 @@ Imports:
     viridis
 Suggests: 
     knitr,
+    leaflet,
     openair,
     readxl,
     rmarkdown,

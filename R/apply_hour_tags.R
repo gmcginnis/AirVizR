@@ -8,9 +8,14 @@
 #' @return Dataframe with a new column ("hour_tag") containing the appropriate hour tag with respect to each row's timestamp.
 #' @examples 
 #' apply_hour_tags(
-#'   head(july_api_diurnal[1:3]),
-#'   starts = c(5, 12, 17, 21),
-#'   tags = c("Morning", "Afternoon", "Evening", "Night")
+#'   july_frm_diurnal[1:3],
+#'   c(5, 12, 17, 21),
+#'   c("Morning", "Afternoon", "Evening", "Night")
+#' )
+#' apply_hour_tags(
+#'   july_frm_diurnal[1:3],
+#'   starts = c(6, 22),
+#'   tags = c("Awake", "Asleep")
 #' )
 #' @importFrom magrittr %>%
 #' @export

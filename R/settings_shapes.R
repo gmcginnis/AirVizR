@@ -32,8 +32,8 @@ settings_shapes <- function(dataset = dataset, meta = data_meta) {
   
   shapes_df <- dplyr::filter(
     data.frame(
-      "location" = c("outside", "inside", "FRM", "average"),
-      "shape" = c(21, 23, 25, 24)
+      "location" = c("outside", "inside", "FRM", "OA", "average"),
+      "shape" = c(21, 23, 24, 25, 22)
     ),
     location %in% unique_locs
   )

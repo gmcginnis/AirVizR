@@ -91,24 +91,19 @@ raw_frm <- read_frm()
 frm_meta <- wrangle_meta(frm_raw_meta)
 frm_full <- wrangle_frm(raw_frm, frm_meta)
 
-frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE) %>% apply_hour_tags()
-frm_daily <- group_stad(frm_full, by_day = TRUE, by_hour = FALSE) %>% apply_date_tags()
-frm_diurnal <- group_stad(frm_full, by_day = FALSE, by_hour = TRUE) %>% apply_hour_tags()
+frm_hourly <- group_stad(frm_full, by_day = TRUE, by_hour = TRUE)
+frm_daily <- group_stad(frm_full, by_day = TRUE, by_hour = FALSE)
+frm_diurnal <- group_stad(frm_full, by_day = FALSE, by_hour = TRUE)
 
 if (run_date_grouping == TRUE){
   frm_full <- apply_date_tags(frm_full)
+  frm_daily <- apply_date_tags(frm_daily)
+  frm_hourly <- apply_date_tags(frm_hourly)
 }
 if (run_hour_grouping == TRUE) {
   frm_full <- apply_hour_tags(frm_full)
-}
-```
-
-```{r start_end_dates, results = 'hide'}
-if (exists("input_startdate") == FALSE) {
-  input_startdate <- min((frm_full %>% column_dt("date"))$date)
-}
-if (exists("input_enddate") == FALSE) {
-  input_enddate <- max((frm_full %>% column_dt("date"))$date)
+  frm_hourly <- apply_hour_tags(frm_hourly)
+  frm_diurnal <- apply_hour_tags(frm_diurnal)
 }
 ```
 
@@ -125,4 +120,5 @@ remove(list = c(ls(pattern = "input_(hour|date|frm)_")))
 
 ## Next steps
 
-Now we're ready to visualize! See the [`visualize-data` vignette](visualize-data.html) for instructions.
+Now we're ready to visualize! See the [`visualize-data` vignette](visualize-data.html) for instructions.  
+You may wish to first combine the data sets with other STADs, which you can learn about in the [`combine-data` vignette](combine-data.html).

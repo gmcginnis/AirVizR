@@ -1,0 +1,5 @@
+Data34_210701_15h04m
+Instrument Settings: SN = 34, ID = 34, Version = 43.3, Hardware = 1.2.1, Firmware = 1.20.2.r1, flowRate = 100, samplePeriod = 2, envComp = True, DLPFilter = 1, FRcalFactor = 1, LEDmode = BC, LEDra = 90, LEDmaxConc = 10, LEDtimeout = 20, maxATN = 80, timeZone = -7, GPS = 1, GPS_SamplePeriod = 10
+Factors: mRef = -0.01110687, bRef = 0.445382, mSig = -0.010485, bSig = 0.420941, FR1 = -108.208, FR2 = -43.354, FR3 = 51.621, FR4 = -4.92, MAC = 12.5, FRcal = 1
+colNames: TS, Iref, Isig, ATN, BC, RH, T, FR, Vbat, GPSlat, GPSlong
+

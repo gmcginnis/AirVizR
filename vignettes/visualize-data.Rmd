@@ -36,14 +36,25 @@ if(FALSE %in% file_list){
   data_diurnal <- july_api_diurnal
 }
 remove(data_files, file_list, i)
+```
 
+# Loading
+
+Make sure you have your STADs of interest in your environment.  
+If you want to combine STADs of multiple sources first, read the instructions on the [`combine-data` vignette](combine-data.html).  
+  
+Visualizing diurnal data requires that you have start and end dates defined in the environment; you can run the following to pull the value from your non-averaged data set (defined as `data_full` in this example):  
+
+```{r loading}
 if (exists("input_startdate") == FALSE) {
-  input_startdate <- as.character(min((data_full %>% column_dt("date"))$date))
+  input_startdate <- as.character(min((column_dt(data_full, "date"))$date))
 }
 if (exists("input_enddate") == FALSE) {
-  input_enddate <- as.character(max((data_full %>% column_dt("date"))$date))
+  input_enddate <- as.character(max((column_dt(data_full, "date"))$date))
 }
 ```
+
+Once you have loaded your STAD, you can run the visualization functions.  
 
 ---
 
@@ -112,7 +123,7 @@ ts_line(data_hourly, pm25_epa_2021, add_extrema = FALSE, add_average = FALSE)
 # Further customization:
 # Filter by site label to spotlight specific monitors without removing others in the set
 # Consider plotting on a single column if few monitors are selected,
-# for ease of visualizaing temporal variation
+# for ease of visualizing temporal variation
 ts_line(data_hourly, pm25_epa_2021, add_points = TRUE,
         label_filter = c("Lighthouse", "PSU"), single_column = TRUE)
 

@@ -62,6 +62,7 @@ map_stad(
 Other {STAD visualizations}: 
 \code{\link{heatmap_cross}()},
 \code{\link{heatmap_single}()},
+\code{\link{map_oa}()},
 \code{\link{ts_line}()},
 \code{\link{ts_variation}()}
 }

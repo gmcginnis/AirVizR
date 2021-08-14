@@ -1,0 +1,83 @@
+---
+title: "Importing and Using ObservAir Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Importing and Using ObservAir Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(AirVizR)
+library(leaflet)
+```
+
+## Inputs
+
+Many functions rely on the same inputs, therefore default to the same defined objects in the environment.
+It is highly recommended to specify inputs upfront in their own chunk to simplify functionality.
+Various environment cleans are present in this document to showcase where and when these objects can be discarded.
+
+```{r inputs}
+# The folder in which the data set(s) are stored:
+input_oafolder <- "data-raw/oa_moving"
+
+# Timezone which the data is stamped with:
+input_timezone <- "America/Los_Angeles"
+# If you are unsure, view your OA's Settings data, however keep in mind that the functions work best if you provide a named value rather than a difference from a GMT value
+```
+
+---
+
+## Loading Data
+
+This function works best if your data folder includes a `Settings` file.
+
+```{r getting_data}
+raw_oa <- read_oa_folder(input_oafolder, input_timezone)
+```
+
+
+## Wrangle
+
+```{r wrangling}
+# Creating the full data set
+oa_full <- wrangle_oa(raw_oa)
+# Note that despite the ability to truncate a certain amount of starter times for each data set,
+# unusual values can still occur.
+# It is recommended to arrange your data set by numeric values and remove any obviously miscalculated values:
+oa_full <- dplyr::filter(oa_full, longitude < 0)
+
+# Creating a data set of location data
+# Note that if you are measuring spatial variation with your monitor, the lat/long will NOT be accurate in the meta data
+oa_meta <- wrangle_oa_meta(oa_full, input_timezone, single = TRUE)
+
+oa_daily <- group_stad(oa_full)
+oa_hourly <- group_stad(oa_full, by_day = TRUE, by_hour = TRUE)
+oa_diurnal <- group_stad(oa_full, by_day = FALSE, by_hour = TRUE)
+```
+
+```{r eclean, echo = FALSE}
+# Optional environment clean
+remove(input_oafolder, input_timezone)
+```
+---
+
+## Next steps
+
+Now we're ready to visualize! See the [`visualize-data` vignette](visualize-data.html) for instructions.  
+You may wish to first combine the data sets with other STADs, which you can learn about in the [`combine-data` vignette](combine-data.html).
+
+Because OA data is continuous, you can view it in the form of a map using `map_oa()`:
+
+```{r leaflet, message = FALSE, warning = FALSE, fig.width = 7, fig.height = 7, eval = TRUE}
+map_oa(oa_moving_full, temperature_c)
+```
