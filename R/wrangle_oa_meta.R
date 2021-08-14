@@ -2,13 +2,13 @@
 #' 
 #' For OA data that does not involve movement, create a meta data frame with this.
 #' @family {OA functions}
-#' @seealso \code{\link{wrangle_meta()}}
-#' @param dataset Blah
-#' @param timezone Character
-#' @param single Logical
+#' @param dataset Wrangled OA data set
+#' @param timezone Character of valid Olson Name
+#' @param single Logical; group all the data into a singular "location", or keep seprate?
 #' @return Data set.
 #' @examples 
-#' 2+2
+#' wrangle_oa_meta(oa_moving_full, "America/Los_Angeles")
+#' wrangle_oa_meta(oa_static_full, "America/Los_Angeles", TRUE)
 #' @importFrom magrittr %>%
 #' @export
 wrangle_oa_meta <- function(dataset, timezone, single = TRUE){
@@ -32,7 +32,7 @@ wrangle_oa_meta <- function(dataset, timezone, single = TRUE){
       longitude = median(longitude, na.rm = TRUE)
     ) %>% 
     dplyr::distinct() %>% 
-    mutate(
+    dplyr::mutate(
       location = factor("OA"),
       timezone = timezone,
       flag_highValue = NA
@@ -40,7 +40,7 @@ wrangle_oa_meta <- function(dataset, timezone, single = TRUE){
   
   if(isTRUE(single)){
     metaset <- metaset %>% 
-      mutate(
+      dplyr::mutate(
         label = "ObservAir",
         label_orig = paste(
           "ObservAir",

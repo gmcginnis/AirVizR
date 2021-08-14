@@ -27,9 +27,7 @@ Interactive leaflet map.
 Visualize data that involves lat/long movement.
 }
 \examples{
-\dontrun{
-map_oa(oa_moving_full)
-}
+map_oa(oa_moving_full, black_carbon)
 }
 \seealso{
 \code{\link{map_stad()}}

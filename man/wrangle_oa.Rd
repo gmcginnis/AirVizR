@@ -18,9 +18,7 @@ Wrangled data frame
 Wrangle imported ObservAir data frames.
 }
 \examples{
-\dontrun{
-wrangle_oa(raw_oa)
-}
+head(wrangle_oa(oa_moving_raw))
 }
 \seealso{
 \link{unit_convert()}

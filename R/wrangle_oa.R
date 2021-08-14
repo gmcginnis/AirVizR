@@ -7,9 +7,7 @@
 #' @param drop_minutes Numeric; number of minutes at the start of each file to remove
 #' @return Wrangled data frame
 #' @examples 
-#' \dontrun{
-#' wrangle_oa(raw_oa)
-#' }
+#' head(wrangle_oa(oa_moving_raw))
 #' @importFrom magrittr %>%
 #' @export
 wrangle_oa <- function(dataset, drop_minutes = 5){

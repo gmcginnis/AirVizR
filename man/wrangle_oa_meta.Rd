@@ -7,11 +7,11 @@
 wrangle_oa_meta(dataset, timezone, single = TRUE)
 }
 \arguments{
-\item{dataset}{Blah}
+\item{dataset}{Wrangled OA data set}
 
-\item{timezone}{Character}
+\item{timezone}{Character of valid Olson Name}
 
-\item{single}{Logical}
+\item{single}{Logical; group all the data into a singular "location", or keep seprate?}
 }
 \value{
 Data set.
@@ -20,11 +20,10 @@ Data set.
 For OA data that does not involve movement, create a meta data frame with this.
 }
 \examples{
-2+2
+wrangle_oa_meta(oa_moving_full, "America/Los_Angeles")
+wrangle_oa_meta(oa_static_full, "America/Los_Angeles", TRUE)
 }
 \seealso{
-\code{\link{wrangle_meta()}}
-
 Other {OA functions}: 
 \code{\link{read_oa_folder}()},
 \code{\link{wrangle_oa}()}

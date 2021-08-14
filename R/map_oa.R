@@ -9,9 +9,7 @@
 #' @param provider_tiles Character or provider source; see \code{provider} argument for \code{\link{addProviderTiles()}} for a link to lists.
 #' @return Interactive leaflet map.
 #' @examples 
-#' \dontrun{
-#' map_oa(oa_moving_full)
-#' }
+#' map_oa(oa_moving_full, black_carbon)
 #' @export
 map_oa <- function(dataset, variable_of_interest,
                    palette_color = "viridis", provider_tiles = "CartoDB.DarkMatter"){
