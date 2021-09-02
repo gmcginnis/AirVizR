@@ -40,9 +40,9 @@ heatmap_cross <- function(dataset, variable_of_interest, drop_incomplete = FALSE
     dataset <- drop_incomplete(dataset, var_qt = variable_of_interest_qt)
   } else { print("All monitors will be plotted.") }
   
-  # Adding quotation marks
-  cap_color <- deparse(substitute(cap_color)) %>%
-    stringr::str_replace_all("\\\"", "") # Removing extra quotation marks if already provided
+  # # Adding quotation marks
+  # cap_color <- deparse(substitute(cap_color)) %>%
+  #   stringr::str_replace_all("\\\"", "") # Removing extra quotation marks if already provided
   
   # Location data
   temp_loc <- location_data %>% 
